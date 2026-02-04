@@ -3,6 +3,7 @@ import SearchBar from "../components/shared/SearchBar";
 import HospitalCard from "../components/cards/HospitalCard";
 import MapView from "../components/MapView";
 import { searchHospitals } from "../api/searchApi";
+import mapResults from "../data/mapResults";
 
 const SearchPage = () => {
   const [results, setResults] = useState([]);
@@ -35,7 +36,7 @@ const SearchPage = () => {
 
         {/* RIGHT: MAP */}
         <div className="lg:col-span-2">
-          <MapView hospitals={results} />
+          <MapView hospitals={mapResults} />
         </div>
       </div>
     </div>
