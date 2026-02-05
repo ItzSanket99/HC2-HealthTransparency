@@ -3,7 +3,7 @@ import SearchBar from "../components/shared/SearchBar";
 import HospitalCard from "../components/cards/HospitalCard";
 import MapView from "../components/MapView";
 import { searchHospitals } from "../api/searchApi";
-import mapResults from "../data/mapResults";
+
 
 const SearchPage = () => {
   const [results, setResults] = useState([]);
@@ -12,6 +12,13 @@ const SearchPage = () => {
     const data = await searchHospitals(condition, city);
     setResults(data.results || []);
   };
+
+  const mapLocations = results.map((h) => ({
+    id: h.hospitalId,
+    lat: h.lat,
+    lng: h.lng,
+    label: `${h.hospitalName} • ₹${h.treatments[0].minCost.toLocaleString()} – ₹${h.treatments[0].maxCost.toLocaleString()}`,
+  }));
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -36,7 +43,7 @@ const SearchPage = () => {
 
         {/* RIGHT: MAP */}
         <div className="lg:col-span-2">
-          <MapView hospitals={mapResults} />
+          <MapView locations={mapLocations} />
         </div>
       </div>
     </div>
