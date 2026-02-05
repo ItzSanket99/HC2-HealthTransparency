@@ -3,6 +3,7 @@ import Navbar from "./components/shared/Navbar"
 
 import Home from "./pages/Home"
 import SearchPage from "./pages/SearchPage"
+import SearchDetails from "./pages/SearchDetails"
 import SearchCare from "./pages/SearchCare"
 import Solutions from "./pages/Solutions"
 import Resources from "./pages/Resources"
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/search-details" element ={<SearchDetails/>}/>
         <Route path="/care" element={<SearchCare />} />
         <Route path="/solutions" element={<Solutions />} />
         <Route path="/resources" element={<Resources />} />

@@ -1,11 +1,22 @@
 import { FaStar, FaMapMarkerAlt, FaRupeeSign } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const HospitalCard = ({ hospital }) => {
+  const navigate = useNavigate();
   const t = hospital.treatments[0];
+
+  const handleViewDetails = () => {
+    navigate("/search-details", {
+      state: {
+        hospital,
+        treatment: t,
+      },
+    });
+  };
 
   return (
     <div className="bg-white rounded-xl border p-5 hover:shadow-md transition">
-      
+
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
@@ -51,9 +62,13 @@ const HospitalCard = ({ hospital }) => {
 
       {/* CTA */}
       <div className="mt-4 flex justify-between items-center">
-        <button className="text-teal-600 font-medium hover:underline">
+        <button
+          onClick={handleViewDetails}
+          className="text-teal-600 font-medium hover:underline"
+        >
           View details
         </button>
+
         <button className="bg-teal-600 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-teal-700">
           Compare
         </button>
