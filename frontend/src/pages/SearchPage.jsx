@@ -3,15 +3,25 @@ import SearchBar from "../components/shared/SearchBar";
 import HospitalCard from "../components/cards/HospitalCard";
 import MapView from "../components/MapView";
 import { searchHospitals } from "../api/searchApi";
+import { mockSearchData } from "../data/searchResults";
 
 
 const SearchPage = () => {
   const [results, setResults] = useState([]);
 
-  const handleSearch = async (condition, city) => {
-    const data = await searchHospitals(condition, city);
-    setResults(data.results || []);
-  };
+const handleSearch = (surgery, city) => {
+  const filteredResults = mockSearchData
+    .flatMap(block => block.results)
+    .filter(hospital =>
+      hospital.city === city &&
+      hospital.treatments.some(t => t.name === surgery)
+    );
+
+  setResults(filteredResults);
+
+  // For map pins (if separate)
+  setMapLocations(filteredResults);
+};
 
   const mapLocations = results.map((h) => ({
     id: h.hospitalId,
