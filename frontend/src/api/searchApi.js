@@ -1,14 +1,19 @@
 import { mockSearchData } from "../data/searchResults";
 
-export const searchHospitals = (condition, city) => {
+// Simulated backend search
+export const searchHospitals = (surgery, city) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const match = mockSearchData.find(
-        (item) =>
-          item.condition.toLowerCase().includes(condition.toLowerCase()) &&
-          item.city.toLowerCase() === city.toLowerCase()
+      // Flatten all hospitals
+      const hospitals = mockSearchData.flatMap(block => block.results);
+
+      // Filter by selected surgery + city
+      const filtered = hospitals.filter(hospital =>
+        hospital.city.toLowerCase() === city.toLowerCase() &&
+        hospital.treatments.some(t => t.name === surgery)
       );
-      resolve(match || { results: [] });
-    }, 500);
+
+      resolve({ results: filtered });
+    }, 500); // simulate network delay
   });
 };
