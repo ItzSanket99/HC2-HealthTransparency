@@ -1,27 +1,29 @@
-import Navbar from "./components/shared/Navbar"
-import "./index.css"
-{/* tailwind css is configured */}
-{/* use tailwind classes for styling  */}
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Navbar from "./components/shared/Navbar"
+
 import Home from "./pages/Home"
 import SearchPage from "./pages/SearchPage"
+import SearchCare from "./pages/SearchCare"
+import Solutions from "./pages/Solutions"
+import Resources from "./pages/Resources"
+import SignIn from "./pages/SignIn"
+import SignUp from "./pages/SignUp"
 
 function App() {
-  
-
   return (
-    <>
-      {/* create all the route in this file */}
-      {/* try to create seprate pages and then work on it we will merge it later */}
-      <Router>
-        <Navbar />
-        <Routes>
-            <Route path="/" element = {<Home/>}/>
-            <Route path="/search" element = {<SearchPage/>}/>
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/care" element={<SearchCare />} />
+        <Route path="/solutions" element={<Solutions />} />
+        <Route path="/resources" element={<Resources />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   )
 }
 
