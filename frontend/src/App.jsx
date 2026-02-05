@@ -9,6 +9,7 @@ import Solutions from "./pages/Solutions"
 import Resources from "./pages/Resources"
 import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
+import Footer from "./components/shared/Footer"
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
+       <Footer/>
     </Router>
+   
   )
 }
 

@@ -122,3 +122,127 @@
   border-top: 1px solid #e5e7eb;
   color: #6b7280;
 }
+/* =========================
+   PRICE TRANSPARENCY SECTION
+========================= */
+.transparency-section {
+  background: #f4fffd;
+  padding: 6.5rem 1.5rem;
+}
+
+.transparency-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 5rem;
+  align-items: flex-start;
+}
+
+/* LEFT CONTENT */
+.transparency-left h2 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #043f42;
+  margin-bottom: 1.6rem;
+  line-height: 1.15;
+}
+
+.transparency-left p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #334155;
+  margin-bottom: 1.25rem;
+  max-width: 560px;
+}
+
+/* RIGHT CONTENT */
+.transparency-right {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
+
+/* ROW STYLE (matches reference) */
+.transparency-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.6rem;
+}
+
+.transparency-row img {
+  width: 72px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.transparency-row h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #064e4e;
+  margin-bottom: 0.4rem;
+}
+
+.transparency-row p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #475569;
+  max-width: 420px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .transparency-container {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .transparency-left h2 {
+    font-size: 2.1rem;
+  }
+}
+/* =========================
+   TESTIMONIAL SECTION
+========================= */
+.testimonial-section {
+  background: #043f42;
+  padding: 6rem 1.5rem;
+}
+
+.testimonial-container {
+  max-width: 1000px;
+  margin: auto;
+  position: relative;
+}
+
+.quote-icon {
+  font-size: 6rem;
+  font-weight: 800;
+  color: #5eead4;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #ffffff;
+  max-width: 880px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .testimonial-text {
+    font-size: 1.4rem;
+  }
+
+  .quote-icon {
+    font-size: 4.5rem;
+  }
+}
+.quote-icon {
+  width: 96px;
+  height: auto;
+  margin-bottom: 1.6rem;
+}
