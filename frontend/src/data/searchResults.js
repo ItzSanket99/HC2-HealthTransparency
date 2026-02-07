@@ -1,7 +1,9 @@
 export const mockSearchData = [
+  /* ===================== PUNE – KNEE PAIN ===================== */
   {
     condition: "Knee Pain",
     city: "Pune",
+    description: "Knee replacement is a surgical procedure in which damaged or worn parts of the knee joint are replaced with artificial components to relieve pain and restore mobility. It is commonly recommended for severe arthritis or knee injury.",
     results: [
       {
         hospitalId: 1,
@@ -10,13 +12,14 @@ export const mockSearchData = [
         city: "Pune",
         state: "Maharashtra",
         lat: 18.5286,
-        lng: 73.8740,
+        lng: 73.8740, // Central Pune
         rating: 4.4,
         affordabilityScore: 7.2,
         treatments: [
           {
             treatmentId: 101,
             name: "Knee Replacement",
+            description: "Knee replacement is a surgical procedure in which damaged or worn parts of the knee joint are replaced with artificial components to relieve pain and restore mobility. It is commonly recommended for severe arthritis or knee injury.",
             minCost: 160000,
             maxCost: 420000,
             recoveryTimeDays: 30,
@@ -24,12 +27,58 @@ export const mockSearchData = [
           },
         ],
       },
+      {
+        hospitalId: 101,
+        hospitalName: "Deenanath Mangeshkar Hospital",
+        type: "Private",
+        city: "Pune",
+        state: "Maharashtra",
+        lat: 18.5079,
+        lng: 73.8070, // Near Kothrud (~6 mi)
+        rating: 4.5,
+        affordabilityScore: 8.1,
+        treatments: [
+          {
+            treatmentId: 1102,
+            name: "Knee Replacement",
+            description: "Knee replacement is a surgical procedure in which damaged or worn parts of the knee joint are replaced with artificial components to relieve pain and restore mobility. It is commonly recommended for severe arthritis or knee injury.",
+            minCost: 140000,
+            maxCost: 360000,
+            recoveryTimeDays: 26,
+            riskLevel: "Medium",
+          },
+        ],
+      },
+      {
+        hospitalId: 102,
+        hospitalName: "District Civil Hospital Baramati",
+        type: "Government",
+        city: "Pune",
+        state: "Maharashtra",
+        lat: 18.1516,
+        lng: 74.5777, // Baramati (~45 mi)
+        rating: 4.1,
+        affordabilityScore: 9.0,
+        treatments: [
+          {
+            treatmentId: 1103,
+            name: "Knee Replacement",
+            description: "Knee replacement is a surgical procedure in which damaged or worn parts of the knee joint are replaced with artificial components to relieve pain and restore mobility. It is commonly recommended for severe arthritis or knee injury.",
+            minCost: 90000,
+            maxCost: 220000,
+            recoveryTimeDays: 35,
+            riskLevel: "Medium",
+          },
+        ],
+      },
     ],
   },
 
+  /* ===================== MUMBAI – HEART BLOCKAGE ===================== */
   {
     condition: "Heart Blockage",
     city: "Mumbai",
+    description: "Angioplasty is a minimally invasive procedure to open blocked coronary arteries that supply blood to the heart. A small balloon is inflated to widen the artery, and often a stent is placed to keep it open.",
     results: [
       {
         hospitalId: 2,
@@ -38,13 +87,14 @@ export const mockSearchData = [
         city: "Mumbai",
         state: "Maharashtra",
         lat: 19.1357,
-        lng: 72.8296,
+        lng: 72.8296, // Andheri
         rating: 4.8,
         affordabilityScore: 6.5,
         treatments: [
           {
             treatmentId: 201,
             name: "Angioplasty",
+            description: "Angioplasty is a minimally invasive procedure to open blocked coronary arteries that supply blood to the heart. A small balloon is inflated to widen the artery, and often a stent is placed to keep it open.",
             minCost: 220000,
             maxCost: 600000,
             recoveryTimeDays: 8,
@@ -52,12 +102,58 @@ export const mockSearchData = [
           },
         ],
       },
+      {
+        hospitalId: 201,
+        hospitalName: "Breach Candy Hospital",
+        type: "Private",
+        city: "Mumbai",
+        state: "Maharashtra",
+        lat: 18.9735,
+        lng: 72.8063, // South Mumbai (~10 mi)
+        rating: 4.7,
+        affordabilityScore: 6.9,
+        treatments: [
+          {
+            treatmentId: 2201,
+            name: "Angioplasty",
+            description: "Angioplasty is a minimally invasive procedure to open blocked coronary arteries that supply blood to the heart. A small balloon is inflated to widen the artery, and often a stent is placed to keep it open.",
+            minCost: 240000,
+            maxCost: 580000,
+            recoveryTimeDays: 7,
+            riskLevel: "High",
+          },
+        ],
+      },
+      {
+        hospitalId: 202,
+        hospitalName: "Kalyan Lifeline Multispeciality Hospital",
+        type: "Private",
+        city: "Mumbai",
+        state: "Maharashtra",
+        lat: 19.2437,
+        lng: 73.1355, // Kalyan (~33 mi)
+        rating: 4.2,
+        affordabilityScore: 7.5,
+        treatments: [
+          {
+            treatmentId: 2202,
+            name: "Angioplasty",
+            description: "Angioplasty is a minimally invasive procedure to open blocked coronary arteries that supply blood to the heart. A small balloon is inflated to widen the artery, and often a stent is placed to keep it open.",
+            minCost: 180000,
+            maxCost: 450000,
+            recoveryTimeDays: 10,
+            riskLevel: "High",
+          },
+        ],
+      },
     ],
   },
 
+  /* ===================== BENGALURU – BRAIN TUMOR ===================== */
   {
     condition: "Brain Tumor",
     city: "Bengaluru",
+    description: "Brain tumor surgery involves removing abnormal growths in the brain through precise neurosurgical techniques. It aims to remove as much of the tumor as possible while preserving brain function.",
     results: [
       {
         hospitalId: 3,
@@ -66,13 +162,14 @@ export const mockSearchData = [
         city: "Bengaluru",
         state: "Karnataka",
         lat: 12.9435,
-        lng: 77.5963,
+        lng: 77.5963, // Central
         rating: 4.9,
         affordabilityScore: 9.5,
         treatments: [
           {
             treatmentId: 301,
             name: "Brain Tumor Surgery",
+            description: "Brain tumor surgery involves removing abnormal growths in the brain through precise neurosurgical techniques. It aims to remove as much of the tumor as possible while preserving brain function.",
             minCost: 120000,
             maxCost: 350000,
             recoveryTimeDays: 45,
@@ -80,142 +177,46 @@ export const mockSearchData = [
           },
         ],
       },
-    ],
-  },
-
-  {
-    condition: "Kidney Failure",
-    city: "Chennai",
-    results: [
       {
-        hospitalId: 4,
-        hospitalName: "Apollo Hospitals Greams Road",
+        hospitalId: 301,
+        hospitalName: "Aster CMI Hospital",
         type: "Private",
-        city: "Chennai",
-        state: "Tamil Nadu",
-        lat: 13.0604,
-        lng: 80.2496,
-        rating: 4.7,
-        affordabilityScore: 6.9,
-        treatments: [
-          {
-            treatmentId: 401,
-            name: "Kidney Transplant",
-            minCost: 500000,
-            maxCost: 900000,
-            recoveryTimeDays: 60,
-            riskLevel: "High",
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    condition: "Liver Cirrhosis",
-    city: "Delhi",
-    results: [
-      {
-        hospitalId: 5,
-        hospitalName: "AIIMS Delhi",
-        type: "Government",
-        city: "Delhi",
-        state: "Delhi",
-        lat: 28.5672,
-        lng: 77.2100,
-        rating: 4.8,
-        affordabilityScore: 9.7,
-        treatments: [
-          {
-            treatmentId: 501,
-            name: "Liver Transplant",
-            minCost: 300000,
-            maxCost: 700000,
-            recoveryTimeDays: 75,
-            riskLevel: "High",
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    condition: "Spinal Disc Herniation",
-    city: "Hyderabad",
-    results: [
-      {
-        hospitalId: 6,
-        hospitalName: "Yashoda Hospitals Somajiguda",
-        type: "Private",
-        city: "Hyderabad",
-        state: "Telangana",
-        lat: 17.4213,
-        lng: 78.4586,
+        city: "Bengaluru",
+        state: "Karnataka",
+        lat: 13.0406,
+        lng: 77.5937, // Hebbal (~9 mi)
         rating: 4.6,
-        affordabilityScore: 7.1,
-        treatments: [
-          {
-            treatmentId: 601,
-            name: "Spinal Decompression Surgery",
-            minCost: 180000,
-            maxCost: 350000,
-            recoveryTimeDays: 25,
-            riskLevel: "Medium",
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    condition: "Cataract",
-    city: "Ahmedabad",
-    results: [
-      {
-        hospitalId: 7,
-        hospitalName: "Drashti Netralaya",
-        type: "Private",
-        city: "Ahmedabad",
-        state: "Gujarat",
-        lat: 23.0225,
-        lng: 72.5714,
-        rating: 4.5,
-        affordabilityScore: 8.9,
-        treatments: [
-          {
-            treatmentId: 701,
-            name: "Cataract Surgery",
-            minCost: 20000,
-            maxCost: 60000,
-            recoveryTimeDays: 7,
-            riskLevel: "Low",
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    condition: "Breast Cancer",
-    city: "Kolkata",
-    results: [
-      {
-        hospitalId: 8,
-        hospitalName: "Tata Medical Center",
-        type: "Private",
-        city: "Kolkata",
-        state: "West Bengal",
-        lat: 22.5726,
-        lng: 88.3639,
-        rating: 4.7,
         affordabilityScore: 7.8,
         treatments: [
           {
-            treatmentId: 801,
-            name: "Chemotherapy",
-            minCost: 150000,
-            maxCost: 500000,
-            recoveryTimeDays: 120,
+            treatmentId: 3301,
+            name: "Brain Tumor Surgery",
+            description: "Brain tumor surgery involves removing abnormal growths in the brain through precise neurosurgical techniques. It aims to remove as much of the tumor as possible while preserving brain function.",
+            minCost: 180000,
+            maxCost: 420000,
+            recoveryTimeDays: 50,
+            riskLevel: "High",
+          },
+        ],
+      },
+      {
+        hospitalId: 302,
+        hospitalName: "Ramanagara District Hospital",
+        type: "Government",
+        city: "Bengaluru",
+        state: "Karnataka",
+        lat: 12.7210,
+        lng: 77.2805, // Ramanagara (~30 mi)
+        rating: 4.0,
+        affordabilityScore: 9.2,
+        treatments: [
+          {
+            treatmentId: 3302,
+            name: "Brain Tumor Surgery",
+            description: "Brain tumor surgery involves removing abnormal growths in the brain through precise neurosurgical techniques. It aims to remove as much of the tumor as possible while preserving brain function.",
+            minCost: 90000,
+            maxCost: 260000,
+            recoveryTimeDays: 55,
             riskLevel: "High",
           },
         ],
@@ -223,56 +224,75 @@ export const mockSearchData = [
     ],
   },
 
+  /* ===================== AHMEDABAD – CATARACT ===================== */
   {
-    condition: "Gallstones",
-    city: "Jaipur",
+    condition: "Cataract",
+    city: "Ahmedabad",
+    description: "Cataract surgery removes the clouded natural lens of the eye and replaces it with an artificial intraocular lens (IOL). It's a quick outpatient procedure that restores clear vision.",
     results: [
       {
-        hospitalId: 9,
-        hospitalName: "SMS Hospital",
-        type: "Government",
-        city: "Jaipur",
-        state: "Rajasthan",
-        lat: 26.9124,
-        lng: 75.7873,
-        rating: 4.3,
-        affordabilityScore: 9.1,
+        hospitalId: 501,
+        hospitalName: "Shalby Eye Care",
+        type: "Private",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        lat: 23.0395,
+        lng: 72.5660, // Central
+        rating: 4.4,
+        affordabilityScore: 8.7,
         treatments: [
           {
-            treatmentId: 901,
-            name: "Laparoscopic Cholecystectomy",
-            minCost: 40000,
-            maxCost: 120000,
-            recoveryTimeDays: 10,
+            treatmentId: 5501,
+            name: "Cataract Surgery",
+            description: "Cataract surgery removes the clouded natural lens of the eye and replaces it with an artificial intraocular lens (IOL). It's a quick outpatient procedure that restores clear vision.",
+            minCost: 22000,
+            maxCost: 55000,
+            recoveryTimeDays: 6,
             riskLevel: "Low",
           },
         ],
       },
-    ],
-  },
-
-  {
-    condition: "COVID-19 Complications",
-    city: "Lucknow",
-    results: [
       {
-        hospitalId: 10,
-        hospitalName: "SGPGIMS",
-        type: "Government",
-        city: "Lucknow",
-        state: "Uttar Pradesh",
-        lat: 26.7417,
-        lng: 80.9462,
-        rating: 4.6,
-        affordabilityScore: 9.3,
+        hospitalId: 502,
+        hospitalName: "Raghudeep Eye Clinic",
+        type: "Private",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        lat: 23.0273,
+        lng: 72.5080, // Satellite (~7 mi)
+        rating: 4.2,
+        affordabilityScore: 9.1,
         treatments: [
           {
-            treatmentId: 1001,
-            name: "ICU Respiratory Care",
-            minCost: 50000,
-            maxCost: 200000,
-            recoveryTimeDays: 20,
-            riskLevel: "High",
+            treatmentId: 5502,
+            name: "Cataract Surgery",
+            description: "Cataract surgery removes the clouded natural lens of the eye and replaces it with an artificial intraocular lens (IOL). It's a quick outpatient procedure that restores clear vision.",
+            minCost: 18000,
+            maxCost: 48000,
+            recoveryTimeDays: 5,
+            riskLevel: "Low",
+          },
+        ],
+      },
+      {
+        hospitalId: 503,
+        hospitalName: "Anand Eye Institute",
+        type: "Private",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        lat: 22.5645,
+        lng: 72.9289, // Anand (~38 mi)
+        rating: 4.1,
+        affordabilityScore: 9.4,
+        treatments: [
+          {
+            treatmentId: 5503,
+            name: "Cataract Surgery",
+            description: "Cataract surgery removes the clouded natural lens of the eye and replaces it with an artificial intraocular lens (IOL). It's a quick outpatient procedure that restores clear vision.",
+            minCost: 15000,
+            maxCost: 40000,
+            recoveryTimeDays: 6,
+            riskLevel: "Low",
           },
         ],
       },

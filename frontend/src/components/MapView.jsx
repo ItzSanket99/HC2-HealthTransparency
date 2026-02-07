@@ -33,15 +33,15 @@ const MapView = ({ locations }) => {
 
   if (!locations || locations.length === 0) {
     return (
-      <div className="border rounded-xl p-4 text-gray-500">
+      <div className="border border-gray-300 shadow rounded-xl p-4 text-gray-500">
         Search to view hospitals on map
       </div>
     );
   }
 
   return (
-    <div className="sticky top-6 bg-white rounded-xl border h-[500px] p-4">
-      <h3 className="font-semibold mb-2">Hospitals Nearby</h3>
+    <div className="sticky top-6 bg-white rounded-xl border border-gray-300 h-[500px]">
+      
       <div className="h-full rounded-lg overflow-hidden">
         <div id="map-container" className="w-full h-full" />
       </div>

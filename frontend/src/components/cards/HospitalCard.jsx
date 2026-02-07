@@ -15,7 +15,7 @@ const HospitalCard = ({ hospital }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border p-5 hover:shadow-md transition">
+    <div className="bg-white rounded-xl border border-gray-300 shadow-sm  p-5 hover:shadow-md transition">
 
       {/* Header */}
       <div className="flex justify-between items-start">
