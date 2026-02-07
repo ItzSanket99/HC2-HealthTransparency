@@ -80,9 +80,13 @@ const conditionName = conditionData?.condition;
             </p>
 
             <div className="flex gap-3 mt-4">
-              <span className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm">
-                ⭐ {hospital.rating}
-              </span>
+              <span
+  onClick={() => navigate("/reviews", { state: { hospital } })}
+  className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm cursor-pointer hover:bg-green-200 transition"
+>
+  ⭐ {hospital.rating}
+</span>
+
               <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded text-sm">
                 {hospital.type}
               </span>

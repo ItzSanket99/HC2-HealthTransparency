@@ -1,0 +1,86 @@
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+/* =========================
+   REVIEWS PAGE STYLES
+========================= */
+
+.reviews-page .bg-white {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.reviews-page .bg-white:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Rating number ===== */
+.reviews-page .text-green-700 {
+  font-size: 2.2rem;
+  letter-spacing: -0.5px;
+  text-shadow: 0 3px 8px rgba(22, 163, 74, 0.25);
+}
+
+/* ===== Rating bars ===== */
+.reviews-page .bg-gray-200 {
+  height: 10px;
+  border-radius: 999px;
+}
+
+.reviews-page .bg-teal-600 {
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+/* ===== Pie chart card ===== */
+.reviews-page .flex.flex-col.items-center {
+  background: linear-gradient(135deg, #f0fdfa, #ffffff);
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(13, 148, 136, 0.15);
+}
+
+/* ===== Category rating cards ===== */
+.reviews-page .rounded-xl {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.reviews-page .rounded-xl:hover {
+  background-color: #f0fdfa;
+  transform: translateX(6px);
+}
+
+/* ===== Review list ===== */
+.reviews-page .border-b {
+  padding-bottom: 16px;
+}
+
+/* ===== Buttons ===== */
+.reviews-page .bg-teal-700 {
+  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.35);
+}
+
+.reviews-page .bg-teal-700:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(13, 148, 136, 0.45);
+}
+
+/* ===== Modal animation ===== */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.reviews-page .animate-fadeIn {
+  animation: fadeInScale 0.25s ease-out;
+}
