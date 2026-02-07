@@ -1,4 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import AlternativeCard from "../components/cards/AlternativeCard";
+import { mockSearchData } from "../data/searchResults";
 
 const SearchDetails = () => {
   const { state } = useLocation();
@@ -19,6 +21,20 @@ const SearchDetails = () => {
   }
 
   const { hospital, treatment } = state;
+
+// Find which CONDITION this hospital + treatment belongs to
+const conditionData = mockSearchData.find(conditionItem =>
+  conditionItem.results.some(h =>
+    h.hospitalId === hospital.hospitalId &&
+    h.treatments.some(t => t.name === treatment.name)
+  )
+);
+
+// alternatives 
+const alternatives = conditionData?.alternatives || [];
+const conditionName = conditionData?.condition;
+
+
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24">
@@ -131,6 +147,17 @@ const SearchDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Alternative Treatments */}
+      <div className="max-w-5xl mx-auto px-4 mt-8 mb-8">
+        <AlternativeCard
+          condition={conditionName}
+          alternatives={alternatives}
+        />
+      </div>
+
+
+
 
       {/* Summary */}
       <div className="max-w-5xl mx-auto px-4 mt-10">
