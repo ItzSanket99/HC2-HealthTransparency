@@ -115,3 +115,22 @@
   transform: translateY(-1px);
   box-shadow: 0 12px 26px rgba(45, 212, 191, 0.45);
 }
+.welcome {
+  color: white;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+.logout {
+  background: transparent;
+  border: 1px solid #ffffff;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
