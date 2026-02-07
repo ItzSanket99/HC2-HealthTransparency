@@ -1,84 +1,63 @@
 import { useState, useMemo } from "react";
 import { mockSearchData } from "../../data/searchResults";
+import { FiSearch } from "react-icons/fi";
+import { HiOutlineLocationMarker } from "react-icons/hi";
 
 const SearchBar = ({ onSearch }) => {
   /* -------------------- INPUT STATES -------------------- */
-
-  // Text typed by user in surgery input
   const [surgeryInput, setSurgeryInput] = useState("");
-
-  // Final selected surgery (used for filtering)
   const [selectedSurgery, setSelectedSurgery] = useState("");
 
-  // Text typed by user in city input
   const [cityInput, setCityInput] = useState("");
-
-  // Final selected city
   const [selectedCity, setSelectedCity] = useState("");
 
-  /* -------------------- DROPDOWN VISIBILITY -------------------- */
-
+  /* -------------------- DROPDOWNS -------------------- */
   const [showSurgeryDropdown, setShowSurgeryDropdown] = useState(false);
   const [showCityDropdown, setShowCityDropdown] = useState(false);
 
-  /* -------------------- DATA DERIVATION -------------------- */
-
-  // Extract ALL unique surgeries from mock data (runs once)
+  /* -------------------- DATA -------------------- */
   const allSurgeries = useMemo(() => {
     const set = new Set();
-
     mockSearchData.forEach(block =>
       block.results.forEach(hospital =>
-        hospital.treatments.forEach(t =>
-          set.add(t.name)
-        )
+        hospital.treatments.forEach(t => set.add(t.name))
       )
     );
-
     return Array.from(set);
   }, []);
 
-  // Filter surgeries as user types (autocomplete behavior)
-  const filteredSurgeries = allSurgeries.filter(surgery =>
-    surgery.toLowerCase().includes(surgeryInput.toLowerCase())
+  const filteredSurgeries = allSurgeries.filter(s =>
+    s.toLowerCase().includes(surgeryInput.toLowerCase())
   );
 
-  // Get all cities where selected surgery is available
   const allCitiesForSurgery = useMemo(() => {
     if (!selectedSurgery) return [];
-
     const set = new Set();
-
     mockSearchData.forEach(block =>
       block.results.forEach(hospital =>
         hospital.treatments.forEach(t => {
-          if (t.name === selectedSurgery) {
-            set.add(hospital.city);
-          }
+          if (t.name === selectedSurgery) set.add(hospital.city);
         })
       )
     );
-
     return Array.from(set);
   }, [selectedSurgery]);
 
-  // Filter cities as user types
   const filteredCities = allCitiesForSurgery.filter(city =>
     city.toLowerCase().includes(cityInput.toLowerCase())
   );
 
   /* -------------------- UI -------------------- */
-
   return (
-    <div className="bg-white shadow-md p-6 rounded-2xl flex gap-4 relative">
+    <div className="bg-white border border-gray-300 rounded-xl shadow-sm flex items-center gap-2 px-3 py-2 relative">
 
-      {/* -------------------- SURGERY AUTOCOMPLETE -------------------- */}
-      <div className="w-full relative">
+      {/* -------- CONDITION -------- */}
+      <div className="flex items-center gap-2 flex-1 px-3">
+        <FiSearch className="text-gray-500 text-lg" />
         <input
           value={surgeryInput}
-          placeholder="Search surgery (e.g. Angioplasty)"
+          placeholder="Search for care (e.g. Angioplasty)"
           onChange={(e) => {
-            // Reset everything when surgery input changes
             setSurgeryInput(e.target.value);
             setShowSurgeryDropdown(true);
             setSelectedSurgery("");
@@ -86,35 +65,19 @@ const SearchBar = ({ onSearch }) => {
             setSelectedCity("");
           }}
           onFocus={() => setShowSurgeryDropdown(true)}
-          className="w-full border rounded-full px-4 py-2 focus:ring-2 focus:ring-teal-500"
+          className="w-full outline-none text-sm"
         />
-
-        {/* Surgery dropdown list */}
-        {showSurgeryDropdown && filteredSurgeries.length > 0 && (
-          <div className="absolute z-10 mt-2 w-full bg-white border rounded-2xl shadow-lg max-h-48 overflow-auto">
-            {filteredSurgeries.map((surgery) => (
-              <div
-                key={surgery}
-                onClick={() => {
-                  // Lock selected surgery
-                  setSurgeryInput(surgery);
-                  setSelectedSurgery(surgery);
-                  setShowSurgeryDropdown(false);
-                }}
-                className="px-4 py-2 cursor-pointer hover:bg-teal-50"
-              >
-                {surgery}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
-      {/* -------------------- CITY AUTOCOMPLETE -------------------- */}
-      <div className="w-full relative">
+      {/* Divider */}
+      <div className="h-8 w-px bg-gray-400" />
+
+      {/* -------- LOCATION -------- */}
+      <div className="flex items-center gap-2 flex-1 px-3">
+        <HiOutlineLocationMarker className="text-gray-500 text-lg" />
         <input
           value={cityInput}
-          placeholder="Search city"
+          placeholder="Location"
           disabled={!selectedSurgery}
           onChange={(e) => {
             setCityInput(e.target.value);
@@ -122,43 +85,61 @@ const SearchBar = ({ onSearch }) => {
             setSelectedCity("");
           }}
           onFocus={() => selectedSurgery && setShowCityDropdown(true)}
-          className={`w-full border rounded-full px-4 py-2 focus:ring-2 focus:ring-teal-500
-            ${!selectedSurgery ? "bg-gray-100 cursor-not-allowed" : ""}`}
+          className={`w-full outline-none text-sm
+            ${!selectedSurgery ? "bg-transparent cursor-not-allowed text-gray-400" : ""}`}
         />
-
-        {/* City dropdown list */}
-        {showCityDropdown && filteredCities.length > 0 && (
-          <div className="absolute z-10 mt-2 w-full bg-white border rounded-2xl shadow-lg max-h-48 overflow-auto">
-            {filteredCities.map((city) => (
-              <div
-                key={city}
-                onClick={() => {
-                  // Lock selected city
-                  setCityInput(city);
-                  setSelectedCity(city);
-                  setShowCityDropdown(false);
-                }}
-                className="px-4 py-2 cursor-pointer hover:bg-teal-50"
-              >
-                {city}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
-      {/* -------------------- SEARCH BUTTON -------------------- */}
+      {/* -------- SEARCH BUTTON -------- */}
       <button
         onClick={() => onSearch(selectedSurgery, selectedCity)}
         disabled={!selectedSurgery || !selectedCity}
-        className={`px-6 py-2 rounded-full text-white
+        className={`ml-2 p-3 rounded-lg text-white
           ${!selectedSurgery || !selectedCity
             ? "bg-gray-400 cursor-not-allowed"
-            : "bg-teal-600 hover:bg-teal-700"
+            : "bg-teal-700 hover:bg-teal-800"
           }`}
       >
-        Search
+        <FiSearch className="text-lg" />
       </button>
+
+      {/* -------- SURGERY DROPDOWN -------- */}
+      {showSurgeryDropdown && filteredSurgeries.length > 0 && (
+        <div className="absolute top-full left-0 mt-2 w-[45%] bg-white border border-gray-300 rounded-xl shadow-lg z-20 max-h-48 overflow-auto">
+          {filteredSurgeries.map(surgery => (
+            <div
+              key={surgery}
+              onClick={() => {
+                setSurgeryInput(surgery);
+                setSelectedSurgery(surgery);
+                setShowSurgeryDropdown(false);
+              }}
+              className="px-4 py-2 cursor-pointer hover:bg-teal-50 text-sm"
+            >
+              {surgery}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* -------- CITY DROPDOWN -------- */}
+      {showCityDropdown && filteredCities.length > 0 && (
+        <div className="absolute top-full left-[45%] mt-2 w-[40%] bg-white border border-gray-300 rounded-xl shadow-lg z-20 max-h-48 overflow-auto">
+          {filteredCities.map(city => (
+            <div
+              key={city}
+              onClick={() => {
+                setCityInput(city);
+                setSelectedCity(city);
+                setShowCityDropdown(false);
+              }}
+              className="px-4 py-2 cursor-pointer hover:bg-teal-50 text-sm"
+            >
+              {city}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
