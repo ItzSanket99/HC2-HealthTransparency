@@ -1,39 +1,29 @@
 export const mockSearchData = [
-  /* ===================== PUNE – KNEE PAIN ===================== */
   {
     condition: "Knee Pain",
     city: "Pune",
     description:
-      "Knee replacement is a surgical procedure in which damaged or worn parts of the knee joint are replaced with artificial components to relieve pain and restore mobility. It is commonly recommended for severe arthritis or knee injury.",
+      "Knee replacement is a surgical procedure to relieve pain and restore mobility in severe arthritis or injury.",
 
     alternatives: [
       {
-        name: "Physiotherapy & Exercise",
+        name: "Medication & Lifestyle Management",
         costScore: 2,
+        riskScore: 2,
+        effectivenessScore: 5,
+        note: "Often suitable for mild to moderate cases with regular monitoring.",
+      },
+      {
+        name: "Physiotherapy & Bracing",
+        costScore: 3,
         riskScore: 1,
         effectivenessScore: 6,
-        note:
-          "Often recommended as first-line treatment for mild to moderate knee pain."
+        note: "Strengthens muscles and improves joint stability without surgery.",
       },
-      {
-        name: "Medications & Pain Management",
-        costScore: 3,
-        riskScore: 3,
-        effectivenessScore: 5,
-        note:
-          "Includes pain relievers and anti-inflammatory drugs for symptom control."
-      },
-      {
-        name: "Injections (Steroid / Hyaluronic Acid)",
-        costScore: 4,
-        riskScore: 4,
-        effectivenessScore: 6,
-        note:
-          "May provide temporary pain relief and improve joint movement."
-      }
     ],
 
     results: [
+      /* ===================== 1 ===================== */
       {
         hospitalId: 1,
         hospitalName: "Jehangir Hospital",
@@ -44,21 +34,90 @@ export const mockSearchData = [
         lng: 73.874,
         rating: 4.4,
         affordabilityScore: 7.2,
+
+        facilities: {
+          icu: true,
+          emergency: true,
+          bloodBank: true,
+          imaging: true,
+          operationTheatre: true,
+        },
+
+        insurance: {
+          privateInsurance: [
+            {
+              name: "Star Health",
+              coveragePercent: 70,
+              maxCoverage: 250000,
+              roomRentCapPercent: 1,
+              nonMedicalCovered: false,
+              eligibility: {
+                minPolicyYears: 2,
+                preExistingCovered: true,
+              },
+            },
+            {
+              name: "HDFC ERGO",
+              coveragePercent: 65,
+              maxCoverage: 300000,
+              roomRentCapPercent: 1,
+              nonMedicalCovered: false,
+              eligibility: {
+                minPolicyYears: 1,
+                preAuthorizationRequired: true,
+              },
+            },
+          ],
+          governmentSchemes: [
+            {
+              name: "MJPJAY",
+              coveragePercent: 75,
+              maxCoverage: 150000,
+              roomTypeAllowed: "General",
+              nonMedicalCovered: false,
+              eligibility: {
+                state: "Maharashtra",
+                incomeBelow: 100000,
+                rationCard: true,
+              },
+            },
+          ],
+        },
+
+        doctors: [
+          {
+            id: "jh-1",
+            name: "Dr. Anand Patil",
+            specialization: "Orthopedic Surgeon",
+            experience: 18,
+            successRate: 95,
+            rating: 4.6,
+          },
+          {
+            id: "jh-2",
+            name: "Dr. Meera Kulkarni",
+            specialization: "Joint Replacement Specialist",
+            experience: 12,
+            successRate: 92,
+            rating: 4.4,
+          },
+        ],
+
         treatments: [
           {
             treatmentId: 101,
             name: "Knee Replacement",
-            description:
-              "Knee replacement is a surgical procedure in which damaged or worn parts of the knee joint are replaced with artificial components to relieve pain and restore mobility.",
             minCost: 160000,
             maxCost: 420000,
             recoveryTimeDays: 30,
-            riskLevel: "Medium"
-          }
-        ]
+            riskLevel: "Medium",
+          },
+        ],
       },
+
+      /* ===================== 2 ===================== */
       {
-        hospitalId: 101,
+        hospitalId: 2,
         hospitalName: "Deenanath Mangeshkar Hospital",
         type: "Private",
         city: "Pune",
@@ -67,228 +126,185 @@ export const mockSearchData = [
         lng: 73.807,
         rating: 4.5,
         affordabilityScore: 8.1,
+
+        facilities: {
+          icu: true,
+          emergency: true,
+          bloodBank: false,
+          imaging: true,
+          operationTheatre: true,
+        },
+
+        insurance: {
+          privateInsurance: [
+            {
+              name: "ICICI Lombard",
+              coveragePercent: 68,
+              maxCoverage: 280000,
+              roomRentCapPercent: 1,
+              nonMedicalCovered: false,
+              eligibility: {
+                minPolicyYears: 1,
+              },
+            },
+          ],
+          governmentSchemes: [
+            {
+              name: "MJPJAY",
+              coveragePercent: 70,
+              maxCoverage: 140000,
+              roomTypeAllowed: "General",
+              nonMedicalCovered: false,
+              eligibility: {
+                state: "Maharashtra",
+                incomeBelow: 120000,
+              },
+            },
+          ],
+        },
+
+        doctors: [
+          {
+            id: "dmh-1",
+            name: "Dr. Sachin Kulkarni",
+            specialization: "Orthopedic & Trauma Surgeon",
+            experience: 20,
+            successRate: 94,
+            rating: 4.7,
+          },
+        ],
+
         treatments: [
           {
-            treatmentId: 1102,
+            treatmentId: 102,
             name: "Knee Replacement",
             minCost: 140000,
             maxCost: 360000,
             recoveryTimeDays: 26,
-            riskLevel: "Medium"
-          }
-        ]
+            riskLevel: "Medium",
+          },
+        ],
       },
+
+      /* ===================== 3 ===================== */
       {
-        hospitalId: 102,
-        hospitalName: "District Civil Hospital Baramati",
+        hospitalId: 3,
+        hospitalName: "Ruby Hall Clinic",
+        type: "Private",
+        city: "Pune",
+        state: "Maharashtra",
+        lat: 18.5314,
+        lng: 73.8766,
+        rating: 4.6,
+        affordabilityScore: 6.8,
+
+        facilities: {
+          icu: true,
+          emergency: true,
+          bloodBank: true,
+          imaging: true,
+          operationTheatre: true,
+        },
+
+        insurance: {
+          privateInsurance: [
+            {
+              name: "Max Bupa",
+              coveragePercent: 60,
+              maxCoverage: 300000,
+              roomRentCapPercent: 1,
+              nonMedicalCovered: false,
+              eligibility: {
+                waitingPeriodCompleted: true,
+              },
+            },
+          ],
+          governmentSchemes: [],
+        },
+
+        doctors: [
+          {
+            id: "ruby-1",
+            name: "Dr. Kunal Shah",
+            specialization: "Joint Replacement Surgeon",
+            experience: 15,
+            successRate: 93,
+            rating: 4.5,
+          },
+        ],
+
+        treatments: [
+          {
+            treatmentId: 103,
+            name: "Knee Replacement",
+            minCost: 180000,
+            maxCost: 480000,
+            recoveryTimeDays: 28,
+            riskLevel: "Medium",
+          },
+        ],
+      },
+
+      /* ===================== GOVERNMENT ===================== */
+      {
+        hospitalId: 4,
+        hospitalName: "Sassoon General Hospital",
         type: "Government",
         city: "Pune",
         state: "Maharashtra",
-        lat: 18.1516,
-        lng: 74.5777,
-        rating: 4.1,
-        affordabilityScore: 9.0,
-        treatments: [
-          {
-            treatmentId: 1103,
-            name: "Knee Replacement",
-            minCost: 90000,
-            maxCost: 220000,
-            recoveryTimeDays: 35,
-            riskLevel: "Medium"
-          }
-        ]
-      }
-    ]
-  },
-
-  /* ===================== MUMBAI – HEART BLOCKAGE ===================== */
-  {
-    condition: "Heart Blockage",
-    city: "Mumbai",
-    description:
-      "Angioplasty is a minimally invasive procedure to open blocked coronary arteries that supply blood to the heart.",
-
-    alternatives: [
-      {
-        name: "Medication & Lifestyle Management",
-        costScore: 2,
-        riskScore: 2,
-        effectivenessScore: 5,
-        note:
-          "Often suitable for mild to moderate blockages with regular monitoring."
-      },
-      {
-        name: "Cardiac Rehabilitation",
-        costScore: 4,
-        riskScore: 1,
-        effectivenessScore: 6,
-        note:
-          "Focuses on supervised exercise, diet, and risk-factor control."
-      },
-      {
-        name: "Watchful Monitoring",
-        costScore: 1,
-        riskScore: 3,
-        effectivenessScore: 3,
-        note:
-          "Used when blockage is stable and symptoms are minimal."
-      }
-    ],
-
-    results: [
-      {
-        hospitalId: 2,
-        hospitalName: "Kokilaben Dhirubhai Ambani Hospital",
-        type: "Private",
-        city: "Mumbai",
-        state: "Maharashtra",
-        lat: 19.1357,
-        lng: 72.8296,
-        rating: 4.8,
-        affordabilityScore: 6.5,
-        treatments: [
-          {
-            treatmentId: 201,
-            name: "Angioplasty",
-            minCost: 220000,
-            maxCost: 600000,
-            recoveryTimeDays: 8,
-            riskLevel: "High"
-          }
-        ]
-      },
-      {
-        hospitalId: 201,
-        hospitalName: "Breach Candy Hospital",
-        type: "Private",
-        city: "Mumbai",
-        state: "Maharashtra",
-        lat: 18.9735,
-        lng: 72.8063,
-        rating: 4.7,
-        affordabilityScore: 6.9,
-        treatments: [
-          {
-            treatmentId: 2201,
-            name: "Angioplasty",
-            minCost: 240000,
-            maxCost: 580000,
-            recoveryTimeDays: 7,
-            riskLevel: "High"
-          }
-        ]
-      }
-    ]
-  },
-
-  /* ===================== BENGALURU – BRAIN TUMOR ===================== */
-  {
-    condition: "Brain Tumor",
-    city: "Bengaluru",
-    description:
-      "Brain tumor surgery involves removing abnormal growths in the brain through precise neurosurgical techniques.",
-
-    alternatives: [
-      {
-        name: "Radiation Therapy",
-        costScore: 6,
-        riskScore: 6,
-        effectivenessScore: 6,
-        note:
-          "Used to shrink tumors or prevent further growth."
-      },
-      {
-        name: "Chemotherapy",
-        costScore: 7,
-        riskScore: 7,
-        effectivenessScore: 5,
-        note:
-          "May be used alone or with surgery depending on tumor type."
-      },
-      {
-        name: "Active Surveillance",
-        costScore: 2,
-        riskScore: 4,
-        effectivenessScore: 3,
-        note:
-          "Monitoring small, slow-growing tumors without immediate intervention."
-      }
-    ],
-
-    results: [
-      {
-        hospitalId: 3,
-        hospitalName: "NIMHANS",
-        type: "Government",
-        city: "Bengaluru",
-        state: "Karnataka",
-        lat: 12.9435,
-        lng: 77.5963,
-        rating: 4.9,
+        lat: 18.528,
+        lng: 73.8741,
+        rating: 4.2,
         affordabilityScore: 9.5,
+
+        facilities: {
+          icu: true,
+          emergency: true,
+          bloodBank: true,
+          imaging: false,
+          operationTheatre: true,
+        },
+
+        insurance: {
+          privateInsurance: [],
+          governmentSchemes: [
+            {
+              name: "Ayushman Bharat (PM-JAY)",
+              coveragePercent: 85,
+              maxCoverage: 500000,
+              roomTypeAllowed: "General",
+              nonMedicalCovered: false,
+              eligibility: {
+                secc: true,
+                incomeBelow: 250000,
+                rationCard: true,
+              },
+            },
+          ],
+        },
+
+        doctors: [
+          {
+            id: "sas-1",
+            name: "Dr. Pravin Deshmukh",
+            specialization: "Orthopedic Surgeon",
+            experience: 22,
+            successRate: 90,
+            rating: 4.3,
+          },
+        ],
+
         treatments: [
           {
-            treatmentId: 301,
-            name: "Brain Tumor Surgery",
-            minCost: 120000,
-            maxCost: 350000,
-            recoveryTimeDays: 45,
-            riskLevel: "High"
-          }
-        ]
-      }
-    ]
-  },
-
-  /* ===================== AHMEDABAD – CATARACT ===================== */
-  {
-    condition: "Cataract",
-    city: "Ahmedabad",
-    description:
-      "Cataract surgery removes the clouded natural lens of the eye and replaces it with an artificial intraocular lens.",
-
-    alternatives: [
-      {
-        name: "Prescription Glasses",
-        costScore: 1,
-        riskScore: 1,
-        effectivenessScore: 2,
-        note:
-          "Temporary vision correction in very early cataract stages."
+            treatmentId: 104,
+            name: "Knee Replacement",
+            minCost: 80000,
+            maxCost: 200000,
+            recoveryTimeDays: 40,
+            riskLevel: "Medium",
+          },
+        ],
       },
-      {
-        name: "Lifestyle Adjustments",
-        costScore: 1,
-        riskScore: 1,
-        effectivenessScore: 2,
-        note:
-          "Includes improved lighting and vision aids."
-      }
     ],
-
-    results: [
-      {
-        hospitalId: 501,
-        hospitalName: "Shalby Eye Care",
-        type: "Private",
-        city: "Ahmedabad",
-        state: "Gujarat",
-        lat: 23.0395,
-        lng: 72.566,
-        rating: 4.4,
-        affordabilityScore: 8.7,
-        treatments: [
-          {
-            treatmentId: 5501,
-            name: "Cataract Surgery",
-            minCost: 22000,
-            maxCost: 55000,
-            recoveryTimeDays: 6,
-            riskLevel: "Low"
-          }
-        ]
-      }
-    ]
-  }
+  },
 ];

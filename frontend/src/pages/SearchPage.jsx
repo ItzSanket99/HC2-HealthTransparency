@@ -51,6 +51,7 @@ const SearchPage = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [price, setPrice] = useState(DEFAULT_PRICE);
   const [procedureInfo, setProcedureInfo] = useState(null);
+  
 
 
   /* -------------------- SEARCH -------------------- */
