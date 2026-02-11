@@ -11,8 +11,14 @@ import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
 import Footer from "./components/shared/Footer"
 import Reviews from "./pages/Reviews";
+import RunAlt from "./components/alternavtive/RunAlt"
+
+
+
+
 
 function App() {
+ 
   return (
     <Router>
       <Navbar />
@@ -27,6 +33,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path= "/reviews" element={<Reviews/>}/>
+        <Route path= "/alt" element={<RunAlt/>}/>
       </Routes>
        <Footer/>
     </Router>
