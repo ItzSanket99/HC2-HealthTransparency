@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import SearchBar from "../components/shared/SearchBar";
 import HospitalCard from "../components/cards/HospitalCard";
 import MapView from "../components/MapView";
@@ -6,7 +6,7 @@ import FiltersBar from "../components/filters/FilterBar";
 import { mockSearchData } from "../data/searchResults";
 import ProcedureDescription from "../components/shared/ProcedureDescription";
 import PriceInsight from "../components/shared/PriceInsight";
-
+import { useSearchParams } from "react-router-dom";
 
 const DEFAULT_DISTANCE = Infinity;
 const DEFAULT_PRICE = { min: null, max: null };
@@ -46,6 +46,9 @@ const cityCoordinates = {
 };
 
 const SearchPage = () => {
+  const [searchParams] = useSearchParams();
+  const surgeryParam = searchParams.get("surgery");
+  const cityParam = searchParams.get("city");
   const [results, setResults] = useState([]);
   const [distance, setDistance] = useState(DEFAULT_DISTANCE);
   const [hasSearched, setHasSearched] = useState(false);
@@ -91,6 +94,14 @@ const SearchPage = () => {
   setHasSearched(true);
 };
 
+useEffect(() => {
+  const surgery = searchParams.get("surgery");
+  const city = searchParams.get("city");
+
+  if (surgery && city) {
+    handleSearch(surgery, city);
+  }
+}, [searchParams]);
 
 
   /* -------------------- FINAL FILTERED RESULTS -------------------- */
@@ -132,10 +143,13 @@ const midpointPrice = prices.length
 
   return (
     <div className="bg-gray-50 min-h-screen">
-
       {/* SEARCH BAR */}
       <div className="max-w-7xl mx-auto pt-8">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar
+          onSearch={handleSearch}
+          initialSurgery={surgeryParam}
+          initialCity={cityParam}
+        />
       </div>
 
       {/* FILTERS */}
@@ -147,13 +161,11 @@ const midpointPrice = prices.length
             price={price}
             onPriceApply={setPrice}
           />
-
         </div>
       )}
 
       {hasSearched && procedureInfo && (
         <div className="max-w-7xl mx-auto px-6 mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-
           {/* LEFT: DESCRIPTION */}
           <div className="lg:col-span-2">
             <ProcedureDescription
@@ -171,16 +183,12 @@ const midpointPrice = prices.length
               procedure={procedureInfo.condition}
             />
           </div>
-
         </div>
       )}
-
-
 
       {/* RESULTS + MAP */}
       {hasSearched && (
         <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-
           {/* RESULTS (3/4) */}
           <div className="lg:col-span-2 space-y-4">
             {filteredResults.length === 0 ? (
@@ -188,7 +196,7 @@ const midpointPrice = prices.length
                 No hospitals found within {distance} miles
               </p>
             ) : (
-              filteredResults.map(h => (
+              filteredResults.map((h) => (
                 <HospitalCard key={h.hospitalId} hospital={h} />
               ))
             )}
@@ -198,7 +206,6 @@ const midpointPrice = prices.length
           <div className="lg:col-span-1">
             <MapView locations={mapLocations} />
           </div>
-
         </div>
       )}
     </div>
