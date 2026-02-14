@@ -91,16 +91,19 @@ const SearchDetails = () => {
           
           {/* ✅ FIXED: Remove conflicting CSS, stay in grid */}
         <button
-            onClick={() =>
-              navigate("/book", {
-                state: { hospital, condition: "Knee Pain" },
-              })
-            }
-            className="bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Book Appointment
-          </button>
-          
+          onClick={() =>
+            navigate("/book", {
+              state: {
+                hospital,
+                treatment, // PASS FULL TREATMENT OBJECT
+              },
+            })
+          }
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Book Appointment
+        </button>
+
         </div>
       </div>
     </div>
