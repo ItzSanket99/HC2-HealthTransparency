@@ -1,11 +1,11 @@
-export const summarizeTextHF = async (text, language = "English") => {
+export const summarizeTextHF = async (text, language = "English", mode = "page-summary") => {
   try {
     const response = await fetch("http://localhost:5001/summarize", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text, language }),
+      body: JSON.stringify({ text, language, mode }),
     });
 
     const data = await response.json();

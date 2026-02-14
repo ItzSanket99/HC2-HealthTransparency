@@ -32,7 +32,13 @@ const TRANSLATE_MODELS = {
  STEP 1 → SUMMARIZE TEXT (ENGLISH)
 =====================================================
 */
-async function summarizeText(text) {
+async function summarizeText(text, mode = "page-summary") {
+  let promptText = text;
+
+  if (mode === "review-summary") {
+  promptText = text;
+}
+
   const response = await fetch(SUMMARY_URL, {
     method: "POST",
     headers: {
@@ -40,7 +46,7 @@ async function summarizeText(text) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      inputs: text.slice(0, 5000), // keep short for speed
+      inputs: promptText.slice(0, 5000), // keep short for speed
       parameters: {
         max_length: 120,
         min_length: 40,
@@ -98,7 +104,9 @@ async function translateText(text, targetLang) {
 */
 app.post("/summarize", async (req, res) => {
   try {
-    const { text, language } = req.body;
+    const { text, language, mode } = req.body;
+    
+
 
     if (!text) {
       return res.status(400).json({ error: "No text provided" });
@@ -129,7 +137,7 @@ app.post("/summarize", async (req, res) => {
     ============================================
     */
     console.log("🧠 Generating summary...");
-    const summary = await summarizeText(workingText);
+    const summary = await summarizeText(workingText, mode);
 
     /*
     ============================================
