@@ -83,7 +83,7 @@ export default function HospitalAppointments() {
 
   return (
     <div>
-      <div className="flex justify-between mb-4" >
+      <div className="flex justify-between mb-4f" >
       <h1 className="text-3xl font-bold mb-6">
         Appointment Management
       </h1>

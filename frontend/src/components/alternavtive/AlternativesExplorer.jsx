@@ -9,16 +9,16 @@ import {
 import { useState } from "react";
 import { AlternativeCard } from "./AlternativeCard";
 import { ComparisonChart } from "./ComparisonChart";
-import { mockAlternatives } from "../../data/mockAlternatives";
 
-export function AlternativesExplorer({ searchParams, onBackToResults }) {
+export function AlternativesExplorer({
+  searchParams,
+  alternatives,   // ✅ RECEIVE FROM PROPS
+  onBackToResults,
+}) {
   const [selectedAlternativeId, setSelectedAlternativeId] = useState(null);
   const [sortBy, setSortBy] = useState("effectiveness");
 
-  // Get alternatives
-  const alternatives = mockAlternatives;
-
-  // Sort alternatives
+  // ✅ Sort alternatives coming from RunAlt
   const sortedAlternatives = [...alternatives].sort((a, b) => {
     switch (sortBy) {
       case "effectiveness":
@@ -87,6 +87,7 @@ export function AlternativesExplorer({ searchParams, onBackToResults }) {
       <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
         <div className="flex flex-wrap items-center gap-4">
           <span className="text-sm font-medium text-gray-700">Rank by:</span>
+
           <div className="flex gap-2">
             <button
               onClick={() => setSortBy("effectiveness")}
@@ -132,7 +133,7 @@ export function AlternativesExplorer({ searchParams, onBackToResults }) {
         <ComparisonChart alternatives={sortedAlternatives} />
       </div>
 
-      {/* Alternatives */}
+      {/* Alternatives List */}
       <div className="space-y-4">
         <h3 className="text-xl font-semibold text-gray-900">
           Available Treatment Options
@@ -164,19 +165,10 @@ export function AlternativesExplorer({ searchParams, onBackToResults }) {
           Next Steps for Informed Decision-Making
         </h3>
         <ul className="space-y-2 text-sm text-blue-800">
-          <li>
-            <strong>1.</strong> Discuss these options with your doctor
-          </li>
-          <li>
-            <strong>2.</strong> Consider your priorities (cost, recovery,
-            effectiveness)
-          </li>
-          <li>
-            <strong>3.</strong> Seek a second opinion for major procedures
-          </li>
-          <li>
-            <strong>4.</strong> Verify insurance coverage
-          </li>
+          <li><strong>1.</strong> Discuss these options with your doctor</li>
+          <li><strong>2.</strong> Consider your priorities (cost, recovery, effectiveness)</li>
+          <li><strong>3.</strong> Seek a second opinion for major procedures</li>
+          <li><strong>4.</strong> Verify insurance coverage</li>
         </ul>
       </div>
     </div>

@@ -42,7 +42,7 @@ function App() {
         <Route path="/signin" element={<PageWrapper><SignIn /></PageWrapper>} />
         <Route path="/signup" element={<PageWrapper><SignUp /></PageWrapper>} />
         <Route path="/reviews" element={<PageWrapper><Reviews /></PageWrapper>} />
-        <Route path="/alt" element={<PageWrapper><RunAlt /></PageWrapper>} />
+        <Route path="/alternatives/:condition" element={<PageWrapper><RunAlt /></PageWrapper>} />
 
         {/* Appointment Routes */}
         <Route path="/book" element={<PageWrapper><BookAppointment /></PageWrapper>} />
