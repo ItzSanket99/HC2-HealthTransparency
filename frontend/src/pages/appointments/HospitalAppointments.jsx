@@ -6,46 +6,28 @@ import {
 import { sendAppointmentEmail } from "../../utils/sendAppointmentEmail";
 import { generateDailyApprovedPDF } from "../../utils/generateDailyApprovedPDF";
 
-
 export default function HospitalAppointments() {
+  const hospitalUser = JSON.parse(
+    localStorage.getItem("hospitalUser")
+  );
+
   const [appointments, setAppointments] = useState([]);
-  const hospitalUser = JSON.parse(localStorage.getItem("hospitalUser"));
   const [selectedDate, setSelectedDate] = useState("");
 
-  const handleDownloadPDF = () => {
-  if (!selectedDate) {
-    alert("Please select a date");
-    return;
-  }
+  const refresh = () => {
+    const all = getAppointments();
 
-  const approvedForDay = appointments.filter(
-    (appt) =>
-      appt.status === "Approved" &&
-      appt.date === selectedDate
-  );
+    const filtered = all.filter(
+      (appt) =>
+        appt.hospitalName === hospitalUser?.hospitalName
+    );
 
-  if (approvedForDay.length === 0) {
-    alert("No approved appointments for this date.");
-    return;
-  }
-
-  generateDailyApprovedPDF(
-    approvedForDay,
-    selectedDate,
-    hospitalUser.hospitalName
-  );
-};
+    setAppointments(filtered);
+  };
 
   useEffect(() => {
     refresh();
   }, []);
-
-  const refresh = () => {
-    const filtered = getAppointments().filter(
-      (appt) => appt.hospitalId === hospitalUser?.hospitalId
-    );
-    setAppointments(filtered);
-  };
 
   const handleUpdate = async (appt, status) => {
     let updatedDate = appt.date;
@@ -81,29 +63,55 @@ export default function HospitalAppointments() {
     refresh();
   };
 
+  const handleDownloadPDF = () => {
+    if (!selectedDate) {
+      alert("Please select a date");
+      return;
+    }
+
+    const approvedForDay = appointments.filter(
+      (appt) =>
+        appt.status === "Approved" &&
+        appt.date === selectedDate
+    );
+
+    if (approvedForDay.length === 0) {
+      alert("No approved appointments for this date.");
+      return;
+    }
+
+    generateDailyApprovedPDF(
+      approvedForDay,
+      selectedDate,
+      hospitalUser.hospitalName
+    );
+  };
+
   return (
     <div>
-      <div className="flex justify-between mb-4f" >
-      <h1 className="text-3xl font-bold mb-6">
-        Appointment Management
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">
+          Appointment Management
+        </h1>
 
-      <div className="flex items-center gap-4 mb-6">
-        <input
-          type="date"
-          className="border p-2 rounded"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-        />
+        <div className="flex items-center gap-4">
+          <input
+            type="date"
+            className="border p-2 rounded"
+            value={selectedDate}
+            onChange={(e) =>
+              setSelectedDate(e.target.value)
+            }
+          />
 
-        <button
-          onClick={handleDownloadPDF}
-          className="bg-purple-600 text-white px-4 py-2 rounded"
-        >
-          Download Approved PDF
-        </button>
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-purple-600 text-white px-4 py-2 rounded"
+          >
+            Download Approved PDF
+          </button>
+        </div>
       </div>
-    </div>
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <table className="w-full border-collapse">
@@ -120,38 +128,28 @@ export default function HospitalAppointments() {
 
           <tbody>
             {appointments.map((appt) => (
-              <tr
-                key={appt.id}
-                className="border-t hover:bg-gray-50"
-              >
-                <td className="p-3">{appt.patientName}</td>
-                <td className="p-3">{appt.condition}</td>
+              <tr key={appt.id} className="border-t">
+                <td className="p-3">
+                  {appt.patientName}
+                </td>
+                <td className="p-3">
+                  {appt.condition}
+                </td>
                 <td className="p-3">{appt.date}</td>
                 <td className="p-3">{appt.time}</td>
-
-                <td className="p-3">
-                  <span
-                    className={`font-semibold ${
-                      appt.status === "Approved"
-                        ? "text-green-600"
-                        : appt.status === "Rejected"
-                        ? "text-red-600"
-                        : appt.status === "Rescheduled"
-                        ? "text-blue-600"
-                        : "text-yellow-600"
-                    }`}
-                  >
-                    {appt.status}
-                  </span>
+                <td className="p-3 font-semibold">
+                  {appt.status}
                 </td>
 
                 <td className="p-3 space-x-2">
-                  {/* ONLY SHOW BUTTONS IF PENDING */}
-                  {appt.status === "Pending" ? (
+                  {appt.status === "Pending" && (
                     <>
                       <button
                         onClick={() =>
-                          handleUpdate(appt, "Approved")
+                          handleUpdate(
+                            appt,
+                            "Approved"
+                          )
                         }
                         className="bg-green-600 text-white px-3 py-1 rounded"
                       >
@@ -160,7 +158,10 @@ export default function HospitalAppointments() {
 
                       <button
                         onClick={() =>
-                          handleUpdate(appt, "Rejected")
+                          handleUpdate(
+                            appt,
+                            "Rejected"
+                          )
                         }
                         className="bg-red-600 text-white px-3 py-1 rounded"
                       >
@@ -169,17 +170,16 @@ export default function HospitalAppointments() {
 
                       <button
                         onClick={() =>
-                          handleUpdate(appt, "Rescheduled")
+                          handleUpdate(
+                            appt,
+                            "Rescheduled"
+                          )
                         }
                         className="bg-blue-600 text-white px-3 py-1 rounded"
                       >
                         Reschedule
                       </button>
                     </>
-                  ) : (
-                    <span className="text-gray-400 text-sm">
-                      No actions available
-                    </span>
                   )}
                 </td>
               </tr>
@@ -189,7 +189,7 @@ export default function HospitalAppointments() {
               <tr>
                 <td
                   colSpan="6"
-                  className="p-6 text-center text-gray-500"
+                  className="text-center p-6 text-gray-500"
                 >
                   No appointment requests found.
                 </td>

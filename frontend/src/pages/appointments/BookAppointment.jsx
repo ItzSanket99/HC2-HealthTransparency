@@ -8,24 +8,26 @@ export default function BookAppointment() {
 
   const [user, setUser] = useState(null);
 
-  const { hospital, condition } = location.state || {};
+  const { hospital, treatment } = location.state || {};
+
+const finalCondition = treatment?.name;
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
 
     if (!storedUser) {
-      // Redirect to signin and remember where user came from
       navigate("/signin", {
         state: {
           from: "/book",
           hospital,
-          condition,
+          condition: finalCondition,
         },
       });
     } else {
       setUser(JSON.parse(storedUser));
     }
-  }, [navigate, hospital, condition]);
+  }, [navigate, hospital, finalCondition]);
 
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -36,18 +38,24 @@ export default function BookAppointment() {
       return;
     }
 
+    if (!hospital || !finalCondition) {
+      alert("Invalid booking request");
+      navigate("/");
+      return;
+    }
+
     const newAppointment = {
       id: Date.now(),
       hospitalId: hospital.hospitalId,
       hospitalName: hospital.hospitalName,
       patientName: user.name,
-      patientEmail: user.email,   // THIS IS IMPORTANT
-      condition,
+      patientEmail: user.email,
+      condition: finalCondition,
+      treatmentId: treatment?.treatmentId || null,
       date,
       time,
       status: "Pending",
     };
-
 
     saveAppointment(newAppointment);
 
@@ -63,7 +71,9 @@ export default function BookAppointment() {
         Book Appointment - {hospital?.hospitalName}
       </h2>
 
-      <p className="text-gray-600 mb-2">Condition: {condition}</p>
+      <p className="text-gray-600 mb-2">
+        Condition: {finalCondition}
+      </p>
 
       <input
         type="date"

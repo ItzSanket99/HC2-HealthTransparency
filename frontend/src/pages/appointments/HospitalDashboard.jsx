@@ -1,8 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HospitalAnalytics from "./HospitalAnalytics";
 import HospitalAppointments from "./HospitalAppointments";
-import { useState } from "react";
 
 export default function HospitalDashboard() {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ export default function HospitalDashboard() {
     if (!hospitalUser) {
       navigate("/hospital-login");
     }
-  }, []);
+  }, [hospitalUser, navigate]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -51,10 +50,15 @@ export default function HospitalDashboard() {
         </button>
       </div>
 
-      {/* Main Content */}
+      {/* Content */}
       <div className="flex-1 p-8">
-        {activeTab === "analytics" && <HospitalAnalytics />}
-        {activeTab === "appointments" && <HospitalAppointments />}
+        {activeTab === "analytics" && (
+          <HospitalAnalytics key="analytics" />
+        )}
+
+        {activeTab === "appointments" && (
+          <HospitalAppointments key="appointments" />
+        )}
       </div>
     </div>
   );
