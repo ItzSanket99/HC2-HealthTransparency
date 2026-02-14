@@ -12,6 +12,9 @@ import SignUp from "./pages/SignUp"
 import Footer from "./components/shared/Footer"
 import Reviews from "./pages/Reviews";
 import RunAlt from "./components/alternavtive/RunAlt"
+import BookAppointment from "./pages/appointments/BookAppointment"
+import HospitalLogin from "./pages/appointments/HospitalLogin"
+import HospitalDashboard from "./pages/appointments/HospitalDashboard"
 
 
 
@@ -22,7 +25,6 @@ function App() {
   return (
     <Router>
       <Navbar />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<SearchPage />} />
@@ -32,8 +34,11 @@ function App() {
         <Route path="/resources" element={<Resources />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path= "/reviews" element={<Reviews/>}/>
-        <Route path= "/alt" element={<RunAlt/>}/>
+        <Route path="/reviews" element={<Reviews/>}/>
+        <Route path="/alt" element={<RunAlt/>}/>
+        <Route path="/book" element={<BookAppointment />} />
+        <Route path="/hospital-login" element={<HospitalLogin />} />
+        <Route path="/hospital-dashboard" element={<HospitalDashboard />} />
       </Routes>
        <Footer/>
     </Router>
