@@ -1,4 +1,4 @@
-export const mockAlternatives = [
+export const mockKneeAlternatives = [
   {
     id: 'alt-1',
     name: 'Physical Therapy & Exercise Program',
@@ -220,4 +220,243 @@ export const mockAlternatives = [
     ],
     typicalCandidates: 'Patients who are overweight or obese with mild to moderate knee arthritis, where reducing joint load can significantly improve symptoms.',
   },
+   
 ];
+
+export const mockHeartAlternatives = [
+  {
+    id: 'heart-alt-1',
+    name: 'Medication & Lifestyle Management',
+    description:
+      'Comprehensive treatment plan including blood thinners, beta blockers, statins, dietary modification, smoking cessation, and structured cardiac exercise programs.',
+    category: 'Non-Invasive',
+    costRange: { min: 1000, max: 5000 },
+    riskLevel: 'Low',
+    effectivenessScore: 70,
+    recoveryTime: 'Ongoing (3-12 months monitoring)',
+    painLevel: 'Minimal',
+    successRate: 68,
+    suitableFor: [
+      'Mild to moderate coronary artery disease',
+      'Patients not eligible for surgery',
+      'Early-stage heart blockage',
+      'High surgical risk patients',
+    ],
+    notSuitableFor: [
+      'Severe multi-vessel blockage',
+      'Frequent chest pain (unstable angina)',
+      'Heart attack cases requiring urgent intervention',
+      'Critical artery narrowing (>80%)',
+    ],
+    commonSideEffects: [
+      'Dizziness',
+      'Low blood pressure',
+      'Fatigue',
+      'Medication-related gastric issues',
+    ],
+    typicalCandidates:
+      'Patients diagnosed with early coronary artery disease who are willing to adopt strict lifestyle changes and regular follow-up care.',
+  },
+
+  {
+    id: 'heart-alt-2',
+    name: 'Coronary Angioplasty (Stent Placement)',
+    description:
+      'Minimally invasive procedure where a balloon and stent are inserted into blocked coronary arteries to restore blood flow.',
+    category: 'Minimally Invasive',
+    costRange: { min: 120000, max: 300000 },
+    riskLevel: 'Medium',
+    effectivenessScore: 85,
+    recoveryTime: '1-3 weeks',
+    painLevel: 'Mild to Moderate',
+    successRate: 88,
+    suitableFor: [
+      'Single or double vessel blockage',
+      'Stable angina patients',
+      'Patients preferring less invasive procedures',
+      'Emergency heart attack cases',
+    ],
+    notSuitableFor: [
+      'Severe triple vessel disease',
+      'Diffuse long blockages',
+      'High risk of restenosis',
+      'Severe calcified arteries',
+    ],
+    commonSideEffects: [
+      'Bleeding at catheter site',
+      'Re-narrowing of artery',
+      'Blood clots (rare)',
+      'Allergic reaction to contrast dye',
+    ],
+    typicalCandidates:
+      'Patients with limited coronary blockages who want quicker recovery compared to open-heart surgery.',
+  },
+
+  {
+    id: 'heart-alt-3',
+    name: 'Enhanced External Counterpulsation (EECP)',
+    description:
+      'Non-surgical therapy that improves blood flow to the heart using inflatable cuffs on the legs to stimulate collateral circulation.',
+    category: 'Non-Invasive',
+    costRange: { min: 50000, max: 120000 },
+    riskLevel: 'Low',
+    effectivenessScore: 65,
+    recoveryTime: '6-8 weeks (35 sessions)',
+    painLevel: 'Mild',
+    successRate: 60,
+    suitableFor: [
+      'Chronic stable angina',
+      'Patients not fit for surgery',
+      'Refractory chest pain cases',
+      'Post-angioplasty symptom persistence',
+    ],
+    notSuitableFor: [
+      'Severe heart failure',
+      'Arrhythmias',
+      'Severe valve disease',
+      'Deep vein thrombosis',
+    ],
+    commonSideEffects: [
+      'Leg discomfort',
+      'Skin irritation',
+      'Fatigue after sessions',
+    ],
+    typicalCandidates:
+      'Patients with chronic angina who are not surgical candidates and seek symptom relief without invasive procedures.',
+  },
+
+  {
+    id: 'heart-alt-4',
+    name: 'Minimally Invasive Direct Coronary Artery Bypass (MIDCAB)',
+    description:
+      'Less invasive form of bypass surgery performed through small chest incisions without opening the entire sternum.',
+    category: 'Minimally Invasive',
+    costRange: { min: 250000, max: 500000 },
+    riskLevel: 'Medium',
+    effectivenessScore: 90,
+    recoveryTime: '3-5 weeks',
+    painLevel: 'Moderate',
+    successRate: 92,
+    suitableFor: [
+      'Single vessel disease (LAD artery)',
+      'Younger patients',
+      'Those seeking faster recovery than traditional CABG',
+      'Patients with low surgical risk',
+    ],
+    notSuitableFor: [
+      'Multiple artery blockage',
+      'Severe lung disease',
+      'Complex coronary anatomy',
+      'Hemodynamically unstable patients',
+    ],
+    commonSideEffects: [
+      'Post-operative pain',
+      'Temporary breathing discomfort',
+      'Infection risk',
+      'Bleeding',
+    ],
+    typicalCandidates:
+      'Selected patients with isolated artery blockage who qualify for minimally invasive surgical techniques.',
+  },
+
+  {
+    id: 'heart-alt-5',
+    name: 'Traditional Coronary Artery Bypass Surgery (CABG)',
+    description:
+      'Open-heart surgery where blocked arteries are bypassed using grafts from other parts of the body to restore blood flow.',
+    category: 'Traditional',
+    costRange: { min: 250000, max: 650000 },
+    riskLevel: 'High',
+    effectivenessScore: 95,
+    recoveryTime: '6-12 weeks',
+    painLevel: 'Severe (initially)',
+    successRate: 94,
+    suitableFor: [
+      'Triple vessel disease',
+      'Severe coronary blockage',
+      'Failed angioplasty',
+      'Diabetic patients with multi-vessel disease',
+    ],
+    notSuitableFor: [
+      'Severe frailty',
+      'End-stage organ failure',
+      'Active infections',
+      'Extremely high surgical risk',
+    ],
+    commonSideEffects: [
+      'Significant post-surgical pain',
+      'Bleeding',
+      'Infection',
+      'Stroke (rare)',
+      'Arrhythmias',
+      'Memory issues (temporary in some cases)',
+    ],
+    typicalCandidates:
+      'Patients with severe multi-vessel coronary artery disease requiring long-term and durable revascularization.',
+  },
+
+  {
+    id: 'heart-alt-6',
+    name: 'Transcatheter Aortic Valve Replacement (TAVR) (If Valve Disease)',
+    description:
+      'Minimally invasive procedure replacing a narrowed aortic valve without open-heart surgery (used when valve disease coexists).',
+    category: 'Minimally Invasive',
+    costRange: { min: 800000, max: 1500000 },
+    riskLevel: 'Medium',
+    effectivenessScore: 88,
+    recoveryTime: '2-4 weeks',
+    painLevel: 'Moderate',
+    successRate: 90,
+    suitableFor: [
+      'Severe aortic stenosis',
+      'High-risk surgical patients',
+      'Elderly patients',
+      'Valve disease with coronary issues',
+    ],
+    notSuitableFor: [
+      'Infection in heart valves',
+      'Incompatible valve anatomy',
+      'Young low-risk patients (prefer surgical valve)',
+    ],
+    commonSideEffects: [
+      'Bleeding',
+      'Vascular complications',
+      'Arrhythmias',
+      'Need for pacemaker (in some cases)',
+    ],
+    typicalCandidates:
+      'Elderly or high-risk patients with severe valve disease who cannot undergo traditional open-heart valve surgery.',
+  },
+
+  {
+    id: 'heart-alt-7',
+    name: 'Cardiac Rehabilitation Program',
+    description:
+      'Supervised medical program including exercise training, heart-healthy education, and counseling to improve cardiovascular health.',
+    category: 'Non-Invasive',
+    costRange: { min: 10000, max: 50000 },
+    riskLevel: 'Low',
+    effectivenessScore: 72,
+    recoveryTime: '3-6 months',
+    painLevel: 'Minimal',
+    successRate: 75,
+    suitableFor: [
+      'Post-angioplasty patients',
+      'Post-CABG recovery',
+      'Stable heart disease patients',
+      'Lifestyle modification seekers',
+    ],
+    notSuitableFor: [
+      'Unstable angina',
+      'Recent untreated heart attack',
+      'Severe uncontrolled arrhythmias',
+    ],
+    commonSideEffects: [
+      'Muscle soreness',
+      'Temporary fatigue',
+      'Mild chest discomfort during exercise',
+    ],
+    typicalCandidates:
+      'Patients recovering from heart procedures or managing stable coronary disease who want to improve long-term heart function and reduce recurrence risk.',
+  },
+]

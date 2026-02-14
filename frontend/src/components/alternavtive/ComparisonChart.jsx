@@ -18,23 +18,40 @@ import { useState } from "react";
 export function ComparisonChart({ alternatives }) {
   const [chartType, setChartType] = useState("bar");
 
-  // Prepare data for bar chart
-  const barChartData = alternatives.slice(0, 5).map((alt) => ({
+  if (!alternatives || alternatives.length === 0) {
+    return <p>No alternatives available.</p>;
+  }
+
+  const topAlternatives = alternatives.slice(0, 5);
+
+  // 🔥 Dynamic Cost Normalization (Fixes Negative Issue)
+  const maxCost = Math.max(...topAlternatives.map(a => a.costRange.max));
+  const minCost = Math.min(...topAlternatives.map(a => a.costRange.min));
+
+  const normalizeCost = (cost) => {
+    if (maxCost === minCost) return 100; // avoid divide by zero
+    const score =
+      100 - ((cost - minCost) / (maxCost - minCost)) * 100;
+    return Math.max(0, Math.min(100, score)); // clamp between 0–100
+  };
+
+  // ================= BAR CHART DATA =================
+  const barChartData = topAlternatives.map((alt) => ({
     name:
       alt.name.length > 20
         ? alt.name.substring(0, 20) + "..."
         : alt.name,
     Effectiveness: alt.effectivenessScore,
     "Success Rate": alt.successRate,
-    "Cost (scaled)": 100 - (alt.costRange.min / 100000) * 100, // inverse cost
+    "Cost (scaled)": normalizeCost(alt.costRange.min),
   }));
 
-  // Prepare data for radar chart
+  // ================= RADAR CHART DATA =================
   const radarChartData = [
     {
       metric: "Effectiveness",
       ...Object.fromEntries(
-        alternatives.slice(0, 5).map((alt, i) => [
+        topAlternatives.map((alt, i) => [
           `Option ${i + 1}`,
           alt.effectivenessScore,
         ])
@@ -43,7 +60,7 @@ export function ComparisonChart({ alternatives }) {
     {
       metric: "Success Rate",
       ...Object.fromEntries(
-        alternatives.slice(0, 5).map((alt, i) => [
+        topAlternatives.map((alt, i) => [
           `Option ${i + 1}`,
           alt.successRate,
         ])
@@ -52,16 +69,16 @@ export function ComparisonChart({ alternatives }) {
     {
       metric: "Affordability",
       ...Object.fromEntries(
-        alternatives.slice(0, 5).map((alt, i) => [
+        topAlternatives.map((alt, i) => [
           `Option ${i + 1}`,
-          100 - (alt.costRange.min / 100000) * 100,
+          normalizeCost(alt.costRange.min),
         ])
       ),
     },
     {
       metric: "Safety",
       ...Object.fromEntries(
-        alternatives.slice(0, 5).map((alt, i) => [
+        topAlternatives.map((alt, i) => [
           `Option ${i + 1}`,
           alt.riskLevel === "Low"
             ? 90
@@ -118,7 +135,7 @@ export function ComparisonChart({ alternatives }) {
         </div>
       </div>
 
-      {/* Chart */}
+      {/* Chart Section */}
       <div className="h-[300px] sm:h-[400px]">
         {chartType === "bar" ? (
           <ResponsiveContainer width="100%" height="100%">
@@ -134,16 +151,11 @@ export function ComparisonChart({ alternatives }) {
                 height={100}
                 tick={{ fill: "#6b7280", fontSize: 12 }}
               />
-              <YAxis tick={{ fill: "#6b7280", fontSize: 12 }} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#fff",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                  boxShadow:
-                    "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                }}
+              <YAxis
+                domain={[0, 100]}
+                tick={{ fill: "#6b7280", fontSize: 12 }}
               />
+              <Tooltip />
               <Legend iconType="circle" />
               <Bar dataKey="Effectiveness" fill="#3b82f6" radius={[8, 8, 0, 0]} />
               <Bar dataKey="Success Rate" fill="#10b981" radius={[8, 8, 0, 0]} />
@@ -163,17 +175,9 @@ export function ComparisonChart({ alternatives }) {
                 domain={[0, 100]}
                 tick={{ fill: "#6b7280", fontSize: 10 }}
               />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#fff",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                  boxShadow:
-                    "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                }}
-              />
+              <Tooltip />
               <Legend />
-              {alternatives.slice(0, 5).map((alt, index) => (
+              {topAlternatives.map((alt, index) => (
                 <Radar
                   key={alt.id}
                   name={`Option ${index + 1}`}
@@ -188,7 +192,7 @@ export function ComparisonChart({ alternatives }) {
         )}
       </div>
 
-      {/* Legend */}
+      {/* Info Section */}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t">
         <div className="flex gap-2">
           <div className="w-3 h-3 bg-blue-500 rounded mt-1" />

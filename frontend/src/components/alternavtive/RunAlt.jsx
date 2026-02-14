@@ -1,24 +1,33 @@
-import React, { useState } from 'react'
-import { AlternativesExplorer } from './AlternativesExplorer';
-import { useNavigate } from 'react-router-dom';
- 
+import { AlternativesExplorer } from "./AlternativesExplorer";
+import { useNavigate, useParams } from "react-router-dom";
+
+// ✅ Import both from same file
+import {
+  mockKneeAlternatives,
+  mockHeartAlternatives,
+} from "../../data/mockAlternatives";
+
 const RunAlt = () => {
-    const [showAlternatives, setShowAlternatives] = useState(true);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { condition } = useParams();
 
-  const searchParams = {
-    treatment: "Knee Pain",
-  };
+  const decodedCondition = decodeURIComponent(condition);
+
+  let alternatives = [];
+
+  if (decodedCondition === "Knee Pain") {
+    alternatives = mockKneeAlternatives;
+  } else if (decodedCondition === "Heart Surgery") {
+    alternatives = mockHeartAlternatives;
+  }
+
   return (
-    <>
-      {showAlternatives && (
-        <AlternativesExplorer
-          searchParams={searchParams}
-          onBackToResults={() => navigate("/")}
-        />
-      )}
-    </>
-  )
-}
+    <AlternativesExplorer
+      searchParams={{ treatment: decodedCondition }}
+      alternatives={alternatives}   // ✅ correct filtered data
+      onBackToResults={() => navigate("/")}
+    />
+  );
+};
 
-export default RunAlt
+export default RunAlt;

@@ -6,7 +6,7 @@ import FiltersBar from "../components/filters/FilterBar";
 import { mockSearchData } from "../data/searchResults";
 import ProcedureDescription from "../components/shared/ProcedureDescription";
 import PriceInsight from "../components/shared/PriceInsight";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const DEFAULT_DISTANCE = Infinity;
 const DEFAULT_PRICE = { min: null, max: null };
@@ -55,6 +55,8 @@ const SearchPage = () => {
   const [price, setPrice] = useState(DEFAULT_PRICE);
   const [procedureInfo, setProcedureInfo] = useState(null);
   
+
+const navigate = useNavigate();
 
 
   /* -------------------- SEARCH -------------------- */
@@ -172,8 +174,23 @@ const midpointPrice = prices.length
               title={procedureInfo.condition}
               description={procedureInfo.description}
             />
+            <div className="mt-10">
+            <button
+              onClick={() =>
+                navigate(
+                  `/alternatives/${encodeURIComponent(
+                    procedureInfo.condition
+                  )}`
+                )
+              }
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition"
+            >
+              See Treatment Alternatives
+            </button>
           </div>
 
+          </div>
+          
           {/* RIGHT: PRICE INSIGHT */}
           <div className="lg:col-span-2">
             <PriceInsight
