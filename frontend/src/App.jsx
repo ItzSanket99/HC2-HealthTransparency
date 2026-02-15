@@ -28,10 +28,6 @@ function App() {
   return (
     <Router>
       <Navbar />
-
-      {/* Floating AI Button */}
-      <AISummary />
-
       <Routes>
         <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
         <Route path="/search" element={<PageWrapper><SearchPage /></PageWrapper>} />
