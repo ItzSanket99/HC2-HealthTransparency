@@ -1,4 +1,4 @@
-import "./Home.css"
+import "../styles/Home.css"
 import { useEffect, useState } from "react"
 import heroImg from "../assets/hero-illustration.png"
 import searchCareImg from "../assets/search-care.png"
