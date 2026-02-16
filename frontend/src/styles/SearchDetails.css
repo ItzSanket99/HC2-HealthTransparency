@@ -1,0 +1,212 @@
+
+
+
+
+
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+/* === TRUST SCORE CONTAINER === */
+/* ================================
+   TRUST SCORE — BASE COMPONENT
+================================ */
+
+.trust-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 26px;
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+}
+
+/* Left Accent Bar */
+.trust-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 6px;
+  border-radius: 14px 0 0 14px;
+}
+
+/* Hover */
+.trust-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* Layout */
+.trust-left {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.trust-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.trust-sub {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.trust-right {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.trust-card:hover .trust-right {
+  transform: translateX(4px);
+}
+
+
+/* ================================
+   CIRCULAR SCORE
+================================ */
+
+.circular-chart {
+  width: 60px;
+  height: 60px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease;
+}
+.percentage {
+  font-size: 0.6em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-weight: 700;
+}
+
+
+/* ================================
+   THEMES (Driven by Rating)
+================================ */
+
+/* GOOD (3.5 — 4.4) */
+.trust-card.good {
+  background: linear-gradient(135deg, #f0fdfa, #ecfeff);
+  border-color: #99f6e4;
+}
+
+.trust-card.good::before {
+  background: #14b8a6;
+}
+
+.trust-card.good .circle {
+  stroke: #14b8a6;
+}
+
+.trust-card.good .circle-bg {
+  stroke: #ccfbf1;
+}
+
+.trust-card.good .percentage,
+.trust-card.good .trust-title {
+  color: #0f766e;
+}
+
+.trust-card.good .trust-right {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+/* EXCELLENT (4.5+) */
+.trust-card.excellent {
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border-color: #86efac;
+}
+
+.trust-card.excellent::before {
+  background: #22c55e;
+}
+
+.trust-card.excellent .circle {
+  stroke: #22c55e;
+}
+
+.trust-card.excellent .circle-bg {
+  stroke: #dcfce7;
+}
+.trust-card {
+  cursor: pointer;
+}
+
+.trust-card.excellent .trust-right {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* AVERAGE (2.5 — 3.4) */
+.trust-card.average {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  border-color: #fcd34d;
+}
+
+.trust-card.average::before {
+  background: #f59e0b;
+}
+
+.trust-card.average .circle {
+  stroke: #f59e0b;
+}
+
+.trust-card.average .circle-bg {
+  stroke: #fde68a;
+}
+
+/* POOR (<2.5) */
+.trust-card.poor {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  border-color: #fca5a5;
+}
+
+.trust-card.poor::before {
+  background: #ef4444;
+}
+
+.trust-card.poor .circle {
+  stroke: #ef4444;
+}
+
+.trust-card.poor .circle-bg {
+  stroke: #fecaca;
+}
+/* ================================
+   SCORE ANIMATION
+================================ */
+
+.circle {
+  animation: progress 1s ease-out forwards;
+  transform-origin: center;
+}
+
+@keyframes progress {
+  from {
+    stroke-dasharray: 0 100;
+  }
+}

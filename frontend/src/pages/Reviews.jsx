@@ -15,34 +15,52 @@ const Reviews = () => {
   // logged-in user
   const loggedUser = JSON.parse(localStorage.getItem("user")) || {};
 
-  const [sort, setSort] = useState("recent");
-  const [showReviewForm, setShowReviewForm] = useState(false);
+const [sort, setSort] = useState("recent");
+const [showReviewForm, setShowReviewForm] = useState(false);
+const [openReview, setOpenReview] = useState(null); // NEW (for dropdown)
+const [likedReviews, setLikedReviews] = useState({});
 
   const [reviews, setReviews] = useState([
     {
-      id: 1,
-      name: "Towhidur Rahman",
-      rating: 5,
-      date: "2024-10-24",
-      visit: "First Visit",
-      recommend: true,
-      verified: true,
-      review:
-        "Doctors were extremely professional. Clean facilities and smooth coordination.",
-      helpful: 18,
-    },
+  id: 1,
+  name: "Towhidur Rahman",
+  rating: 5,
+  date: "2024-10-24",
+  visit: "First Visit",
+  recommend: true,
+  verified: true,
+  review:
+    "Doctors were extremely professional. Clean facilities and smooth coordination.",
+  details: {
+    communication: "Excellent",
+    cleanliness: "Excellent",
+    waiting: "Reasonable",
+    cons: "",
+    advice: "Carry prior reports for faster consultation.",
+  },
+  helpful: 18,
+}
+,
     {
-      id: 2,
-      name: "Anita Sharma",
-      rating: 4,
-      date: "2024-09-11",
-      visit: "Regular Patient",
-      recommend: true,
-      verified: false,
-      review:
-        "Good overall experience. Staff was polite, waiting time can be improved.",
-      helpful: 7,
-    },
+  id: 2,
+  name: "Anita Sharma",
+  rating: 4,
+  date: "2024-09-11",
+  visit: "Regular Patient",
+  recommend: true,
+  verified: false,
+  review:
+    "Good overall experience. Staff was polite, waiting time can be improved.",
+  details: {
+    communication: "Good",
+    cleanliness: "Good",
+    waiting: "Long",
+    cons: "Waiting time needs improvement.",
+    advice: "",
+  },
+  helpful: 7,
+}
+,
     {
       id: 3,
       name: "Suresh Patil",
@@ -176,14 +194,17 @@ const Reviews = () => {
     },
   ]);
 
-  const [newReview, setNewReview] = useState({
-    rating: 0,
-    visit: "",
-    recommend: "",
-    pros: "",
-    cons: "",
-    advice: "",
-  });
+const [newReview, setNewReview] = useState({
+  rating: 0,
+  visit: "",
+  recommend: "",
+  pros: "",
+  cons: "",
+  advice: "",
+  communication: "",
+  cleanliness: "",
+  waiting: "",
+});
 
   if (!hospital) {
     return <div className="empty">No hospital selected</div>;
@@ -193,11 +214,30 @@ const Reviews = () => {
     if (sort === "rating") return b.rating - a.rating;
     return new Date(b.date) - new Date(a.date);
   });
-
   const avgRating =
-    reviews.length > 0
-      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-      : 0;
+  reviews.length > 0
+    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+    : 0;
+
+
+ // ✅ Sync rating back to other pages (acts like backend persistence)
+useEffect(() => {
+  if (!hospital) return;
+
+  const updatedHospital = {
+    ...hospital,
+    rating: Number(avgRating.toFixed(1)),
+    reviewCount: reviews.length,
+  };
+
+  sessionStorage.setItem(
+    `hospital_${hospital.hospitalId}`,
+    JSON.stringify(updatedHospital)
+  );
+
+  console.log("UPDATED HOSPITAL RATING SAVED:", updatedHospital);
+}, [avgRating, reviews, hospital]);
+
 
   useEffect(() => {
     const generateReviewSummary = async () => {
@@ -356,165 +396,270 @@ const Reviews = () => {
                 </div>
 
                 <p className="review-text">{r.review}</p>
+                {r.details && (
+  <div className="review-expand">
+    <button
+      className="expand-btn"
+      onClick={() =>
+        setOpenReview(openReview === r.id ? null : r.id)
+      }
+    >
+      {openReview === r.id ? "Hide Details ▲" : "View Experience ▼"}
+    </button>
 
-                <div className="review-footer">
-                  <span>{new Date(r.date).toLocaleDateString()}</span>
-                  <button
-                    onClick={() =>
-                      setReviews((prev) =>
-                        prev.map((x) =>
-                          x.id === r.id ? { ...x, helpful: x.helpful + 1 } : x,
-                        ),
-                      )
-                    }
-                  >
-                    👍 Helpful ({r.helpful})
-                  </button>
-                </div>
+    {openReview === r.id && (
+      <div className="expanded-content">
+        <div className="detail-grid">
+          <span>Doctor Communication</span>
+          <strong>{r.details.communication || "-"}</strong>
+
+          <span>Cleanliness</span>
+          <strong>{r.details.cleanliness || "-"}</strong>
+
+          <span>Waiting Time</span>
+          <strong>{r.details.waiting || "-"}</strong>
+        </div>
+
+        {r.details.cons && (
+          <div className="detail-block">
+            <label>Needs Improvement</label>
+            <p>{r.details.cons}</p>
+          </div>
+        )}
+
+        {r.details.advice && (
+          <div className="detail-block">
+            <label>Advice</label>
+            <p>{r.details.advice}</p>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+)}
+
+<div className="review-footer">
+  <span>{new Date(r.date).toLocaleDateString()}</span>
+
+  <button
+    className={`helpful-btn ${likedReviews[r.id] ? "active" : ""}`}
+    onClick={() => {
+      if (likedReviews[r.id]) return;
+
+      setLikedReviews((prev) => ({ ...prev, [r.id]: true }));
+
+      setReviews((prev) =>
+        prev.map((x) =>
+          x.id === r.id ? { ...x, helpful: x.helpful + 1 } : x
+        )
+      );
+    }}
+  >
+    <span className="icon">
+      {likedReviews[r.id] ? "✔" : "👍"}
+    </span>
+
+    <span className="label">
+      {likedReviews[r.id] ? "Marked Helpful" : "Helpful"}
+    </span>
+
+    <span className="count">{r.helpful}</span>
+  </button>
+</div>
+
               </div>
             </div>
           ))}
         </section>
       </div>
 
-      {/* ADD REVIEW MODAL */}
-      {showReviewForm && (
-        <div className="modal-overlay">
-          <div className="review-modal">
-            <h2>Share Your Experience</h2>
-            <p className="subtitle">
-              Your feedback helps other patients make confident decisions.
-            </p>
+{showReviewForm && (
+  <div className="modal-overlay">
+    <div className="review-modal">
+      {/* HEADER */}
+      <div className="modal-header">
+        <h2>Share Your Experience</h2>
+        <p>Your feedback helps other patients choose better care.</p>
+      </div>
 
-            {/* ⭐ OVERALL RATING */}
-            <div className="form-group">
-              <label>Overall Experience</label>
-              <div className="stars">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    className={star <= newReview.rating ? "filled" : ""}
-                    onClick={() => setNewReview({ ...newReview, rating: star })}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* VISIT TYPE */}
-            <div className="form-group">
-              <label>Visit Type</label>
-              <select
-                value={newReview.visit}
-                onChange={(e) =>
-                  setNewReview({ ...newReview, visit: e.target.value })
-                }
-              >
-                <option value="">Select visit type</option>
-                <option>First Visit</option>
-                <option>Regular Patient</option>
-              </select>
-            </div>
-
-            {/* RECOMMEND */}
-            <div className="form-group">
-              <label>Would you recommend this hospital?</label>
-              <select
-                value={newReview.recommend}
-                onChange={(e) =>
-                  setNewReview({ ...newReview, recommend: e.target.value })
-                }
-              >
-                <option value="">Select</option>
-                <option>Yes</option>
-                <option>Maybe</option>
-                <option>No</option>
-              </select>
-            </div>
-
-            {/* PROS */}
-            <div className="form-group">
-              <label>What went well?</label>
-              <textarea
-                placeholder="Doctors, staff behaviour, cleanliness, treatment clarity..."
-                value={newReview.pros}
-                onChange={(e) =>
-                  setNewReview({ ...newReview, pros: e.target.value })
-                }
-              />
-            </div>
-
-            {/* CONS */}
-            <div className="form-group">
-              <label>What could be improved? (optional)</label>
-              <textarea
-                placeholder="Waiting time, billing, crowd management..."
-                value={newReview.cons}
-                onChange={(e) =>
-                  setNewReview({ ...newReview, cons: e.target.value })
-                }
-              />
-            </div>
-
-            {/* ADVICE */}
-            <div className="form-group">
-              <label>Advice for future patients (optional)</label>
-              <textarea
-                placeholder="Book early, carry reports, ask questions..."
-                value={newReview.advice}
-                onChange={(e) =>
-                  setNewReview({ ...newReview, advice: e.target.value })
-                }
-              />
-            </div>
-
-            {/* ACTIONS */}
-            <div className="modal-actions">
-              <button
-                className="ghost"
-                onClick={() => setShowReviewForm(false)}
-              >
-                Cancel
-              </button>
-
-              <button
-                className="primary"
-                onClick={() => {
-                  if (!newReview.rating || !newReview.pros) return;
-
-                  setReviews((prev) => [
-                    {
-                      id: Date.now(),
-                      name: loggedUser?.name || loggedUser?.username || "User",
-                      rating: newReview.rating,
-                      date: new Date().toISOString(),
-                      visit: newReview.visit || "First Visit",
-                      recommend: newReview.recommend === "Yes",
-                      verified: true,
-                      review: newReview.pros,
-                      helpful: 0,
-                    },
-                    ...prev,
-                  ]);
-
-                  setShowReviewForm(false);
-                  setNewReview({
-                    rating: 0,
-                    visit: "",
-                    recommend: "",
-                    pros: "",
-                    cons: "",
-                    advice: "",
-                  });
-                }}
-              >
-                Submit Review
-              </button>
-            </div>
-          </div>
+      {/* ⭐ RATING */}
+      <div className="form-group">
+        <label>Overall Satisfaction</label>
+        <div className="stars large">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span
+              key={star}
+              className={star <= newReview.rating ? "filled" : ""}
+              onClick={() => setNewReview({ ...newReview, rating: star })}
+            >
+              ★
+            </span>
+          ))}
         </div>
-      )}
+      </div>
+
+      {/* VISIT */}
+      <div className="form-row">
+        <div className="form-group">
+          <label>Visit Type</label>
+          <select
+            value={newReview.visit}
+            onChange={(e) =>
+              setNewReview({ ...newReview, visit: e.target.value })
+            }
+          >
+            <option value="">Select</option>
+            <option>First Visit</option>
+            <option>Follow-up</option>
+            <option>Emergency</option>
+            <option>Surgery</option>
+            <option>Diagnostic</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Would you recommend?</label>
+          <select
+            value={newReview.recommend}
+            onChange={(e) =>
+              setNewReview({ ...newReview, recommend: e.target.value })
+            }
+          >
+            <option value="">Select</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </div>
+      </div>
+
+     <div className="form-group">
+  <label>Doctor Communication</label>
+  <select
+    value={newReview.communication}
+    onChange={(e) =>
+      setNewReview({ ...newReview, communication: e.target.value })
+    }
+  >
+    <option value="">Select</option>
+    <option>Excellent</option>
+    <option>Good</option>
+    <option>Average</option>
+    <option>Poor</option>
+  </select>
+</div>
+
+<div className="form-group">
+  <label>Cleanliness & Hygiene</label>
+  <select
+    value={newReview.cleanliness}
+    onChange={(e) =>
+      setNewReview({ ...newReview, cleanliness: e.target.value })
+    }
+  >
+    <option value="">Select</option>
+    <option>Excellent</option>
+    <option>Good</option>
+    <option>Average</option>
+    <option>Poor</option>
+  </select>
+</div>
+
+<div className="form-group">
+  <label>Waiting Time Experience</label>
+  <select
+    value={newReview.waiting}
+    onChange={(e) =>
+      setNewReview({ ...newReview, waiting: e.target.value })
+    }
+  >
+    <option value="">Select</option>
+    <option>Very Short</option>
+    <option>Reasonable</option>
+    <option>Long</option>
+    <option>Very Long</option>
+  </select>
+</div>
+
+
+      {/* TEXT */}
+      <div className="form-group">
+        <label>What went well?</label>
+        <textarea
+          placeholder="Tell us what you liked..."
+          value={newReview.pros}
+          onChange={(e) =>
+            setNewReview({ ...newReview, pros: e.target.value })
+          }
+        />
+      </div>
+
+      <div className="form-group">
+        <label>What can be improved?</label>
+        <textarea
+          placeholder="Suggestions for improvement..."
+          value={newReview.cons}
+          onChange={(e) =>
+            setNewReview({ ...newReview, cons: e.target.value })
+          }
+        />
+      </div>
+
+      {/* ACTION */}
+      <div className="modal-actions">
+        <button className="ghost" onClick={() => setShowReviewForm(false)}>
+          Cancel
+        </button>
+
+        <button
+          className="primary"
+          onClick={() => {
+            if (!newReview.rating || !newReview.pros) return;
+
+            setReviews((prev) => [
+              {
+                id: Date.now(),
+                name: loggedUser?.name || "User",
+                rating: newReview.rating,
+                date: new Date().toISOString(),
+                visit: newReview.visit || "First Visit",
+                recommend: newReview.recommend === "Yes",
+                verified: true,
+                review: newReview.pros,
+details: {
+  communication: newReview.communication,
+  cleanliness: newReview.cleanliness,
+  waiting: newReview.waiting,
+  cons: newReview.cons,
+  advice: newReview.advice,
+},
+helpful: 0,
+
+              },
+              ...prev,
+            ]);
+
+            setShowReviewForm(false);
+            setNewReview({
+  rating: 0,
+  visit: "",
+  recommend: "",
+  pros: "",
+  cons: "",
+  advice: "",
+  communication: "",
+  cleanliness: "",
+  waiting: "",
+});
+
+          }}
+        >
+          Submit Review
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

@@ -3,6 +3,7 @@ import DoctorsPanel from "../components/shared/DoctorsPanel";
 import { mockSearchData } from "../data/searchResults";
 import OutOfPocketPanel from "../components/shared/OutOfPocketPanel";
 import FacilitiesPanel from "../components/shared/FacilitiesPanel";
+import "../styles/SearchDetails.css";
 
 const SearchDetails = () => {
   const { state } = useLocation();
@@ -21,18 +22,37 @@ const SearchDetails = () => {
       </div>
     );
   }
-  
-  const { hospital, treatment } = state;
-  const conditionData = mockSearchData.find(conditionItem =>
-    conditionItem.results.some(h =>
-      h.hospitalId === hospital.hospitalId &&
-      h.treatments.some(t => t.name === treatment.name)
+
+  let { hospital, treatment } = state;
+
+  // ✅ Pull latest rating calculated from Reviews page
+  const storedHospital = sessionStorage.getItem(
+    `hospital_${hospital.hospitalId}`
+  );
+
+  if (storedHospital) {
+    hospital = JSON.parse(storedHospital);
+  }
+
+  const conditionData = mockSearchData.find((conditionItem) =>
+    conditionItem.results.some(
+      (h) =>
+        h.hospitalId === hospital.hospitalId &&
+        h.treatments.some((t) => t.name === treatment.name)
     )
   );
-  
+
   const alternatives = conditionData?.alternatives || [];
   const conditionName = conditionData?.condition;
-  
+const getScoreTheme = (rating) => {
+  if (rating >= 4.5) return "excellent";
+  if (rating >= 3.5) return "good";
+  if (rating >= 2.5) return "average";
+  return "poor";
+};
+
+const scoreTheme = getScoreTheme(hospital.rating || 0);
+
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* BACK */}
@@ -54,21 +74,62 @@ const SearchDetails = () => {
             <h1 className="text-2xl font-semibold">
               {hospital.hospitalName}
             </h1>
+
             <p className="text-gray-600 mt-1">
               {hospital.city}, {hospital.state}
             </p>
-            <div className="flex flex-wrap gap-3 mt-4">
-              <span 
-  onClick={() => navigate("/reviews", { state: { hospital } })}
-  className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm cursor-pointer hover:bg-green-200 transition"
->
-                ⭐ {hospital.rating}
-              </span>
-             
 
+            {/* ⭐ TRUST SCORE — PRIMARY SIGNAL */}
+            <div className="mt-5">
+              <div
+                onClick={() => navigate("/reviews", { state: { hospital } })}
+                className={`trust-card ${scoreTheme} cursor-pointer`}
+
+              >
+                <div className="trust-left">
+                  <div className="trust-ring">
+                    <svg viewBox="0 0 36 36" className="circular-chart">
+                      <path
+                        className="circle-bg"
+                        d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                      <path
+                        className="circle"
+                        strokeDasharray={`${
+                          (hospital.rating / 5) * 100
+                        }, 100`}
+                        d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                      <text x="18" y="20.35" className="percentage">
+                        {hospital.rating}
+                      </text>
+                    </svg>
+                  </div>
+
+                  <div>
+                    <h3 className="trust-title">Patient Trust Score</h3>
+                    <p className="trust-sub">
+                      Based on {hospital.reviewCount || 0} verified experiences
+                    </p>
+                  </div>
+                </div>
+
+                <div className="trust-right">
+                  View Reviews →
+                </div>
+              </div>
+            </div>
+
+            {/* 🏷️ METADATA (Not Equal To Trust Score) */}
+            <div className="flex gap-3 mt-5">
               <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded text-sm">
                 {hospital.type}
               </span>
+
               <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded text-sm">
                 Affordability {hospital.affordabilityScore}/10
               </span>
@@ -77,33 +138,25 @@ const SearchDetails = () => {
 
           {/* DOCTORS PANEL */}
           <DoctorsPanel doctors={hospital.doctors} />
-          
+
           {/* OUT OF POCKET */}
-          <OutOfPocketPanel
-            hospital={hospital}
-            treatment={treatment}
-          />
+          <OutOfPocketPanel hospital={hospital} treatment={treatment} />
         </div>
 
         {/* RIGHT COLUMN */}
         <div className="space-y-6">
           <FacilitiesPanel facilities={hospital.facilities} />
-          
-          {/* ✅ FIXED: Remove conflicting CSS, stay in grid */}
-        <button
-          onClick={() =>
-            navigate("/book", {
-              state: {
-                hospital,
-                treatment, // PASS FULL TREATMENT OBJECT
-              },
-            })
-          }
-          className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Book Appointment
-        </button>
 
+          <button
+            onClick={() =>
+              navigate("/book", {
+                state: { hospital, treatment },
+              })
+            }
+            className="bg-green-600 text-white px-4 py-2 rounded"
+          >
+            Book Appointment
+          </button>
         </div>
       </div>
     </div>
