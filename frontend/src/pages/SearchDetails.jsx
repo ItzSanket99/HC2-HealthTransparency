@@ -21,18 +21,30 @@ const SearchDetails = () => {
       </div>
     );
   }
-  
+
   const { hospital, treatment } = state;
-  const conditionData = mockSearchData.find(conditionItem =>
-    conditionItem.results.some(h =>
-      h.hospitalId === hospital.hospitalId &&
-      h.treatments.some(t => t.name === treatment.name)
+
+  /* ======================================================
+     🔥 FIND CONDITION FROM mockSearchData (IMPORTANT)
+  ======================================================= */
+  const conditionData = mockSearchData.find((conditionItem) =>
+    conditionItem.results.some(
+      (h) =>
+        h.hospitalId === hospital.hospitalId &&
+        h.treatments.some((t) => t.name === treatment.name)
     )
   );
-  
+
   const alternatives = conditionData?.alternatives || [];
   const conditionName = conditionData?.condition;
-  
+
+  /* ======================================================
+     🔥 SAFETY CHECK
+  ======================================================= */
+  if (!conditionName) {
+    console.error("Condition not found for hospital");
+  }
+
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* BACK */}
@@ -47,28 +59,41 @@ const SearchDetails = () => {
 
       {/* MAIN LAYOUT */}
       <div className="px-8 mt-6 grid grid-cols-2 lg:grid-cols-3 gap-8">
+
         {/* LEFT COLUMN */}
         <div className="lg:col-span-2 space-y-6">
+
           {/* HOSPITAL INFO */}
           <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-sm">
             <h1 className="text-2xl font-semibold">
               {hospital.hospitalName}
             </h1>
+
             <p className="text-gray-600 mt-1">
               {hospital.city}, {hospital.state}
             </p>
+
             <div className="flex flex-wrap gap-3 mt-4">
-              <span 
-  onClick={() => navigate("/reviews", { state: { hospital } })}
-  className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm cursor-pointer hover:bg-green-200 transition"
->
+
+              {/* ⭐ FIXED REVIEWS NAVIGATION */}
+              <span
+                onClick={() =>
+                  navigate("/reviews", {
+                    state: {
+                      hospital,
+                      condition: conditionName, // ✅ FIXED
+                    },
+                  })
+                }
+                className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm cursor-pointer hover:bg-green-200 transition"
+              >
                 ⭐ {hospital.rating}
               </span>
-             
 
               <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded text-sm">
                 {hospital.type}
               </span>
+
               <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded text-sm">
                 Affordability {hospital.affordabilityScore}/10
               </span>
@@ -77,7 +102,7 @@ const SearchDetails = () => {
 
           {/* DOCTORS PANEL */}
           <DoctorsPanel doctors={hospital.doctors} />
-          
+
           {/* OUT OF POCKET */}
           <OutOfPocketPanel
             hospital={hospital}
@@ -88,22 +113,20 @@ const SearchDetails = () => {
         {/* RIGHT COLUMN */}
         <div className="space-y-6">
           <FacilitiesPanel facilities={hospital.facilities} />
-          
-          {/* ✅ FIXED: Remove conflicting CSS, stay in grid */}
-        <button
-          onClick={() =>
-            navigate("/book", {
-              state: {
-                hospital,
-                treatment, // PASS FULL TREATMENT OBJECT
-              },
-            })
-          }
-          className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Book Appointment
-        </button>
 
+          <button
+            onClick={() =>
+              navigate("/book", {
+                state: {
+                  hospital,
+                  treatment,
+                },
+              })
+            }
+            className="bg-green-600 text-white px-4 py-2 rounded"
+          >
+            Book Appointment
+          </button>
         </div>
       </div>
     </div>

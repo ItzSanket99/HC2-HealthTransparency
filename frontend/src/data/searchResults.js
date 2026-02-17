@@ -5,23 +5,7 @@ export const mockSearchData = [
     description:
       "Knee replacement is a surgical procedure to relieve pain and restore mobility in severe arthritis or injury.",
 
-    alternatives: [
-      {
-        name: "Medication & Lifestyle Management",
-        costScore: 2,
-        riskScore: 2,
-        effectivenessScore: 5,
-        note: "Often suitable for mild to moderate cases with regular monitoring.",
-      },
-      {
-        name: "Physiotherapy & Bracing",
-        costScore: 3,
-        riskScore: 1,
-        effectivenessScore: 6,
-        note: "Strengthens muscles and improves joint stability without surgery.",
-      },
-    ],
-
+    
     results: [
       /* ===================== 1 ===================== */
       {
