@@ -26,6 +26,9 @@ const SearchDetails = () => {
 
   const { hospital, treatment } = state;
 
+  /* ======================================================
+     🔥 FIND CONDITION FROM mockSearchData (IMPORTANT)
+  ======================================================= */
   const conditionData = mockSearchData.find((conditionItem) =>
     conditionItem.results.some(
       (h) =>
@@ -57,6 +60,32 @@ const SearchDetails = () => {
       <div className="grid lg:grid-cols-[1.65fr_0.9fr] gap-8 items-start">
         {/* LEFT COLUMN */}
         <div className="space-y-6">
+
+  /* ======================================================
+     🔥 SAFETY CHECK
+  ======================================================= */
+  if (!conditionName) {
+    console.error("Condition not found for hospital");
+  }
+
+  return (
+    <div className="bg-gray-50 min-h-screen">
+      {/* BACK */}
+      <div className="px-8 pt-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-teal-700 font-medium"
+        >
+          ← Back to results
+        </button>
+      </div>
+
+      {/* MAIN LAYOUT */}
+      <div className="px-8 mt-6 grid grid-cols-2 lg:grid-cols-3 gap-8">
+
+        {/* LEFT COLUMN */}
+        <div className="lg:col-span-2 space-y-6">
+
           {/* HOSPITAL INFO */}
           <div className="bg-white border border-[#e2e8ea] rounded-2xl p-7">
             <h1 className="text-[30px] leading-tight font-semibold text-[#0f2f33]">
@@ -66,6 +95,26 @@ const SearchDetails = () => {
             <p className="text-[#5f7a7f] mt-1">
               {hospital.city}, {hospital.state}
             </p>
+            <p className="text-gray-600 mt-1">
+              {hospital.city}, {hospital.state}
+            </p>
+
+            <div className="flex flex-wrap gap-3 mt-4">
+
+              {/* ⭐ FIXED REVIEWS NAVIGATION */}
+              <span
+                onClick={() =>
+                  navigate("/reviews", {
+                    state: {
+                      hospital,
+                      condition: conditionName, // ✅ FIXED
+                    },
+                  })
+                }
+                className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm cursor-pointer hover:bg-green-200 transition"
+              >
+                ⭐ {hospital.rating}
+              </span>
 
             <div className="flex flex-wrap gap-3 mt-5">
               <span className="bg-[#eef3ff] text-[#3554d1] px-3.5 py-1.5 rounded-full text-sm">
@@ -73,6 +122,7 @@ const SearchDetails = () => {
               </span>
 
               <span className="bg-[#f3eefe] text-[#6b4fd6] px-3.5 py-1.5 rounded-full text-sm">
+              <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded text-sm">
                 Affordability {hospital.affordabilityScore}/10
               </span>
             </div>
@@ -176,6 +226,30 @@ const SearchDetails = () => {
               </ul>
             </div>
           </div>
+          {/* OUT OF POCKET */}
+          <OutOfPocketPanel
+            hospital={hospital}
+            treatment={treatment}
+          />
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="space-y-6">
+          <FacilitiesPanel facilities={hospital.facilities} />
+
+          <button
+            onClick={() =>
+              navigate("/book", {
+                state: {
+                  hospital,
+                  treatment,
+                },
+              })
+            }
+            className="bg-green-600 text-white px-4 py-2 rounded"
+          >
+            Book Appointment
+          </button>
         </div>
       </div>
     </div>

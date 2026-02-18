@@ -11,34 +11,30 @@ app.use(express.json());
 
 /*
 =====================================================
- HUGGINGFACE INFERENCE ENDPOINT (CORRECT)
+ HUGGINGFACE MODEL ENDPOINTS
 =====================================================
 */
 
-// ✅ Summarization model
+// 🔹 Summarization Model
 const SUMMARY_URL =
   "https://router.huggingface.co/hf-inference/models/sshleifer/distilbart-cnn-12-6";
 
-// ✅ Translation model (must ALSO use hf-inference)
-// Translation models (free supported)
+// 🔹 Translation Models (English → Target)
 const TRANSLATE_MODELS = {
-  Hindi: "https://router.huggingface.co/hf-inference/models/Helsinki-NLP/opus-mt-en-hi",
-  Marathi: "https://router.huggingface.co/hf-inference/models/Helsinki-NLP/opus-mt-en-mr",
-  Gujarati: "https://router.huggingface.co/hf-inference/models/Helsinki-NLP/opus-mt-en-gu",
+  Hindi:
+    "https://router.huggingface.co/hf-inference/models/Helsinki-NLP/opus-mt-en-hi",
+  Marathi:
+    "https://router.huggingface.co/hf-inference/models/Helsinki-NLP/opus-mt-en-mr",
+  Gujarati:
+    "https://router.huggingface.co/hf-inference/models/Helsinki-NLP/opus-mt-en-gu",
 };
 
 /*
 =====================================================
- STEP 1 → SUMMARIZE TEXT (ENGLISH)
+ STEP 1 → SUMMARIZE TEXT
 =====================================================
 */
-async function summarizeText(text, mode = "page-summary") {
-  let promptText = text;
-
-  if (mode === "review-summary") {
-  promptText = text;
-}
-
+async function summarizeText(text) {
   const response = await fetch(SUMMARY_URL, {
     method: "POST",
     headers: {
@@ -46,7 +42,7 @@ async function summarizeText(text, mode = "page-summary") {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      inputs: promptText.slice(0, 5000), // keep short for speed
+      inputs: text.slice(0, 4000), // limit size
       parameters: {
         max_length: 120,
         min_length: 40,
@@ -56,23 +52,25 @@ async function summarizeText(text, mode = "page-summary") {
   });
 
   const data = await response.json();
-  console.log("🧠 Summary:", data);
 
-  if (Array.isArray(data)) return data[0].summary_text;
+  console.log("🧠 HF Summary Response:", data);
+
+  if (Array.isArray(data)) {
+    return data[0].summary_text;
+  }
 
   throw new Error("Summarization failed");
 }
 
 /*
 =====================================================
- STEP 2 → TRANSLATE SUMMARY (MULTILINGUAL)
+ STEP 2 → TRANSLATE SUMMARY (OPTIONAL)
 =====================================================
 */
-async function translateText(text, targetLang) {
-  const modelURL = TRANSLATE_MODELS[targetLang];
+async function translateText(text, language) {
+  const modelURL = TRANSLATE_MODELS[language];
 
-  // If language not supported → return English summary
-  if (!modelURL) return text;
+  if (!modelURL) return text; // If unsupported → return English
 
   const response = await fetch(modelURL, {
     method: "POST",
@@ -87,7 +85,8 @@ async function translateText(text, targetLang) {
   });
 
   const data = await response.json();
-  console.log("🌍 Translation:", data);
+
+  console.log("🌍 HF Translation Response:", data);
 
   if (Array.isArray(data)) {
     return data[0].translation_text;
@@ -96,7 +95,6 @@ async function translateText(text, targetLang) {
   return text;
 }
 
-
 /*
 =====================================================
  MAIN API ROUTE
@@ -104,66 +102,40 @@ async function translateText(text, targetLang) {
 */
 app.post("/summarize", async (req, res) => {
   try {
-    const { text, language, mode } = req.body;
-    
-
+    const { text, language = "English" } = req.body;
 
     if (!text) {
       return res.status(400).json({ error: "No text provided" });
     }
 
     console.log("📄 Processing request...");
-    console.log("🌐 Target Language:", language || "English");
+    console.log("🌐 Target Language:", language);
 
-    let workingText = text;
+    // 🔹 Step 1: Generate English summary
+    const summary = await summarizeText(text);
 
-    /*
-    ============================================
-    STEP 1 → If user wants Hindi/Marathi/etc
-    Translate ORIGINAL PAGE → English FIRST
-    ============================================
-    */
-    if (language && language !== "English" && LANG_MODELS[language]) {
-      console.log("🔄 Translating page → English");
-      workingText = await translate(
-        text.slice(0, 2000),   // translate more text for context
-        LANG_MODELS[language].toEnglish
-      );
-    }
-
-    /*
-    ============================================
-    STEP 2 → Summarize CLEAN English content
-    ============================================
-    */
-    console.log("🧠 Generating summary...");
-    const summary = await summarizeText(workingText, mode);
-
-    /*
-    ============================================
-    STEP 3 → Translate SUMMARY back to user language
-    ============================================
-    */
+    // 🔹 Step 2: Translate if needed
     let finalSummary = summary;
 
-    if (language && language !== "English" && LANG_MODELS[language]) {
-      console.log("🌍 Translating summary →", language);
-      finalSummary = await translate(summary, LANG_MODELS[language].fromEnglish);
+    if (language !== "English") {
+      finalSummary = await translateText(summary, language);
     }
 
     res.json({ summary: finalSummary });
+
   } catch (err) {
-    console.error("❌ Proxy error:", err.message);
+    console.error("❌ AI Proxy Error:", err);
     res.status(500).json({ error: "AI processing failed" });
   }
 });
-
 
 /*
 =====================================================
  START SERVER
 =====================================================
 */
-app.listen(5001, () => {
-  console.log("✅ HF Proxy running on http://localhost:5001");
+const PORT = 5001;
+
+app.listen(PORT, () => {
+  console.log(`✅ HF Proxy running on http://localhost:${PORT}`);
 });
