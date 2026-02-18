@@ -12,79 +12,58 @@ const SearchDetails = () => {
   if (!state?.hospital) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#f6f8f8]">
-        {" "}
         <p className="text-[#5c7478] mb-4">No hospital selected</p>
         <button
           onClick={() => navigate("/search")}
           className="bg-[#1f6f6b] text-white px-5 py-2 rounded-full hover:brightness-95 transition"
         >
-          Go to Search{" "}
-        </button>{" "}
+          Go to Search
+        </button>
       </div>
     );
   }
 
   const { hospital, treatment } = state;
 
-  /* ======================================================
-     🔥 FIND CONDITION FROM mockSearchData (IMPORTANT)
-  ======================================================= */
+  /* FIND CONDITION */
   const conditionData = mockSearchData.find((conditionItem) =>
     conditionItem.results.some(
       (h) =>
         h.hospitalId === hospital.hospitalId &&
-        h.treatments.some((t) => t.name === treatment.name),
-    ),
+        h.treatments.some((t) => t.name === treatment.name)
+    )
   );
 
-  const alternatives = conditionData?.alternatives || [];
   const conditionName = conditionData?.condition;
 
-  const avgRating =
-    hospitalReviews.reduce((s, r) => s + r.rating, 0) / hospitalReviews.length;
-
-  const ratingCounts = [5, 4, 3, 2, 1].map(
-    (star) => hospitalReviews.filter((r) => r.rating === star).length,
-  );
-
-  return (
-    <div className="bg-white min-h-screen pt-6 pb-14">
-      {/* BACK LINK */}
-      <button
-        onClick={() => navigate(-1)}
-        className="text-[#1f6f6b] font-medium mb-6 hover:underline"
-      >
-        ← Back to results{" "}
-      </button>
-      {/* MAIN GRID (2 COLUMN) */}
-      <div className="grid lg:grid-cols-[1.65fr_0.9fr] gap-8 items-start">
-        {/* LEFT COLUMN */}
-        <div className="space-y-6">
-
-  /* ======================================================
-     🔥 SAFETY CHECK
-  ======================================================= */
   if (!conditionName) {
     console.error("Condition not found for hospital");
   }
 
-  return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* BACK */}
-      <div className="px-8 pt-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-teal-700 font-medium"
-        >
-          ← Back to results
-        </button>
-      </div>
+  const avgRating =
+    hospitalReviews.reduce((s, r) => s + r.rating, 0) /
+    hospitalReviews.length;
 
-      {/* MAIN LAYOUT */}
-      <div className="px-8 mt-6 grid grid-cols-2 lg:grid-cols-3 gap-8">
+  const ratingCounts = [5, 4, 3, 2, 1].map(
+    (star) => hospitalReviews.filter((r) => r.rating === star).length
+  );
+
+  return (
+    <div className="bg-white min-h-screen pt-6 pb-14">
+
+      {/* BACK */}
+      <button
+        onClick={() => navigate(-1)}
+        className="text-[#1f6f6b] font-medium mb-6 hover:underline"
+      >
+        ← Back to results
+      </button>
+
+      {/* MAIN GRID */}
+      <div className="grid lg:grid-cols-[1.65fr_0.9fr] gap-8 items-start">
 
         {/* LEFT COLUMN */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6">
 
           {/* HOSPITAL INFO */}
           <div className="bg-white border border-[#e2e8ea] rounded-2xl p-7">
@@ -95,19 +74,15 @@ const SearchDetails = () => {
             <p className="text-[#5f7a7f] mt-1">
               {hospital.city}, {hospital.state}
             </p>
-            <p className="text-gray-600 mt-1">
-              {hospital.city}, {hospital.state}
-            </p>
 
-            <div className="flex flex-wrap gap-3 mt-4">
+            <div className="flex flex-wrap gap-3 mt-5">
 
-              {/* ⭐ FIXED REVIEWS NAVIGATION */}
               <span
                 onClick={() =>
                   navigate("/reviews", {
                     state: {
                       hospital,
-                      condition: conditionName, // ✅ FIXED
+                      condition: conditionName,
                     },
                   })
                 }
@@ -116,12 +91,10 @@ const SearchDetails = () => {
                 ⭐ {hospital.rating}
               </span>
 
-            <div className="flex flex-wrap gap-3 mt-5">
               <span className="bg-[#eef3ff] text-[#3554d1] px-3.5 py-1.5 rounded-full text-sm">
                 {hospital.type}
               </span>
 
-              <span className="bg-[#f3eefe] text-[#6b4fd6] px-3.5 py-1.5 rounded-full text-sm">
               <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded text-sm">
                 Affordability {hospital.affordabilityScore}/10
               </span>
@@ -138,6 +111,7 @@ const SearchDetails = () => {
         {/* RIGHT SIDEBAR */}
         <div className="relative">
           <div className="sticky top-28 space-y-6">
+
             {/* FACILITIES */}
             <div className="bg-white border border-[#e2e8ea] rounded-2xl p-6">
               <FacilitiesPanel facilities={hospital.facilities} />
@@ -152,9 +126,9 @@ const SearchDetails = () => {
               </button>
             </div>
 
-            {/* PROFESSIONAL REVIEW CARD */}
+            {/* REVIEW CARD */}
             <div className="bg-white border border-[#e2e8ea] rounded-2xl p-6">
-              {/* HEADER */}
+
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-semibold text-[#0f2f33] text-lg">
@@ -166,14 +140,18 @@ const SearchDetails = () => {
                 </div>
 
                 <button
-                  onClick={() => navigate("/reviews", { state: { hospital } })}
+                  onClick={() =>
+                    navigate("/reviews", {
+                      state: { hospital, condition: conditionName },
+                    })
+                  }
                   className="text-sm text-[#1f6f6b] font-medium hover:underline"
                 >
                   View all →
                 </button>
               </div>
 
-              {/* AVG RATING */}
+              {/* AVG */}
               <div className="flex items-end gap-3 mt-4">
                 <div className="text-3xl font-semibold text-[#0f2f33]">
                   {avgRating.toFixed(1)}
@@ -204,10 +182,10 @@ const SearchDetails = () => {
                 })}
               </div>
 
-              {/* REVIEW PREVIEW */}
+              {/* PREVIEW */}
               <div className="mt-5 pt-4 border-t border-[#eef3f4]">
                 <p className="text-sm text-[#5f7a7f] italic">
-                  “{hospitalReviews[0].review}”
+                  “{hospitalReviews[0]?.review}”
                 </p>
               </div>
             </div>
@@ -225,31 +203,8 @@ const SearchDetails = () => {
                 <li>✔ High Success Rate</li>
               </ul>
             </div>
+
           </div>
-          {/* OUT OF POCKET */}
-          <OutOfPocketPanel
-            hospital={hospital}
-            treatment={treatment}
-          />
-        </div>
-
-        {/* RIGHT COLUMN */}
-        <div className="space-y-6">
-          <FacilitiesPanel facilities={hospital.facilities} />
-
-          <button
-            onClick={() =>
-              navigate("/book", {
-                state: {
-                  hospital,
-                  treatment,
-                },
-              })
-            }
-            className="bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Book Appointment
-          </button>
         </div>
       </div>
     </div>
