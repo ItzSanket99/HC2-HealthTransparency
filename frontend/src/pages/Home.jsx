@@ -1,13 +1,12 @@
-import "../styles/Home.css"
-import { useEffect, useState } from "react"
-import heroImg from "../assets/hero-illustration.png"
-import searchCareImg from "../assets/search-care.png"
-import compareImg from "../assets/compare-options.png"
-import estimateImg from "../assets/estimate-cost.png"
-import overviewImg from "../assets/price-transparency-overview.png"
-import indiaCostImg from "../assets/india-healthcare-costs.png"
-import solutionImg from "../assets/treatwise-solution.png"
-import quoteIcon from "../assets/quote-icon.png"
+import { useEffect, useState } from "react";
+
+import searchCareImg from "../assets/search-care.png";
+import compareImg from "../assets/compare-options.png";
+import estimateImg from "../assets/estimate-cost.png";
+import overviewImg from "../assets/price-transparency-overview.png";
+import indiaCostImg from "../assets/india-healthcare-costs.png";
+import solutionImg from "../assets/treatwise-solution.png";
+import quoteIcon from "../assets/quote-icon.png";
 import SearchBar from "../components/shared/SearchBar";
 
 const treatments = [
@@ -16,63 +15,82 @@ const treatments = [
   "for CT scans",
   "for lab tests",
   "for surgeries",
-]
+];
 
 const Home = () => {
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % treatments.length)
-    }, 2000)
+      setIndex((prev) => (prev + 1) % treatments.length);
+    }, 2000);
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="home">
       {/* HERO */}
-      <section className="hero">
-        <div className="hero-split">
-          <div className="hero-text">
-            <h1 className="hero-title">
-              Know what you’ll pay <br />
-              <span className="hero-highlight">{treatments[index]}</span>
-            </h1>
-
-            <p className="hero-subtitle">
-              TreatWise helps you explore healthcare costs, compare providers,
-              and make confident decisions without surprises.
-            </p>
-          </div>
-
-          <div className="hero-image">
-            <img src={heroImg} alt="Healthcare transparency" />
-          </div>
+      <section className="bg-[var(--bg-section)] pt-20 pb-20 bg-white">
+        {/* Heading */}
+        <div className="max-w-[920px]">
+          <h1 className="font-[var(--font-serif)] text-[72px] leading-[1.05] tracking-[-0.02em] text-[var(--teal-900)] font-semibold">
+            Know what you’ll pay <br />
+            <span className="text-[var(--teal-700)]">{treatments[index]}</span>
+          </h1>
         </div>
 
-        <div className="hero-search-wrapper">
+        {/* Search Bar */}
+        <div className="mt-10">
           <SearchBar />
         </div>
-      </section>
 
+        {/* Suggested searches */}
+        <div className="mt-8 flex flex-wrap gap-4">
+          {[
+            "Colonoscopy",
+            "Knee Repair - Arthroscopic",
+            "MRI with Contrast",
+            "Tonsil and/or Adenoid Removal",
+          ].map((item) => (
+            <button
+              key={item}
+              className="px-3 py-2 rounded-full border border-[var(--teal-700)] text-[var(--teal-700)] text-[15px] hover:bg-[var(--teal-100)] transition"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </section>
       {/* INFO CARDS */}
-      <section className="cards-section">
-        <div className="cards-grid">
+      <section className="mt-1 relative">
+        {/* Glow Background */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[320px] rounded-[6px] pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(23,111,111,0.22), rgba(23,111,111,0.12) 35%, rgba(23,111,111,0.04) 60%, transparent 80%)",
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative grid md:grid-cols-3 gap-10 py-15 px-8">
           <InfoCard
             img={searchCareImg}
             title="Search for care"
-            text="Find the treatment you need and discover providers near you."
+            text="Search for care you need, add your insurance plan, and find providers near you."
           />
+
           <InfoCard
             img={compareImg}
             title="Compare what matters"
-            text="Review pricing, quality, and options side by side."
+            text="Set your location and quality preferences to compare price options."
           />
+
           <InfoCard
             img={estimateImg}
             title="Estimate your cost"
-            text="Understand expected costs before choosing a provider."
+            text="Add your insurance details to see what you'll pay, then contact the provider to confirm."
           />
         </div>
       </section>
@@ -150,14 +168,27 @@ const Home = () => {
       </section>
     </div>
   );
-}
-
+};
 const InfoCard = ({ img, title, text }) => (
-  <div className="info-card">
-    <img src={img} alt={title} />
-    <h3>{title}</h3>
-    <p>{text}</p>
-  </div>
-)
+  <div
+    className="
+    bg-white
+    rounded-2xl
+    p-10
+    min-h-[220px]
+    border border-[rgba(0,0,0,0.08)]
+    shadow-[0_8px_24px_rgba(2,54,61,0.3)]
+    transition hover:-translate-y-[3px]
+  "
+  >
+    <img src={img} alt={title} className="w-20 mb-6" />
 
-export default Home
+    <h3 className="text-[22px] font-semibold text-[var(--teal-900)] mb-3">
+      {title}
+    </h3>
+
+    <p className="text-[15px] leading-6 text-[var(--text-body)]">{text}</p>
+  </div>
+);
+
+export default Home;

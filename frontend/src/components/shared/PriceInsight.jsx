@@ -21,7 +21,7 @@ const PriceInsight = ({ min, max, midpoint, procedure }) => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-3xl p-8 shadow-l hover:shadow-2xl transition-all duration-300">
+    <div className=" mt-4 bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-3xl p-8 shadow-l hover:shadow-2xl transition-all duration-300 ">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* LEFT TEXT - Prominent pricing like Turquoise */}
         <div className="space-y-3">

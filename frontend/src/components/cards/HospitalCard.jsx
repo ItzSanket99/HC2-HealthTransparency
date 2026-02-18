@@ -15,61 +15,61 @@ const HospitalCard = ({ hospital }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-300 shadow-sm  p-5 hover:shadow-md transition">
+    <div className="bg-white rounded-2xl border border-[#E3ECEC] p-6 hover:border-[#CFE0E0] transition">
 
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">
+          <h3 className="text-[18px] font-medium text-[#083A3D]">
             {hospital.hospitalName}
           </h3>
-          <p className="text-sm text-gray-500 flex items-center gap-1">
-            <FaMapMarkerAlt className="text-teal-600" />
+          <p className="text-[14px] text-[#5F7D7E] flex items-center gap-2 mt-1">
+            <FaMapMarkerAlt className="text-[#176F6F]" />
             {hospital.city}, {hospital.state}
           </p>
         </div>
 
-        <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded">
-          <FaStar className="text-green-600" />
-          <span className="text-sm font-medium">{hospital.rating}</span>
+        <div className="flex items-center gap-1 text-[#176F6F] text-[14px] font-medium">
+          <FaStar className="text-[#176F6F]" />
+          <span>{hospital.rating}</span>
         </div>
       </div>
 
       {/* Treatment */}
       <div className="mt-4">
-        <p className="text-sm text-gray-500">Treatment</p>
-        <p className="font-medium">{t.name}</p>
+        <p className="text-[13px] text-[#7A9A9B]">Treatment</p>
+        <p className="font-medium text-[#083A3D]">{t.name}</p>
       </div>
 
       {/* Cost */}
-      <div className="mt-3 flex items-center gap-2 text-teal-700 font-semibold">
-        <FaRupeeSign />
+      <div className="mt-4 flex items-center gap-2 text-[#083A3D] font-semibold text-[18px]">
+        <FaRupeeSign className="text-[#176F6F]" />
         ₹{t.minCost.toLocaleString()} – ₹{t.maxCost.toLocaleString()}
       </div>
 
       {/* Tags */}
-      <div className="mt-3 flex gap-2 text-xs">
-        <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">
+      <div className="mt-4 flex gap-2 text-[12px] text-[#5F7D7E]">
+        <span className="px-2 py-1 border border-[#E3ECEC] rounded-full">
           {hospital.type}
         </span>
-        <span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+        <span className="px-2 py-1 border border-[#E3ECEC] rounded-full">
           Risk: {t.riskLevel}
         </span>
-        <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded">
+        <span className="px-2 py-1 border border-[#E3ECEC] rounded-full">
           Affordability {hospital.affordabilityScore}/10
         </span>
       </div>
 
       {/* CTA */}
-      <div className="mt-4 flex justify-between items-center">
+      <div className="mt-5 flex justify-between items-center">
         <button
           onClick={handleViewDetails}
-          className="text-teal-600 font-medium hover:underline"
+          className="text-[#176F6F] font-medium hover:underline"
         >
           View details
         </button>
 
-        <button className="bg-teal-600 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-teal-700">
+        <button className="bg-[#176F6F] text-white px-5 py-2 rounded-full text-[14px] hover:bg-[#0E5658] transition">
           Compare
         </button>
       </div>

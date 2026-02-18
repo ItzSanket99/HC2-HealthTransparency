@@ -1,4 +1,3 @@
-
 import {
   FaProcedures,
   FaHospitalAlt,
@@ -11,24 +10,27 @@ import {
 
 const FacilityRow = ({ icon, label, available, note }) => {
   return (
-    <div className="flex items-center justify-between py-3 border-b border-gray-300 last:border-b-0 last:border-gray-300">
-      <div className="flex items-center gap-3">
-        <div className="text-teal-700 text-lg">{icon}</div>
+    <div className="flex items-start justify-between py-4 border-b border-[#eef3f3] last:border-b-0">
+      <div className="flex items-start gap-3">
+        <div className="text-[#1f6f6b] text-[18px] mt-[2px]">{icon}</div>
+
         <div>
-          <p className="font-medium text-gray-800">{label}</p>
+          <p className="font-medium text-[#0f2f33] leading-none">{label}</p>
           {note && (
-            <p className="text-xs text-gray-500">{note}</p>
+            <p className="text-[13px] text-[#6b8a8f] mt-1 leading-snug">
+              {note}
+            </p>
           )}
         </div>
       </div>
 
       {available ? (
-        <span className="flex items-center gap-1 text-green-700 text-sm">
-          <FaCheckCircle /> Available
+        <span className="flex items-center gap-1.5 text-[#1f6f6b] text-[13px] font-medium">
+          <FaCheckCircle className="text-[12px]" /> Available
         </span>
       ) : (
-        <span className="flex items-center gap-1 text-red-600 text-sm">
-          <FaTimesCircle /> Not available
+        <span className="flex items-center gap-1.5 text-[#8aa3a6] text-[13px]">
+          <FaTimesCircle className="text-[12px]" /> Not available
         </span>
       )}
     </div>
@@ -38,11 +40,11 @@ const FacilityRow = ({ icon, label, available, note }) => {
 const FacilitiesPanel = ({ facilities }) => {
   if (!facilities) {
     return (
-      <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-sm">
-        <h3 className="text-lg font-semibold mb-2">
+      <div className="bg-white border border-[#e2e8ea] rounded-2xl p-6">
+        <h3 className="text-[18px] font-semibold text-[#0f2f33] mb-2">
           Facilities & Infrastructure
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-[14px] text-[#6b8a8f]">
           Facility information not available for this hospital.
         </p>
       </div>
@@ -50,14 +52,15 @@ const FacilitiesPanel = ({ facilities }) => {
   }
 
   return (
-    <div className="bg-white border border-gray-300 rounded-xl shadow-sm">
+    <div className="bg-white border border-[#e2e8ea] rounded-2xl">
+
       {/* Header */}
-      <div className="p-6 border-b border-gray-300">
-        <h3 className="text-xl font-semibold flex items-center gap-2">
-          <FaHospitalAlt className="text-teal-700" />
+      <div className="p-6 border-b border-[#eef3f3]">
+        <h3 className="text-[19px] font-semibold flex items-center gap-2 text-[#0f2f33]">
+          <FaHospitalAlt className="text-[#1f6f6b]" />
           Facilities & Infrastructure
         </h3>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-[13px] text-[#6b8a8f] mt-1">
           Medical facilities available at this hospital
         </p>
       </div>
@@ -104,9 +107,9 @@ const FacilitiesPanel = ({ facilities }) => {
         />
       </div>
 
-      {/* Confidence footer */}
-      <div className="px-6 py-4 bg-slate-50 text-xs text-gray-600 flex items-center gap-2">
-        ✔ Facility data verified with hospital infrastructure records
+      {/* Footer */}
+      <div className="px-6 py-4 text-[12px] text-[#7f9a9e] border-t border-[#eef3f3]">
+        Facility data verified with hospital infrastructure records
       </div>
     </div>
   );
