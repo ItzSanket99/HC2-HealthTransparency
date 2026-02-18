@@ -11,11 +11,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const DEFAULT_DISTANCE = Infinity;
 const DEFAULT_PRICE = { min: null, max: null };
 
-
-/* -------------------- DISTANCE HELPER (HAVERSINE) -------------------- */
+/* -------------------- DISTANCE HELPER -------------------- */
 const getDistanceMiles = (lat1, lon1, lat2, lon2) => {
   const toRad = (v) => (v * Math.PI) / 180;
-  const R = 3958.8; // miles
+  const R = 3958.8;
 
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
@@ -28,7 +27,6 @@ const getDistanceMiles = (lat1, lon1, lat2, lon2) => {
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return +((R * c) * 5).toFixed(1);
-
 };
 
 /* -------------------- CITY COORDINATES -------------------- */
@@ -49,94 +47,78 @@ const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const surgeryParam = searchParams.get("surgery");
   const cityParam = searchParams.get("city");
+
   const [results, setResults] = useState([]);
   const [distance, setDistance] = useState(DEFAULT_DISTANCE);
   const [hasSearched, setHasSearched] = useState(false);
   const [price, setPrice] = useState(DEFAULT_PRICE);
   const [procedureInfo, setProcedureInfo] = useState(null);
-  
 
-const navigate = useNavigate();
-
+  const navigate = useNavigate();
 
   /* -------------------- SEARCH -------------------- */
   const handleSearch = (surgery, city) => {
-  // reset filters
-  setDistance(DEFAULT_DISTANCE);
-  setPrice(DEFAULT_PRICE);
+    setDistance(DEFAULT_DISTANCE);
+    setPrice(DEFAULT_PRICE);
 
-  const cityCenter = cityCoordinates[city];
+    const cityCenter = cityCoordinates[city];
 
-  const block = mockSearchData.find(
-    (b) =>
-      b.results.some(h =>
-        h.city === city &&
-        h.treatments.some(t => t.name === surgery)
-      )
-  );
-
-  const filteredResults = block
-    ? block.results
-        .filter(h =>
-          h.treatments.some(t => t.name === surgery)
+    const block = mockSearchData.find(
+      (b) =>
+        b.results.some(
+          (h) =>
+            h.city === city &&
+            h.treatments.some((t) => t.name === surgery)
         )
-        .map(h => ({
-          ...h,
-          distanceMiles: getDistanceMiles(
-            cityCenter.lat,
-            cityCenter.lng,
-            h.lat,
-            h.lng
-          ),
-        }))
-    : [];
+    );
 
-  setResults(filteredResults);
-  setProcedureInfo(block || null);
-  setHasSearched(true);
-};
+    const filteredResults = block
+      ? block.results
+          .filter((h) => h.treatments.some((t) => t.name === surgery))
+          .map((h) => ({
+            ...h,
+            distanceMiles: getDistanceMiles(
+              cityCenter.lat,
+              cityCenter.lng,
+              h.lat,
+              h.lng
+            ),
+          }))
+      : [];
 
-useEffect(() => {
-  const surgery = searchParams.get("surgery");
-  const city = searchParams.get("city");
+    setResults(filteredResults);
+    setProcedureInfo(block || null);
+    setHasSearched(true);
+  };
 
-  if (surgery && city) {
-    handleSearch(surgery, city);
-  }
-}, [searchParams]);
+  useEffect(() => {
+    if (surgeryParam && cityParam) {
+      handleSearch(surgeryParam, cityParam);
+    }
+  }, [searchParams]);
 
-
-  /* -------------------- FINAL FILTERED RESULTS -------------------- */
+  /* -------------------- FILTER RESULTS -------------------- */
   const filteredResults = results.filter((h) => {
-  const treatment = h.treatments[0];
+    const treatment = h.treatments[0];
 
-  // distance
-  const distanceOk =
-    distance === Infinity || h.distanceMiles <= distance;
+    const distanceOk = distance === Infinity || h.distanceMiles <= distance;
+    const minOk = price.min == null || treatment.minCost >= price.min;
+    const maxOk = price.max == null || treatment.maxCost <= price.max;
 
-  // price
-  const minOk =
-    price.min == null || treatment.minCost >= price.min;
+    return distanceOk && minOk && maxOk;
+  });
 
-  const maxOk =
-    price.max == null || treatment.maxCost <= price.max;
+  const prices = results.flatMap((h) =>
+    h.treatments.map((t) => [t.minCost, t.maxCost])
+  ).flat();
 
-  return distanceOk && minOk && maxOk;
-});
+  const minPrice = prices.length ? Math.min(...prices) : 0;
+  const maxPrice = prices.length ? Math.max(...prices) : 0;
+  const midpointPrice = prices.length
+    ? Math.round((minPrice + maxPrice) / 2)
+    : 0;
 
-  const prices = results.flatMap(h =>
-  h.treatments.map(t => [t.minCost, t.maxCost])
-).flat();
-
-const minPrice = prices.length ? Math.min(...prices) : 0;
-const maxPrice = prices.length ? Math.max(...prices) : 0;
-const midpointPrice = prices.length
-  ? Math.round((minPrice + maxPrice) / 2)
-  : 0;
-
-
-  /* -------------------- MAP LOCATIONS -------------------- */
-  const mapLocations = filteredResults.map(h => ({
+  const mapLocations = filteredResults.map((h) => ({
     id: h.hospitalId,
     lat: h.lat,
     lng: h.lng,
@@ -144,9 +126,10 @@ const midpointPrice = prices.length
   }));
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* SEARCH BAR */}
-      <div className="max-w-7xl mx-auto pt-8">
+    <div className="bg-[var(--bg)] min-h-screen">
+
+      {/* SEARCH */}
+      <div className="pt-8">
         <SearchBar
           onSearch={handleSearch}
           initialSurgery={surgeryParam}
@@ -156,7 +139,7 @@ const midpointPrice = prices.length
 
       {/* FILTERS */}
       {hasSearched && (
-        <div className="max-w-7xl mx-auto px-6 pb-8">
+        <div className="mt-6">
           <FiltersBar
             distance={distance}
             onDistanceApply={setDistance}
@@ -166,63 +149,51 @@ const midpointPrice = prices.length
         </div>
       )}
 
+      {/* MAIN CONTENT */}
       {hasSearched && procedureInfo && (
-        <div className="max-w-7xl mx-auto px-6 mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* LEFT: DESCRIPTION */}
-          <div className="lg:col-span-2">
+        <div className="grid lg:grid-cols-[1fr_420px]">
+
+          {/* LEFT CONTENT FLOW */}
+          <div>
+
             <ProcedureDescription
               title={procedureInfo.condition}
               description={procedureInfo.description}
             />
-            <div className="mt-10">
-            <button
-              onClick={() =>
-                navigate(
-                  `/alternatives/${encodeURIComponent(
-                    procedureInfo.condition
-                  )}`
-                )
-              }
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition"
-            >
-              See Treatment Alternatives
-            </button>
-          </div>
+
+            {/* RESULTS */}
+            <div className="mt-6 space-y-6">
+              {filteredResults.length === 0 ? (
+                <p className="text-[var(--text-muted)]">
+                  No hospitals found within {distance} miles
+                </p>
+              ) : (
+                filteredResults.map((h) => (
+                  <HospitalCard key={h.hospitalId} hospital={h} />
+                ))
+              )}
+            </div>
 
           </div>
-          
-          {/* RIGHT: PRICE INSIGHT */}
-          <div className="lg:col-span-2">
-            <PriceInsight
-              min={minPrice}
-              max={maxPrice}
-              midpoint={midpointPrice}
-              procedure={procedureInfo.condition}
-            />
-          </div>
-        </div>
-      )}
 
-      {/* RESULTS + MAP */}
-      {hasSearched && (
-        <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* RESULTS (3/4) */}
-          <div className="lg:col-span-2 space-y-4">
-            {filteredResults.length === 0 ? (
-              <p className="text-gray-500">
-                No hospitals found within {distance} miles
-              </p>
-            ) : (
-              filteredResults.map((h) => (
-                <HospitalCard key={h.hospitalId} hospital={h} />
-              ))
-            )}
+          {/* RIGHT STICKY SIDEBAR */}
+          <div className=" space-y-6">
+
+            <div className="sticky top-2 space-y-6">
+
+              <PriceInsight
+                min={minPrice}
+                max={maxPrice}
+                midpoint={midpointPrice}
+                procedure={procedureInfo.condition}
+              />
+
+              <MapView locations={mapLocations} />
+
+            </div>
+
           </div>
 
-          {/* MAP (1/4) */}
-          <div className="lg:col-span-1">
-            <MapView locations={mapLocations} />
-          </div>
         </div>
       )}
     </div>
