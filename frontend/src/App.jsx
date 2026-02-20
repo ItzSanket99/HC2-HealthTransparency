@@ -14,7 +14,6 @@ import Reviews from "./pages/Reviews"
 import RunAlt from "./components/alternavtive/RunAlt"
 
 // ✅ Appointment Features (From GitHub)
-import BookAppointment from "./pages/appointments/BookAppointment"
 import HospitalLogin from "./pages/appointments/HospitalLogin"
 import HospitalDashboard from "./pages/appointments/HospitalDashboard"
 
@@ -23,6 +22,8 @@ import AISummary from "./components/ai/AISummary"
 
 // ✅ Your Page Layout Wrapper
 import PageWrapper from "./components/layout/PageWrapper"
+import HospitalBookingPage from "./pages/appointments/BookAppointment"
+import BookAppointment from "./pages/appointments/BookAppointment"
 
 function App() {
   return (

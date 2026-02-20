@@ -410,7 +410,7 @@ export const mockSearchData = [
         insurance: {
           privateInsurance: [
             {
-              name: "ICICI Lombard",
+              name: "ICICI Lombard", 
               coveragePercent: 65,
               maxCoverage: 450000,
               roomRentCapPercent: 1,
