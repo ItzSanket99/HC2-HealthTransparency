@@ -21,8 +21,8 @@ const Reviews = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const hospital = state?.hospital;
-  const condition = state?.condition;
+  // const hospital = state?.hospital;
+  // const condition = state?.condition;
 
   const loggedUser = JSON.parse(localStorage.getItem("user")) || {};
 
@@ -42,9 +42,12 @@ const Reviews = () => {
     advice: "",
   });
 
-  if (!hospital || !condition) {
-    return <div className="empty">No hospital selected</div>;
-  }
+  const hospital = state?.hospital || JSON.parse(localStorage.getItem("selectedHospital"));
+const condition = state?.condition || "General";
+
+if (!hospital) {
+  return <div className="empty">No hospital selected</div>;
+}
 
   /* =========================
      UNIQUE REVIEW KEY
