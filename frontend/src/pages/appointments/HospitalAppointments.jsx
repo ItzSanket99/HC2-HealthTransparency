@@ -89,8 +89,10 @@ export default function HospitalAppointments() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">
+      <div className="flex justify-between items-center mb-10">
+
+        <h1 className="text-4xl font-bold text-[#0f2f33]">
+
           Appointment Management
         </h1>
 
@@ -113,7 +115,8 @@ export default function HospitalAppointments() {
         </div>
       </div>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden">
+      <div className="bg-white shadow-md rounded-2xl overflow-hidden border border-[#e2e8ea]">
+
         <table className="w-full border-collapse">
           <thead className="bg-gray-100">
             <tr>
