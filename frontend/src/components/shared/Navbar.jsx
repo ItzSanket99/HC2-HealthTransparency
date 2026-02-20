@@ -25,6 +25,7 @@ const Navbar = () => {
 
           {/* NAV LINKS */}
           <nav className="hidden md:flex items-center gap-8 text-[15px] leading-6 font-bold text-white">
+            <Link className="hover:opacity-80 transition" to="/hospital-login">Hospital Login</Link>
             <Link className="hover:opacity-80 transition" to="/care">Search Care</Link>
             <Link className="hover:opacity-80 transition" to="/solutions">Solutions</Link>
             <Link className="hover:opacity-80 transition" to="/platform">Platform</Link>

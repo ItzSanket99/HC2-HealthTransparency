@@ -35,37 +35,49 @@ export default function HospitalAnalytics() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">
+      <h1 className="text-4xl font-bold text-[#0f2f33] mb-10">
         Hospital Analytics
       </h1>
 
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-8">
+
         <StatCard
           title="Total Requests"
           value={stats.total}
+          color="bg-[#e0f2f1]"
         />
+
         <StatCard
           title="Approved"
           value={stats.approved}
+          color="bg-[#d1fae5]"
         />
+
         <StatCard
           title="Pending"
           value={stats.pending}
+          color="bg-[#fef3c7]"
         />
+
         <StatCard
           title="Rejected"
           value={stats.rejected}
+          color="bg-[#fee2e2]"
         />
+
       </div>
     </div>
   );
 }
 
-function StatCard({ title, value }) {
+function StatCard({ title, value, color }) {
   return (
-    <div className="bg-white p-6 shadow rounded-xl">
-      <h3 className="text-gray-500">{title}</h3>
-      <p className="text-3xl font-bold">
+    <div className={`${color} p-8 rounded-2xl shadow-md`}>
+      <h3 className="text-[#5f7a7f] text-sm mb-2">
+        {title}
+      </h3>
+
+      <p className="text-4xl font-bold text-[#0f2f33]">
         {value}
       </p>
     </div>
