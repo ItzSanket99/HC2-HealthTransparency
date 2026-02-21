@@ -1,93 +1,185 @@
 import { useState } from "react";
-import InsuranceSelector from "./InsuranceSelector";
 import EligibilityForm from "./EligibilityForm";
 import CostBreakdownTable from "./CostBreakdownTable";
+import { recommendSchemes } from "../../utils/recommendSchemes";
 import { calculateOOP } from "../../utils/outOfPocketCalculator";
 import { generateBillPDF } from "../../utils/pdfGenerator";
 
 const OutOfPocketPanel = ({ hospital, treatment }) => {
-const [insurance, setInsurance] = useState(null);
-const [eligibility, setEligibility] = useState({});
-const [result, setResult] = useState(null);
+  const [eligibility, setEligibility] = useState({});
+  const [recommended, setRecommended] = useState([]);
+  const [selectedScheme, setSelectedScheme] = useState(null);
+  const [result, setResult] = useState(null);
 
-if (!hospital || !treatment) return null;
+  /* ===============================
+     1️⃣ CHECK ELIGIBLE SCHEMES
+  =============================== */
+  const checkSchemes = () => {
+    const eligibleSchemes = recommendSchemes({
+      user: eligibility,
+    });
 
-const insuranceOptions = [
-...(hospital.insurance?.privateInsurance || []).map((i) => ({
-...i,
-type: "PRIVATE",
-})),
-...(hospital.insurance?.governmentSchemes || []).map((i) => ({
-...i,
-type: "GOVT",
-})),
-];
+    setRecommended(eligibleSchemes);
 
-const calculate = () => {
-const res = calculateOOP({
-treatmentCost: treatment.maxCost,
-selectedInsurance: insurance,
-eligibility,
-});
-setResult(res);
-};
+    if (eligibleSchemes.length === 0) {
+      setSelectedScheme(null);
+    }
+  };
 
-return ( <div className="space-y-6 bg-[#fcfefe] p-7 rounded-2xl border border-[#e2e8ea] shadow-sm">
-  {/* TITLE */}
-  <div>
-    <h2 className="text-2xl font-semibold text-[#0f2f33]">
-      Estimate Your Treatment Cost
-    </h2>
-    <p className="text-sm text-[#5f7a7f] mt-1">
-      Calculate how much you may pay after insurance coverage
-    </p>
-  </div>
+  /* ===============================
+     2️⃣ CALCULATE OOP
+  =============================== */
+  const calculate = () => {
+    if (!treatment) {
+      alert("Treatment data missing");
+      return;
+    }
 
-  {/* INSURANCE */}
-  <div className="bg-white border border-[#e2e8ea] rounded-xl p-5">
-    <InsuranceSelector options={insuranceOptions} onSelect={setInsurance} />
-  </div>
+    const res = calculateOOP({
+      treatmentCost: treatment.maxCost,
+      scheme: selectedScheme || null,
+      user: eligibility,
+    });
 
-  {/* ELIGIBILITY */}
-  <div className="bg-white border border-[#e2e8ea] rounded-xl p-5">
-    <EligibilityForm onChange={setEligibility} />
-  </div>
+    setResult(res);
+  };
 
-  {/* CALCULATE BUTTON */}
-  <button
-    onClick={calculate}
-    className="w-full bg-[#1f6f6b] text-white py-3 rounded-full font-semibold hover:brightness-95 transition"
-  >
-    Calculate Out-of-Pocket Cost
-  </button>
+  /* ===============================
+     3️⃣ HANDLE PDF DOWNLOAD
+  =============================== */
+  const handlePDFDownload = () => {
+    if (!hospital || !treatment || !result) {
+      alert("Missing data for PDF generation");
+      return;
+    }
 
-  {/* RESULT */}
-  {result && (
-    <div className="space-y-5 pt-2 border-t border-[#e2e8ea]">
+    generateBillPDF({
+      hospital,
+      treatment,
+      result,
+    });
+  };
 
-      <div className="bg-[#f4fbfa] border border-[#d7eeea] rounded-xl p-5">
-        <h3 className="font-semibold text-[#0f2f33] mb-3">
-          Cost Breakdown
-        </h3>
-        <CostBreakdownTable data={result} />
-      </div>
+  return (
+    <div className="space-y-6 bg-[#fcfefe] p-7 rounded-2xl border shadow-sm">
+
+      <h2 className="text-2xl font-semibold">
+        Estimate Out-of-Pocket Cost
+      </h2>
+
+      {/* ================= Eligibility Form ================= */}
+      <EligibilityForm onChange={setEligibility} />
 
       <button
-        onClick={() =>
-          generateBillPDF({
-            hospital,
-            treatment,
-            result,
-          })
-        }
-        className="w-full bg-[#0f2f33] text-white py-2.5 rounded-full font-medium hover:brightness-110 transition"
+        onClick={checkSchemes}
+        className="bg-teal-600 text-white px-4 py-2 rounded"
       >
-        Download Detailed Bill (PDF)
+        Check Eligible Schemes
       </button>
+
+      {/* ================= Scheme List ================= */}
+      {recommended.length > 0 ? (
+        <div className="space-y-2">
+          <h4 className="font-semibold">
+            Recommended Schemes
+          </h4>
+
+          {recommended.map((scheme) => (
+            <div
+              key={scheme.id}
+              onClick={() => setSelectedScheme(scheme)}
+              className={`border p-3 rounded cursor-pointer transition ${
+                selectedScheme?.id === scheme.id
+                  ? "bg-teal-100 border-teal-600"
+                  : "hover:bg-gray-50"
+              }`}
+            >
+              <p className="font-medium">
+                {scheme.name}
+              </p>
+              <p className="text-sm text-gray-500">
+                Max Coverage: ₹{scheme.maxCoverage}
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="p-3 bg-yellow-50 border rounded">
+          No government scheme applicable.
+          You can still calculate without insurance.
+        </div>
+      )}
+
+      {/* ================= Calculate Button ================= */}
+      <button
+        onClick={calculate}
+        className="bg-black text-white px-4 py-2 rounded"
+      >
+        Calculate OOP
+      </button>
+
+      {/* ================= Result Section ================= */}
+      {result && (
+        <div className="bg-white p-6 rounded-xl border shadow space-y-3">
+
+          <h3 className="text-lg font-semibold">
+            Eligibility Result
+          </h3>
+
+          <div className="grid grid-cols-2 gap-4 text-sm">
+
+            <div>
+              <p className="text-gray-500">Treatment Cost</p>
+              <p className="font-semibold">
+                ₹{result.totalBill}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-gray-500">Coverage</p>
+              <p className="font-semibold text-green-600">
+                ₹{result.coverageAmount}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-gray-500">
+                Final Out-of-Pocket
+              </p>
+              <p className="font-semibold text-red-600">
+                ₹{result.finalOOP}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-gray-500">
+                Scheme Applied
+              </p>
+              <p className="font-semibold">
+                {selectedScheme
+                  ? selectedScheme.shortName
+                  : "No Scheme"}
+              </p>
+            </div>
+
+          </div>
+
+          {/* Cost Breakdown */}
+          <CostBreakdownTable data={result} />
+
+          {/* ================= PDF BUTTON ================= */}
+          <button
+            onClick={handlePDFDownload}
+            className="w-full bg-[#0f2f33] text-white py-2.5 rounded-full font-medium hover:brightness-110 transition"
+          >
+            Download Detailed Bill (PDF)
+          </button>
+
+        </div>
+      )}
+
     </div>
-  )}
-</div>
-);
+  );
 };
 
 export default OutOfPocketPanel;

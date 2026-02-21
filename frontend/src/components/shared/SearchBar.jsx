@@ -126,7 +126,7 @@ const SearchBar = ({ onSearch, initialSurgery, initialCity }) => {
 
       {/* LOCATION FIELD */}
       <div className="flex items-center gap-3 px-5 relative">
-        <HiOutlineLocationMarker className="text-[var(--teal-900)] text-xl" />
+        
 
         <div className="leading-tight w-full">
           <div className="text-[12px] text-[var(--text-muted)]">Location</div>

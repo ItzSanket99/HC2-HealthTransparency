@@ -1,119 +1,67 @@
 export function calculateOOP({
   treatmentCost,
-  selectedInsurance,
-  eligibility,
+  scheme,
 }) {
-  if (!treatmentCost || treatmentCost <= 0) {
-    return null;
-  }
+  if (!treatmentCost || !scheme) return null;
 
-  // Base breakdown (realistic hospital bill)
   const breakdown = {
-    SurgeryCharges: Math.round(treatmentCost * 0.6),
-    RoomCharges: Math.round(treatmentCost * 0.15),
-    ICUCharges: Math.round(treatmentCost * 0.1),
-    DoctorFees: Math.round(treatmentCost * 0.08),
-    NursingCharges: Math.round(treatmentCost * 0.05),
+    Surgery: Math.round(treatmentCost * 0.6),
+    Room: Math.round(treatmentCost * 0.15),
+    ICU: Math.round(treatmentCost * 0.1),
+    Doctor: Math.round(treatmentCost * 0.08),
+    Nursing: Math.round(treatmentCost * 0.05),
     Medicines: Math.round(treatmentCost * 0.07),
     Consumables: Math.round(treatmentCost * 0.05),
   };
 
-  const totalBill = Object.values(breakdown).reduce(
-    (sum, val) => sum + val,
-    0
-  );
+  const totalBill = Object.values(breakdown)
+    .reduce((a, b) => a + b, 0);
 
-  if (!selectedInsurance) {
-    return {
-      totalBill,
-      coverageAmount: 0,
-      finalOOP: totalBill,
-      breakdown,
-      insuranceName: "No Insurance",
-    };
-  }
+  let coverageAmount = 0;
 
-  let eligible = true;
-
-  // ---- GOVT CHECK ----
-  if (selectedInsurance.type === "GOVT") {
-    if (
-      selectedInsurance.eligibility?.incomeBelow &&
-      eligibility.income > selectedInsurance.eligibility.incomeBelow
-    ) {
-      eligible = false;
-    }
-
-    if (
-      selectedInsurance.eligibility?.rationCard &&
-      !eligibility.hasRationCard
-    ) {
-      eligible = false;
-    }
-
-    if (
-      selectedInsurance.eligibility?.state &&
-      eligibility.state !== selectedInsurance.eligibility.state
-    ) {
-      eligible = false;
-    }
-  }
-
-  // ---- PRIVATE CHECK ----
-  if (selectedInsurance.type === "PRIVATE") {
-    if (
-      selectedInsurance.eligibility?.minPolicyYears &&
-      eligibility.policyYears <
-        selectedInsurance.eligibility.minPolicyYears
-    ) {
-      eligible = false;
-    }
-  }
-
-  if (!eligible) {
-    return {
-      totalBill,
-      coverageAmount: 0,
-      finalOOP: totalBill,
-      breakdown,
-      insuranceName: selectedInsurance.name,
-      notEligible: true,
-    };
-  }
-
-  // ---- COVERAGE CALCULATION ----
-  let coverageAmount =
-    (totalBill * selectedInsurance.coveragePercent) / 100;
-
-  // Max coverage cap
-  if (selectedInsurance.maxCoverage) {
+  // 🔹 PMJAY
+  if (scheme.id === "PMJAY") {
     coverageAmount = Math.min(
-      coverageAmount,
-      selectedInsurance.maxCoverage
+      totalBill,
+      scheme.coverageDetails.maxAnnualCoveragePerFamily
     );
   }
 
-  // Room rent cap logic
-  if (selectedInsurance.roomRentCapPercent) {
-    const allowedRoom =
-      (selectedInsurance.roomRentCapPercent / 100) *
-      selectedInsurance.maxCoverage;
-
-    if (breakdown.RoomCharges > allowedRoom) {
-      const extra = breakdown.RoomCharges - allowedRoom;
-      coverageAmount -= extra;
-    }
+  // 🔹 MJPJAY
+  if (scheme.id === "MJPJAY") {
+    coverageAmount = Math.min(
+      totalBill,
+      scheme.coverageDetails.baseAnnualCoveragePerFamily
+    );
   }
 
-  if (coverageAmount < 0) coverageAmount = 0;
+  // 🔹 ESIC
+  if (scheme.id === "ESIC") {
+    coverageAmount = totalBill * 0.9; // 90% coverage simulation
+  }
 
-  const finalOOP = totalBill - coverageAmount;
+  // 🔹 CGHS
+  if (scheme.id === "CGHS") {
+    coverageAmount = totalBill * 0.85; // package-based approx
+  }
+
+  // 🔹 RSBY
+  if (scheme.id === "RSBY") {
+    coverageAmount = Math.min(
+      totalBill,
+      scheme.coverageLimit
+    );
+  }
+
+  const nonMedical = Math.round(totalBill * 0.05);
+  const finalOOP =
+    totalBill - coverageAmount + nonMedical;
 
   return {
     totalBill,
     coverageAmount: Math.round(coverageAmount),
     finalOOP: Math.round(finalOOP),
     breakdown,
-    insuranceName: selectedInsurance.name,
+    schemeApplied: scheme,
   };
 }

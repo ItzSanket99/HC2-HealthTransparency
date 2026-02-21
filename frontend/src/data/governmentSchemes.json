@@ -1,0 +1,285 @@
+[
+  {
+  "id": "PMJAY",
+  "name": "Ayushman Bharat – Pradhan Mantri Jan Arogya Yojana",
+  "shortName": "PM-JAY",
+  "type": "Income-Based",
+  "state": "India",
+  "coverageType": "Package-Based Cashless",
+
+  "coverageDetails": {
+    "maxAnnualCoveragePerFamily": 500000,
+    "familyFloater": true,
+    "numberOfFamilyMembersLimit": null,
+    "preHospitalizationDays": 3,
+    "postHospitalizationDays": 15,
+    "opdCovered": false,
+    "dayCareProceduresCovered": true,
+    "cashlessAtEmpanelledHospitalsOnly": true,
+    "panIndiaPortability": true
+  },
+
+  "eligibilityCriteria": {
+    "basedOnSECC2011Data": true,
+    "autoEnrollment": true,
+    "incomeCertificateRequired": false,
+    "rationCardRequired": false,
+    "aadhaarRecommended": true,
+    "ruralDeprivationCategories": true,
+    "urbanOccupationalCategories": true,
+    "age70PlusUniversalEligibility": true,
+
+    "governmentEmployeeEligible": false,
+    "privateEmployeesEligible": true,
+    "stateGovernmentEmployeesEligible": false,
+    "pensionerSpecificScheme": false,
+    "contributionRequired": false,
+    "premiumRequired": false
+  },
+
+  "ruralEligibilityExamples": [
+    "Households with only one room and kutcha walls/roof",
+    "No adult member between age 16-59",
+    "Female-headed household with no adult male member",
+    "SC/ST households",
+    "Landless households earning from manual labor"
+  ],
+
+  "urbanEligibilityOccupations": [
+    "Rag picker",
+    "Domestic worker",
+    "Street vendor",
+    "Construction worker",
+    "Driver",
+    "Sanitation worker",
+    "Electrician",
+    "Plumber",
+    "Security guard",
+    "Shop worker"
+  ],
+
+  "documentsRequired": [
+    "PM-JAY Beneficiary ID (from SECC database)",
+    "Aadhaar Card (for identity verification)",
+    "Ration Card (if applicable for identification)",
+    "Family ID proof"
+  ],
+
+  "benefits": [
+    "Cashless hospitalization at empanelled hospitals",
+    "Coverage up to ₹5 lakh per family per year",
+    "Secondary and tertiary care procedures covered",
+    "Pre-existing diseases covered from day one",
+    "ICU charges included as per package",
+    "Diagnostics during hospitalization included",
+    "Medicines during hospital stay included",
+    "Pan-India portability across empanelled hospitals"
+  ],
+
+  "exclusions": [
+    "OPD consultations",
+    "Cosmetic procedures",
+    "Fertility treatments",
+    "Experimental treatments",
+    "Non-medically indicated admissions"
+  ]
+},
+
+  {
+  "id": "MJPJAY",
+  "name": "Mahatma Jyotirao Phule Jan Arogya Yojana",
+  "shortName": "MJPJAY",
+  "type": "State Income-Based",
+  "state": "Maharashtra",
+  "coverageType": "Package-Based Cashless",
+
+  "coverageDetails": {
+    "baseAnnualCoveragePerFamily": 150000,
+    "enhancedCoverageForSpecificProcedures": 250000,
+    "familyFloater": true,
+    "numberOfFamilyMembersLimit": null,
+    "preHospitalizationDays": 3,
+    "postHospitalizationDays": 10,
+    "opdCovered": false,
+    "dayCareProceduresCovered": true,
+    "cashlessAtEmpanelledHospitalsOnly": true,
+    "panIndiaPortability": false,
+    "coverageLimitedToState": true
+  },
+
+  "eligibilityCriteria": {
+    "stateResidencyRequired": true,
+    "rationCardBasedEligibility": true,
+    "yellowRationCardEligible": true,
+    "antyodayaCardEligible": true,
+    "orangeRationCardEligible": true,
+    "whiteRationCardEligible": false,
+
+    "incomeBasedEligibility": true,
+    "incomeThresholdDefinedByState": true,
+
+    "aadhaarRequired": true,
+    "governmentEmployeeEligible": false,
+    "privateEmployeesEligible": true,
+    "contributionRequired": false,
+    "premiumRequired": false
+  },
+
+  "specialEligibleCategories": [
+    "Farmers from notified distress-affected districts",
+    "Families under integrated PM-JAY category in Maharashtra"
+  ],
+
+  "documentsRequired": [
+    "Maharashtra Ration Card (Yellow/Orange/AAY)",
+    "Aadhaar Card",
+    "Domicile Proof of Maharashtra",
+    "Family Identity Proof"
+  ],
+
+  "benefits": [
+    "Cashless hospitalization at empanelled public and private hospitals",
+    "Coverage up to ₹1.5 lakh per family per year",
+    "Enhanced coverage up to ₹2.5 lakh for select critical procedures",
+    "Coverage for major surgeries (cardiac, neuro, oncology, ortho, etc.)",
+    "Pre-existing diseases covered",
+    "ICU and hospital stay charges included as per package",
+    "Diagnostics during hospitalization included"
+  ],
+
+  "exclusions": [
+    "OPD consultations",
+    "Minor procedures not listed in package",
+    "Cosmetic procedures",
+    "Experimental treatments",
+    "Non-listed hospital charges beyond package rate"
+  ]
+},
+
+  {
+  "id": "ESIC",
+  "name": "Employees' State Insurance Scheme",
+  "shortName": "ESIC",
+  "type": "Employment-Based",
+  "state": "India",
+  "coverageType": "Contribution-Based Social Insurance",
+
+  "eligibilityCriteria": {
+    "maxMonthlySalary": 21000,
+    "organizedSectorEmployee": true,
+    "esicRegistrationRequired": true,
+    "minimumContributionPeriodDays": 78,
+
+    "dependentsCovered": true,
+    "retiredCoverageWithConditions": true,
+
+    "privateEmployeesEligible": true,
+    "governmentEmployeesEligible": false,
+    "selfEmployedEligible": false,
+    "rationCardRequired": false,
+    "incomeBasedEligibility": false
+  },
+
+  "documentsRequired": [
+    "ESIC Card",
+    "Employer Registration Proof",
+    "Salary Slip",
+    "ESIC Insurance Number"
+  ],
+
+  "benefits": [
+    "Full medical treatment at ESIC hospitals",
+    "Cashless hospitalization at empanelled hospitals",
+    "Coverage for pre-existing diseases",
+    "Sickness benefit (cash compensation during medical leave)",
+    "Maternity benefit",
+    "Disablement benefit",
+    "Dependent pension in case of death",
+    "Funeral expenses assistance"
+  ]
+},
+  {
+  "id": "CGHS",
+  "name": "Central Government Health Scheme",
+  "shortName": "CGHS",
+  "type": "Employment-Based",
+  "state": "India",
+  "coverageType": "Package-Based Reimbursement",
+
+  "eligibilityCriteria": {
+    "governmentEmployee": true,
+    "pensionerEligible": true,
+    "mpEligible": true,
+    "judiciaryEligible": true,
+    "autonomousBodyEligible": true,
+
+    "contributionRequired": true,
+    "lifetimeContributionForPensioners": true,
+
+    "dependentsAllowed": true,
+    "dependentIncomeLimitPerMonth": 9000,
+
+    "privateEmployeesEligible": false,
+    "stateGovernmentEmployeesEligible": false,
+    "rationCardRequired": false,
+    "incomeBasedEligibility": false
+  },
+
+  "documentsRequired": [
+    "CGHS Card",
+    "Government Employee ID",
+    "Pension Payment Order (if pensioner)",
+    "Dependent Certificate (if claiming dependents)"
+  ],
+
+  "benefits": [
+    "Cashless treatment at empanelled hospitals",
+    "Reimbursement as per CGHS approved package rates",
+    "OPD consultation at CGHS wellness centres",
+    "Diagnostics and lab tests",
+    "Pre-existing diseases covered",
+    "Medicines from CGHS dispensary",
+    "Maternity coverage",
+    "AYUSH treatments (limited)"
+  ]
+},{
+  "id": "RSBY",
+  "name": "Rashtriya Swasthya Bima Yojana",
+  "shortName": "RSBY",
+  "type": "Income-Based (BPL)",
+  "state": "India (Legacy Scheme)",
+  "coverageType": "Family Floater - Smart Card Based",
+
+  "eligibilityCriteria": {
+    "bplRequired": true,
+    "seccListedFamily": true,
+    "rationCardRequired": true,
+    "maxFamilyMembersCovered": 5,
+
+    "annualIncomeThreshold": 100000,
+    "privateEmployeesEligible": false,
+    "governmentEmployeesEligible": false,
+    "organizedSectorEmployeesEligible": false
+  },
+
+  "documentsRequired": [
+    "BPL Ration Card",
+    "RSBY Smart Card",
+    "Aadhaar Card",
+    "Family Identification Proof"
+  ],
+
+  "benefits": [
+    "Cashless hospitalization up to scheme limit",
+    "Coverage for pre-existing diseases",
+    "Transport allowance per hospitalization",
+    "Smart card based biometric identification"
+  ],
+
+  "coverageLimit": 30000,
+  "transportAllowancePerVisit": 1000
+}
+
+  
+  
+]
