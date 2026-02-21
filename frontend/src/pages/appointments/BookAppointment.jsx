@@ -54,51 +54,50 @@ export default function BookAppointment() {
 
   /* SAVE APPOINTMENT */
   const handleConfirmAppointment = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("registeredUser"));
 
-    if (!user) {
-      navigate("/signin", {
-        state: { hospital, treatment, conditionName: correctCondition },
-      });
-      return;
-    }
+  if (!user) {
+    navigate("/signin", {
+      state: { hospital, treatment, conditionName: correctCondition },
+    });
+    return;
+  }
 
-    if (!selectedDate) {
-      alert("Please select a date");
-      return;
-    }
+  if (!selectedDate) {
+    alert("Please select a date");
+    return;
+  }
 
-    if (!selectedTime) {
-      alert("Please select a time");
-      return;
-    }
+  if (!selectedTime) {
+    alert("Please select a time");
+    return;
+  }
 
-    const newAppointment = {
-      id: Date.now(),
-      hospitalId: hospital.hospitalId,
-      hospitalName: hospital.hospitalName,
-      patientName: user.name,
-      patientEmail: user.email,
-      condition: correctCondition,
-      treatmentName: treatment?.name,
-      date: selectedDate,
-      time: selectedTime,
-      status: "Pending",
-    };
-
-    const existingAppointments =
-      JSON.parse(localStorage.getItem("appointments")) || [];
-
-    localStorage.setItem(
-      "appointments",
-      JSON.stringify([...existingAppointments, newAppointment])
-    );
-
-    alert("Appointment Request Sent!");
-
-    /* ✅ NEW: redirect to home */
-    navigate("/");
+  const newAppointment = {
+    id: Date.now(),
+    hospitalId: hospital.hospitalId,
+    hospitalName: hospital.hospitalName,
+    patientName: user.name,
+    patientEmail: user.email,
+    patientPhone: user.phone, // 🔥 ADD THIS
+    condition: correctCondition,
+    treatmentName: treatment?.name,
+    date: selectedDate,
+    time: selectedTime,
+    status: "Pending",
   };
+
+  const existingAppointments =
+    JSON.parse(localStorage.getItem("appointments")) || [];
+
+  localStorage.setItem(
+    "appointments",
+    JSON.stringify([...existingAppointments, newAppointment])
+  );
+
+  alert("Appointment Request Sent!");
+  navigate("/");
+};
 
   return (
     <div className="max-w-8xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-10">

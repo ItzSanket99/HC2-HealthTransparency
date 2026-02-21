@@ -12,6 +12,7 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const SignUp = () => {
     // 📝 fake register success (backend later)
     localStorage.setItem(
       "registeredUser",
-      JSON.stringify({ name, email })
+      JSON.stringify({ name, email, phone })
     );
 
     // 🔁 after register → go to SIGN IN
@@ -64,6 +65,14 @@ const SignUp = () => {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+            />
+            
+            <label>Phone No</label>
+            <input
+              type="number"
+              placeholder="+918482870171"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
 
             <label>Password</label>

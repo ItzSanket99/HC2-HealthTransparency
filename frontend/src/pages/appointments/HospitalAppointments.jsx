@@ -29,6 +29,64 @@ export default function HospitalAppointments() {
     refresh();
   }, []);
 
+  /* ==============================
+     🔥 NEW: SEND WHATSAPP
+  ============================== */
+  const sendWhatsApp = async (appointment, status) => {
+    if (!appointment.patientPhone) return;
+
+    let message = "";
+
+    if (status === "Approved") {
+      message = `Hello ${appointment.patientName},
+
+Your appointment at ${appointment.hospitalName}
+on ${appointment.date} at ${appointment.time}
+has been APPROVED.
+
+Thank you for choosing TreatWise.`;
+    }
+
+    if (status === "Rejected") {
+      message = `Hello ${appointment.patientName},
+
+Your appointment at ${appointment.hospitalName}
+on ${appointment.date} has been CANCELLED.
+
+Please rebook at your convenience.`;
+    }
+
+    if (status === "Rescheduled") {
+      message = `Hello ${appointment.patientName},
+
+Your appointment at ${appointment.hospitalName}
+has been RESCHEDULED.
+
+New Date: ${appointment.date}
+New Time: ${appointment.time}
+
+Please check your dashboard.`;
+    }
+
+    try {
+      await fetch("http://localhost:5001/send-whatsapp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: appointment.patientPhone,
+          message: message,
+        }),
+      });
+    } catch (error) {
+      console.error("WhatsApp sending failed:", error);
+    }
+  };
+
+  /* ==============================
+     EXISTING UPDATE LOGIC + WHATSAPP
+  ============================== */
   const handleUpdate = async (appt, status) => {
     let updatedDate = appt.date;
     let updatedTime = appt.time;
@@ -51,14 +109,17 @@ export default function HospitalAppointments() {
       time: updatedTime,
     });
 
-    await sendAppointmentEmail(
-      {
-        ...appt,
-        date: updatedDate,
-        time: updatedTime,
-      },
-      status
-    );
+    const updatedAppointment = {
+      ...appt,
+      date: updatedDate,
+      time: updatedTime,
+    };
+
+    /* ✅ EMAIL (existing) */
+    await sendAppointmentEmail(updatedAppointment, status);
+
+    /* 🔥 NEW: WHATSAPP */
+    await sendWhatsApp(updatedAppointment, status);
 
     refresh();
   };
@@ -92,7 +153,6 @@ export default function HospitalAppointments() {
       <div className="flex justify-between items-center mb-10">
 
         <h1 className="text-4xl font-bold text-[#0f2f33]">
-
           Appointment Management
         </h1>
 
