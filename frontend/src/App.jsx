@@ -12,7 +12,7 @@ import SignUp from "./pages/SignUp"
 import Footer from "./components/shared/Footer"
 import Reviews from "./pages/Reviews"
 import RunAlt from "./components/alternavtive/RunAlt"
-
+import ComparePage from "./pages/ComparePage";
 // ✅ Appointment Features (From GitHub)
 import HospitalLogin from "./pages/appointments/HospitalLogin"
 import HospitalDashboard from "./pages/appointments/HospitalDashboard"
@@ -45,6 +45,7 @@ function App() {
         <Route path="/book" element={<PageWrapper><BookAppointment /></PageWrapper>} />
         <Route path="/hospital-login" element={<PageWrapper><HospitalLogin /></PageWrapper>} />
         <Route path="/hospital-dashboard" element={<PageWrapper><HospitalDashboard /></PageWrapper>} />
+        <Route path="/compare" element={<ComparePage />} />
       </Routes>
 
       <Footer />
