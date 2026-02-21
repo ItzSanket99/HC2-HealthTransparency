@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom"
 import Navbar from "./components/shared/Navbar"
 
 import Home from "./pages/Home"
@@ -25,10 +25,13 @@ import PageWrapper from "./components/layout/PageWrapper"
 import HospitalBookingPage from "./pages/appointments/BookAppointment"
 import BookAppointment from "./pages/appointments/BookAppointment"
 
-function App() {
+function AppLayout() {
+  const location = useLocation();
+
   return (
-    <Router>
+    <>
       <Navbar />
+
       <Routes>
         <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
         <Route path="/search" element={<PageWrapper><SearchPage /></PageWrapper>} />
@@ -45,12 +48,22 @@ function App() {
         <Route path="/book" element={<PageWrapper><BookAppointment /></PageWrapper>} />
         <Route path="/hospital-login" element={<PageWrapper><HospitalLogin /></PageWrapper>} />
         <Route path="/hospital-dashboard" element={<PageWrapper><HospitalDashboard /></PageWrapper>} />
+
+        {/* Compare WITHOUT PageWrapper */}
         <Route path="/compare" element={<ComparePage />} />
       </Routes>
 
-      <Footer />
-    </Router>
-  )
+      {/* ✅ Hide Footer only on Compare page */}
+      {location.pathname !== "/compare" && <Footer />}
+    </>
+  );
 }
 
+function App() {
+  return (
+    <Router>
+      <AppLayout />
+    </Router>
+  );
+}
 export default App
