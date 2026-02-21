@@ -3,7 +3,9 @@ import DoctorsPanel from "../components/shared/DoctorsPanel";
 import { mockSearchData } from "../data/searchResults";
 import OutOfPocketPanel from "../components/shared/OutOfPocketPanel";
 import FacilitiesPanel from "../components/shared/FacilitiesPanel";
-import { hospitalReviews } from "../data/reviewData";
+import { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 const SearchDetails = () => {
   const { state } = useLocation();
@@ -40,13 +42,38 @@ const SearchDetails = () => {
     console.error("Condition not found for hospital");
   }
 
-  const avgRating =
-    hospitalReviews.reduce((s, r) => s + r.rating, 0) /
-    hospitalReviews.length;
+  const [reviews, setReviews] = useState([]);
 
-  const ratingCounts = [5, 4, 3, 2, 1].map(
-    (star) => hospitalReviews.filter((r) => r.rating === star).length
+const reviewKey = `${conditionName}_${hospital.hospitalId}`;
+
+useEffect(() => {
+  const q = query(
+    collection(db, "reviews"),
+    where("reviewKey", "==", reviewKey)
   );
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const fetched = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setReviews(fetched);
+  });
+
+  return () => unsubscribe();
+}, [reviewKey]);
+const avgRating =
+  reviews.length > 0
+    ? reviews.reduce(
+        (sum, r) => sum + (r.overallRating || 0),
+        0
+      ) / reviews.length
+    : 0;
+
+const ratingCounts = [5, 4, 3, 2, 1].map(
+  (star) =>
+    reviews.filter((r) => r.overallRating === star).length
+);
 
   return (
     <div className="bg-white min-h-screen pt-6 pb-14">
@@ -77,19 +104,34 @@ const SearchDetails = () => {
 
             <div className="flex flex-wrap gap-3 mt-5">
 
-              <span
-                onClick={() =>
-                  navigate("/reviews", {
-                    state: {
-                      hospital,
-                      condition: conditionName,
-                    },
-                  })
-                }
-                className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm cursor-pointer hover:bg-green-200 transition"
-              >
-                ⭐ {hospital.rating}
-              </span>
+             <button
+  onClick={() =>
+    navigate("/reviews", {
+      state: { hospital, condition: conditionName },
+    })
+  }
+  className="group relative flex items-center gap-3 bg-white border border-[#d8e4e6] px-5 py-2.5 rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+>
+  {/* Star Icon Circle */}
+  <div className="flex items-center justify-center w-7 h-7 rounded-full bg-[#1f6f6b] text-white text-sm shadow">
+    ★
+  </div>
+
+  {/* Rating Text */}
+  <div className="flex items-center gap-2">
+    <span className="font-semibold text-[#0f2f33] text-sm">
+      {reviews.length ? avgRating.toFixed(1) : "New"}
+    </span>
+    <span className="text-xs text-[#6b8a8f]">
+      ({reviews.length} reviews)
+    </span>
+  </div>
+
+  {/* Arrow */}
+  <span className="text-[#1f6f6b] text-sm opacity-0 group-hover:opacity-100 transition">
+    →
+  </span>
+</button>
 
               <span className="bg-[#eef3ff] text-[#3554d1] px-3.5 py-1.5 rounded-full text-sm">
                 {hospital.type}
@@ -153,12 +195,12 @@ const SearchDetails = () => {
 
               {/* AVG */}
               <div className="flex items-end gap-3 mt-4">
-                <div className="text-3xl font-semibold text-[#0f2f33]">
-                  {avgRating.toFixed(1)}
-                </div>
+               <div className="text-3xl font-semibold text-[#0f2f33]">
+  {reviews.length ? avgRating.toFixed(1) : "New"}
+</div>
                 <div className="text-[#1f6f6b] text-lg">★★★★★</div>
                 <div className="text-sm text-[#5f7a7f]">
-                  {hospitalReviews.length} reviews
+                  {reviews.length} reviews
                 </div>
               </div>
 
@@ -166,7 +208,9 @@ const SearchDetails = () => {
               <div className="mt-4 space-y-2">
                 {[5, 4, 3, 2, 1].map((star, i) => {
                   const percent =
-                    (ratingCounts[i] / hospitalReviews.length) * 100 || 0;
+  reviews.length > 0
+    ? (ratingCounts[i] / reviews.length) * 100
+    : 0;
 
                   return (
                     <div key={star} className="flex items-center gap-2 text-xs">
@@ -185,7 +229,7 @@ const SearchDetails = () => {
               {/* PREVIEW */}
               <div className="mt-5 pt-4 border-t border-[#eef3f4]">
                 <p className="text-sm text-[#5f7a7f] italic">
-                  “{hospitalReviews[0]?.review}”
+                 “{reviews[0]?.review || "No reviews yet"}”
                 </p>
               </div>
             </div>

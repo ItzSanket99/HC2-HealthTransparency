@@ -113,3 +113,73 @@ body,
   display: flex;
   flex-direction: column;
 }
+/* Hide Google top bar */
+/* Hide Google top banner */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+/* Hide Google branding */
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget span {
+  display: none !important;
+}
+
+.goog-te-gadget img {
+  display: none !important;
+}
+
+/* Remove extra vertical stacking */
+#google_translate_element {
+  display: flex;
+  align-items: center;
+}
+
+/* Clean dropdown styling */
+.goog-te-gadget {
+  font-size: 0 !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+  background-color: #CFEAEA !important;
+  color: #02363D !important;
+  border-radius: 999px !important;
+  padding: 8px 16px !important;
+  border: none !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  outline: none !important;
+  cursor: pointer !important;
+}
+
+/* Hide Google UI completely */
+.goog-logo-link,
+.goog-te-gadget,
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+/* Language dropdown items */
+.lang-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.lang-item:hover {
+  background: #CFEAEA;
+}

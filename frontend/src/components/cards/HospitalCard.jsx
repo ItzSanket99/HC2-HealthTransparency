@@ -1,7 +1,7 @@
 import { FaStar, FaMapMarkerAlt, FaRupeeSign } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const HospitalCard = ({ hospital }) => {
+const HospitalCard = ({ hospital, isSelected, toggleSelect }) => {
   const navigate = useNavigate();
   const t = hospital.treatments[0];
 
@@ -29,9 +29,24 @@ const HospitalCard = ({ hospital }) => {
           </p>
         </div>
 
-        <div className="flex items-center gap-1 text-[#176F6F] text-[14px] font-medium">
-          <FaStar className="text-[#176F6F]" />
-          <span>{hospital.rating}</span>
+        <div className="flex items-center gap-3">
+          {/* Rating */}
+          <div className="flex items-center gap-1 text-[#176F6F] text-[14px] font-medium">
+            <FaStar className="text-[#176F6F]" />
+           <span>
+  {hospital.rating > 0
+    ? hospital.rating.toFixed(1)
+    : "New"}
+</span>
+          </div>
+
+          {/* Select Checkbox */}
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => toggleSelect(hospital)}
+            className="w-4 h-4 accent-[#176F6F]"
+          />
         </div>
       </div>
 
@@ -48,7 +63,7 @@ const HospitalCard = ({ hospital }) => {
       </div>
 
       {/* Tags */}
-      <div className="mt-4 flex gap-2 text-[12px] text-[#5F7D7E]">
+      <div className="mt-4 flex gap-2 text-[12px] text-[#5F7D7E] flex-wrap">
         <span className="px-2 py-1 border border-[#E3ECEC] rounded-full">
           {hospital.type}
         </span>
@@ -61,16 +76,12 @@ const HospitalCard = ({ hospital }) => {
       </div>
 
       {/* CTA */}
-      <div className="mt-5 flex justify-between items-center">
+      <div className="mt-5">
         <button
           onClick={handleViewDetails}
           className="text-[#176F6F] font-medium hover:underline"
         >
           View details
-        </button>
-
-        <button className="bg-[#176F6F] text-white px-5 py-2 rounded-full text-[14px] hover:bg-[#0E5658] transition">
-          Compare
         </button>
       </div>
     </div>

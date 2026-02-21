@@ -7,6 +7,8 @@ import { mockSearchData } from "../data/searchResults";
 import ProcedureDescription from "../components/shared/ProcedureDescription";
 import PriceInsight from "../components/shared/PriceInsight";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { db } from "../firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 
 const DEFAULT_DISTANCE = Infinity;
 const DEFAULT_PRICE = { min: null, max: null };
@@ -53,7 +55,8 @@ const SearchPage = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [price, setPrice] = useState(DEFAULT_PRICE);
   const [procedureInfo, setProcedureInfo] = useState(null);
-
+const [hospitalRatings, setHospitalRatings] = useState({});
+const [selectedHospitals, setSelectedHospitals] = useState([]);
   const navigate = useNavigate();
 
   /* -------------------- SEARCH -------------------- */
@@ -96,6 +99,37 @@ const SearchPage = () => {
       handleSearch(surgeryParam, cityParam);
     }
   }, [searchParams]);
+  useEffect(() => {
+  const unsubscribe = onSnapshot(
+    collection(db, "reviews"),
+    (snapshot) => {
+      const ratingMap = {};
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const hospitalId = data.hospitalId;
+
+        if (!ratingMap[hospitalId]) {
+          ratingMap[hospitalId] = { total: 0, count: 0 };
+        }
+
+        ratingMap[hospitalId].total += data.overallRating || 0;
+        ratingMap[hospitalId].count += 1;
+      });
+
+      const averages = {};
+
+      Object.keys(ratingMap).forEach((id) => {
+        averages[id] =
+          ratingMap[id].total / ratingMap[id].count;
+      });
+
+      setHospitalRatings(averages);
+    }
+  );
+
+  return () => unsubscribe();
+}, []);
 
   /* -------------------- FILTER RESULTS -------------------- */
   const filteredResults = results.filter((h) => {
@@ -125,6 +159,28 @@ const SearchPage = () => {
     label: `${h.hospitalName} • ${h.distanceMiles} mi`,
   }));
 
+  const toggleSelect = (hospital) => {
+  const exists = selectedHospitals.find(
+    (h) => h.hospitalId === hospital.hospitalId
+  );
+
+  if (exists) {
+    setSelectedHospitals(
+      selectedHospitals.filter(
+        (h) => h.hospitalId !== hospital.hospitalId
+      )
+    );
+  } else {
+    if (selectedHospitals.length < 3) {
+      setSelectedHospitals([...selectedHospitals, hospital]);
+    } else {
+      alert("You can compare up to 3 hospitals only");
+    }
+  }
+};
+
+
+
   return (
     <div className="bg-[var(--bg)] min-h-screen">
 
@@ -136,18 +192,33 @@ const SearchPage = () => {
           initialCity={cityParam}
         />
       </div>
+      
+
 
       {/* FILTERS */}
-      {hasSearched && (
-        <div className="mt-6">
-          <FiltersBar
-            distance={distance}
-            onDistanceApply={setDistance}
-            price={price}
-            onPriceApply={setPrice}
-          />
-        </div>
-      )}
+{hasSearched && (
+  <div className="mt-6 px-6">
+    <div className="flex items-center gap-4">
+
+      <FiltersBar
+        distance={distance}
+        onDistanceApply={setDistance}
+        price={price}
+        onPriceApply={setPrice}
+      />
+
+      <button
+        onClick={() => navigate("/compare", {
+  state: { hospitals: selectedHospitals }
+})}
+        className="bg-[#176F6F] text-white px-6 py-2 rounded-full hover:bg-[#0E5658] transition whitespace-nowrap"
+      >
+        Compare Hospitals
+      </button>
+
+    </div>
+  </div>
+)}
 
       {/* MAIN CONTENT */}
       {hasSearched && procedureInfo && (
@@ -169,8 +240,18 @@ const SearchPage = () => {
                 </p>
               ) : (
                 filteredResults.map((h) => (
-                  <HospitalCard key={h.hospitalId} hospital={h} />
-                ))
+  <HospitalCard
+    key={h.hospitalId}
+    hospital={{
+      ...h,
+      rating: hospitalRatings[h.hospitalId] || 0,
+    }}
+    isSelected={selectedHospitals.some(
+      (sel) => sel.hospitalId === h.hospitalId
+    )}
+    toggleSelect={toggleSelect}
+  />
+))
               )}
             </div>
 

@@ -6,7 +6,7 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 10;
 
   /* ADD THIS */
   display: flex;
@@ -19,7 +19,7 @@
   height: 64px;
   border-radius: 50%;
 
-  background: #e3faf7;
+  background: #ffffff;
 
   backdrop-filter: blur(6px);
 
@@ -42,14 +42,14 @@
 /* Panel */
 .ai-panel {
   position: fixed;
-  right: 24px;
+  right: 30px;
   bottom: 90px;
   width: 360px;
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.15);
   overflow: hidden;
-  z-index: 9999;
+  z-index: 20;
   animation: slideUp 0.25s ease;
 }
 

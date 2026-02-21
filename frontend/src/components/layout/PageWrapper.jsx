@@ -13,7 +13,7 @@ const PageWrapper = ({ children }) => {
         {children}
       </div>
 
-      {!hideAIOnReviews && <AISummary />}
+      {!hideAIOnReviews }
     </div>
   );
 };
