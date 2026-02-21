@@ -198,7 +198,7 @@ const [selectedHospitals, setSelectedHospitals] = useState([]);
       {/* FILTERS */}
 {hasSearched && (
   <div className="mt-6 px-6">
-    <div className="flex items-center gap-4">
+    <div className="flex items-end gap-4">
 
       <FiltersBar
         distance={distance}

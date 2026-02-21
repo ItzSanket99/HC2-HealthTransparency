@@ -129,7 +129,7 @@ const ComparePage = () => {
 
   /* empty guard */
   if (!hospitals.length) return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16 }}>
+    <div style={{ minHeight: "180px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16 }}>
       <p style={{ color: C.muted, fontSize: 16 }}>No hospitals selected for comparison.</p>
       <button onClick={() => navigate(-1)} style={{
         background: C.teal, color: "#fff", border: "none",
@@ -201,53 +201,106 @@ const ComparePage = () => {
 
       {/* ── HERO ────────────────────────────────────────── */}
       <div style={{
-        background: `linear-gradient(130deg, ${C.dark} 0%, ${C.teal} 60%, ${C.teal2} 100%)`,
-        padding: "40px 48px 52px",
-        position: "relative",
-        overflow: "hidden",
-        flexShrink: 0,
-      }}>
+  background: `linear-gradient(130deg, ${C.dark} 0%, ${C.teal} 60%, ${C.teal2} 100%)`,
+  padding: "16px 48px",
+  position: "relative",
+  overflow: "hidden",
+  flexShrink: 0,
+  minHeight: "130px",
+  display: "flex",
+  flexDirection: "column",   // ✅ important
+  justifyContent: "center"
+}}>
         {/* Decorative blobs */}
         <div style={{ position:"absolute", top:"-70px", right:"-70px", width:"260px", height:"260px", borderRadius:"50%", background:"rgba(255,255,255,.05)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", bottom:"-50px", right:"220px", width:"170px", height:"170px", borderRadius:"50%", background:"rgba(255,255,255,.05)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", top:"30px", left:"55%", width:"90px", height:"90px", borderRadius:"50%", background:"rgba(255,255,255,.03)", pointerEvents:"none" }}/>
 
-        <button onClick={() => navigate(-1)} style={{
-          display: "inline-flex", alignItems: "center", gap: 8,
-          background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.22)",
-          color: "#fff", borderRadius: 99, padding: "8px 20px",
-          cursor: "pointer", fontSize: 13, fontWeight: 600,
-          backdropFilter: "blur(8px)", marginBottom: 28,
-        }}>
-          ← Back to Results
-        </button>
+{/* Back Button */}
+<button
+  onClick={() => navigate(-1)}
+  style={{
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 8,
+  background: "rgba(255,255,255,0.12)",
+  border: "1px solid rgba(255,255,255,0.22)",
+  color: "#fff",
+  borderRadius: 99,
+  padding: "6px 16px",
+  cursor: "pointer",
+  fontSize: 13,
+  fontWeight: 600,
+  backdropFilter: "blur(8px)",
+  marginBottom: 12,   // smaller spacing
+  alignSelf: "flex-start"
+}}
+>
+  ← Back to Results
+</button>
 
-        <h1 style={{ fontSize: 40, fontWeight: 900, color: "#fff", margin: "0 0 8px", letterSpacing: "-1.5px", lineHeight: 1.1 }}>
-          Hospital&nbsp;<span style={{ color: "#7DD8D8" }}>Comparison</span>
-        </h1>
-        <p style={{ color: "rgba(255,255,255,.6)", fontSize: 15, margin: 0 }}>
-          Side-by-side analysis · {hospitals.length} hospitals
-        </p>
+{/* Title + Winners Row */}
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 20,
+  }}
+>
+  <div>
+    <h1 style={{
+      fontSize: 30,
+      fontWeight: 900,
+      color: "#fff",
+      margin: "0 0 6px",
+      letterSpacing: "-1px"
+    }}>
+      Hospital <span style={{ color: "#7DD8D8" }}>Comparison</span>
+    </h1>
 
-        {/* Winner chips */}
-        <div style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
-          {[
-            { e: "⭐", l: "Top Rated",  v: hospitals.find(h => (h.rating||0)===bestRating)  ? short(hospitals.find(h => (h.rating||0)===bestRating)) : "Tied" },
-            { e: "💰", l: "Best Price", v: short(hospitals.find(h => h.treatments[0].minCost===lowestPrice)) },
-            { e: "📍", l: "Nearest",    v: short(hospitals.find(h => h.distanceMiles===nearest)) },
-            { e: "🏆", l: "Best Value", v: short(hospitals.find(h => h.affordabilityScore===bestAffird)) },
-          ].map(chip => (
-            <div key={chip.l} style={{
-              background: "rgba(255,255,255,.11)", border: "1px solid rgba(255,255,255,.2)",
-              borderRadius: 99, padding: "6px 16px", fontSize: 12, color: "#fff", fontWeight: 600,
-              backdropFilter: "blur(6px)",
-            }}>
-              {chip.e} <span style={{ opacity: .7 }}>{chip.l}:</span> {chip.v}
-            </div>
-          ))}
-        </div>
+    <p style={{
+      color: "rgba(255,255,255,.65)",
+      fontSize: 14,
+      margin: 0
+    }}>
+      Side-by-side analysis · {hospitals.length} hospitals
+    </p>
+  </div>
+
+  {/* Winner Chips */}
+  <div style={{
+    display: "flex",
+    gap: 10,
+    flexWrap: "wrap",
+    justifyContent: "flex-end"
+  }}>
+    {[
+      { e: "⭐", l: "Top Rated",  v: hospitals.find(h => (h.rating||0)===bestRating) ? short(hospitals.find(h => (h.rating||0)===bestRating)) : "Tied" },
+      { e: "💰", l: "Best Price", v: short(hospitals.find(h => h.treatments[0].minCost===lowestPrice)) },
+      { e: "📍", l: "Nearest",    v: short(hospitals.find(h => h.distanceMiles===nearest)) },
+      { e: "🏆", l: "Best Value", v: short(hospitals.find(h => h.affordabilityScore===bestAffird)) },
+    ].map(chip => (
+      <div key={chip.l} style={{
+        background: "rgba(255,255,255,.12)",
+        border: "1px solid rgba(255,255,255,.25)",
+        borderRadius: 14,
+       padding: "6px 12px",
+fontSize: 12,
+        color: "#fff",
+        fontWeight: 600,
+        backdropFilter: "blur(8px)",
+        boxShadow: "0 4px 20px rgba(0,0,0,.15)"
+      }}>
+        <span style={{ marginRight: 8 }}>{chip.e}</span>
+        <span style={{ opacity: .7 }}>{chip.l}:</span>{" "}
+        <span style={{ fontWeight: 800 }}>{chip.v}</span>
       </div>
+    ))}
+  </div>
 
+</div>
+</div>
       {/* ── TAB BAR ─────────────────────────────────────── */}
       <div style={{
         background: C.white,
@@ -262,7 +315,7 @@ const ComparePage = () => {
       }}>
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} style={{
-            padding: "17px 28px", fontSize: 13, fontWeight: 700,
+            padding: "13px 24px",fontSize: 13, fontWeight: 700,
             border: "none", background: "none", cursor: "pointer",
             color: tab === t.id ? C.teal : C.muted,
             borderBottom: tab === t.id ? `3px solid ${C.teal}` : "3px solid transparent",
@@ -350,7 +403,7 @@ const ComparePage = () => {
 
                     {/* Affordability ring */}
                     <div style={{
-                      display: "flex", alignItems: "center", gap: 14,
+                      display: "flex",alignItems: "flex-start", gap: 14,
                       background: C.tealLight, borderRadius: 14,
                       padding: "14px 16px", marginBottom: 18,
                     }}>
