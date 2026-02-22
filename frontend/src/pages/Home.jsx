@@ -46,7 +46,7 @@ const Home = () => {
         </div>
 
         {/* Suggested searches */}
-        <div className="mt-8 flex flex-wrap gap-4">
+        {/* <div className="mt-8 flex flex-wrap gap-4">
           {[
             "Colonoscopy",
             "Knee Repair - Arthroscopic",
@@ -60,7 +60,7 @@ const Home = () => {
               {item}
             </button>
           ))}
-        </div>
+        </div> */}
       </section>
       {/* INFO CARDS */}
       <section className="mt-1 relative">

@@ -439,7 +439,7 @@ fontSize: 12,
 
                     <div style={{ flex: 1 }}/>
 
-                    <button
+                    {/* <button
                       onClick={() => navigate("/search-details", { state: { hospital: h } })}
                       style={{
                         marginTop: 22, width: "100%",
@@ -454,7 +454,7 @@ fontSize: 12,
                         transition: "all .18s",
                       }}>
                       View Full Details →
-                    </button>
+                    </button> */}
                   </div>
                 );
               })}
