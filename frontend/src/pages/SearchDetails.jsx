@@ -103,35 +103,20 @@ const ratingCounts = [5, 4, 3, 2, 1].map(
             </p>
 
             <div className="flex flex-wrap gap-3 mt-5">
+              <span
+                onClick={() =>
+                  navigate("/reviews", {
+                    state: {
+                      hospital,
+                      condition: conditionName,
+                    },
+                  })
+                }
+                className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm cursor-pointer hover:bg-green-200 transition"
+              >
+                ⭐ {hospital.rating}
+              </span>
 
-             <button
-  onClick={() =>
-    navigate("/reviews", {
-      state: { hospital, condition: conditionName },
-    })
-  }
-  className="group relative flex items-center gap-3 bg-white border border-[#d8e4e6] px-5 py-2.5 rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
->
-  {/* Star Icon Circle */}
-  <div className="flex items-center justify-center w-7 h-7 rounded-full bg-[#1f6f6b] text-white text-sm shadow">
-    ★
-  </div>
-
-  {/* Rating Text */}
-  <div className="flex items-center gap-2">
-    <span className="font-semibold text-[#0f2f33] text-sm">
-      {reviews.length ? avgRating.toFixed(1) : "New"}
-    </span>
-    <span className="text-xs text-[#6b8a8f]">
-      ({reviews.length} reviews)
-    </span>
-  </div>
-
-  {/* Arrow */}
-  <span className="text-[#1f6f6b] text-sm opacity-0 group-hover:opacity-100 transition">
-    →
-  </span>
-</button>
 
               <span className="bg-[#eef3ff] text-[#3554d1] px-3.5 py-1.5 rounded-full text-sm">
                 {hospital.type}
