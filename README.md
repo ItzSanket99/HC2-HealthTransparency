@@ -1,4 +1,4 @@
-# 🏥 TreatWise – Healthcare Transparency & Decision Intelligence Platform
+<img width="974" height="537" alt="image" src="https://github.com/user-attachments/assets/bf72c7e9-95ce-4d4e-8841-001a8f1fdabf" /># 🏥 TreatWise – Healthcare Transparency & Decision Intelligence Platform
 
 TreatWise is a healthcare transparency platform designed to help patients make informed decisions based on structured, real-world treatment data. Unlike traditional review systems that rely on generic star ratings, TreatWise converts patient feedback into measurable healthcare intelligence such as billing deviation, insurance efficiency, recovery outcomes, and wait times.
 
@@ -144,7 +144,7 @@ External Integrations
 
 ## Database
 - Firebase
-- 
+
 ## Authentication
 - Role-Based Access Control (RBAC)
 
@@ -232,42 +232,39 @@ cd backend
 npm install
 npm start
 ```
----
-# 📂 Project Structure
+## 📂 Project Structure
 
+```text
 Health-Transparency/
 │
-├── 📁 frontend/ # React Frontend (User Interface)
-│ ├── 📁 public/ # Static assets
-│ ├── 📁 src/
-│ │ ├── 📁 api/ # API calls
-│ │ ├── 📁 components/ # Reusable UI components
-│ │ │ ├── 📁 ai/ # AI chatbot components
-│ │ │ ├── 📁 cards/ # Hospital & treatment cards
-│ │ │ ├── 📁 filters/ # Search filters
-│ │ │ ├── 📁 layout/ # Navbar, footer, layouts
-│ │ │ ├── 📁 shared/ # Shared reusable components
-│ │ │ ├── 📄 MapView.jsx # Map-based hospital visualization
-│ │ │ └── 📄 ReviewPieChart.jsx
-│ │ │
-│ │ ├── 📁 pages/ # Main application pages
-│ │ │
-│ │ ├── 📁 data/ # Mock / structured data
-│ │ ├── 📁 utils/ # Helper functions (cost calculation, etc.)
-│ │ ├── 📄 App.jsx # Main App component
-│ │ └── 📄 main.jsx # Entry point
-│ │
-│ └── package.json
+├── frontend/                  # React Frontend (User Interface)
+│   ├── public/                # Static assets
+│   ├── src/
+│   │   ├── api/               # API calls
+│   │   ├── components/        # Reusable UI components
+│   │   │   ├── ai/            # AI chatbot components
+│   │   │   ├── cards/         # Hospital & treatment cards
+│   │   │   ├── filters/       # Search filters
+│   │   │   ├── layout/        # Navbar, footer, layouts
+│   │   │   ├── shared/        # Shared reusable components
+│   │   │   ├── MapView.jsx    # Map-based hospital visualization
+│   │   │   └── ReviewPieChart.jsx
+│   │   │
+│   │   ├── pages/             # Main application pages
+│   │   ├── data/              # Mock / structured data
+│   │   ├── utils/             # Helper functions (cost calculation, etc.)
+│   │   ├── App.jsx            # Main App component
+│   │   └── main.jsx           # Entry point
+│   │
+│   └── package.json
 │
-├── 📁 proxy/ # Backend / API Layer
-│ ├── 📄 server.js # Express server
-│ ├── 📄 aiProxy.js # AI request handler
-│ └── package.json
+├── proxy/                     # Backend / API Layer
+│   ├── server.js              # Express server
+│   ├── aiProxy.js             # AI request handler
+│   └── package.json
 │
-└── 📄 README.md
----
-
----
+└── README.md
+```
 
 # 👨‍💻 Team
 
