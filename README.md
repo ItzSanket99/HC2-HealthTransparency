@@ -269,6 +269,14 @@ Health-Transparency/
 # 👨‍💻 Team
 
 Developed by a team of 4 innovators focused on transforming healthcare transparency and financial accessibility.
+---
+
+## 👥 Project Team
+
+- **Sanket Jagtap** – [@itzsanket0](https://github.com/itzsanket0)  
+- **Yash date** – [@yash-date](https://github.com/yash-date)  
+- **Piyush Gawali** – [@piyush9420707813](https://github.com/piyush9420707813)  
+- **Himanshu Sonawane** – [@sHimanshu22](https://github.com/sHimanshu22)  
 
 ---
 
