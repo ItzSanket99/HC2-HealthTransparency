@@ -1,4 +1,4 @@
-<img width="974" height="537" alt="image" src="https://github.com/user-attachments/assets/bf72c7e9-95ce-4d4e-8841-001a8f1fdabf" /># 🏥 TreatWise – Healthcare Transparency & Decision Intelligence Platform
+# 🏥 TreatWise – Healthcare Transparency & Decision Intelligence Platform
 
 TreatWise is a healthcare transparency platform designed to help patients make informed decisions based on structured, real-world treatment data. Unlike traditional review systems that rely on generic star ratings, TreatWise converts patient feedback into measurable healthcare intelligence such as billing deviation, insurance efficiency, recovery outcomes, and wait times.
 
