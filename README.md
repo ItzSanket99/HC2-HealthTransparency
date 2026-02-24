@@ -101,9 +101,14 @@ Automatically adjusts final payable amount.
 ---
 
 ## 🤖 AI Chatbot
+- voice support
 - Guides patients
 - Explains cost breakdown
 - Assists in navigation
+
+  ## Multi language support
+  - more than 5 language support.
+  
 
 ---
 
